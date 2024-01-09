@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Enum\UserType;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder
@@ -18,7 +17,7 @@ class UserSeeder extends Seeder
             'fullname' => 'Admin',
             'username' => 'admin',
             'password' => bcrypt('admin123'),
-            'user_type' => UserType::ADMIN
+            'user_type' => UserType::ADMIN,
         ]);
     }
 }
