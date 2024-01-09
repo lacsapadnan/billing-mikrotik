@@ -1,6 +1,5 @@
 <?php
 
-use App\Enum\UserType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,13 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('customer_metas', function (Blueprint $table) {
             $table->id();
-            $table->string('username')->unique();
-            $table->string('fullname');
-            $table->string('password');
-            $table->enum('user_type', array_column(UserType::cases(), 'value'))->default(UserType::SALES->value);
-            $table->boolean('is_active')->default(true);
+            $table->foreignId('customer_id')->constrained('customers');
+            $table->string('meta_key', 64);
+            $table->longText('meta_value')->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('customer_metas');
     }
 };
