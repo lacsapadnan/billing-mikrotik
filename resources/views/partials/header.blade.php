@@ -161,7 +161,7 @@
                     <div class="cursor-pointer symbol symbol-30px symbol-md-40px"
                         data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-attach="parent"
                         data-kt-menu-placement="bottom-end">
-                        <img src="assets/media/avatars/300-1.jpg" alt="user" />
+                        <img src="{{asset('assets/media/avatars/300-1.jpg')}}" alt="user" />
                     </div>
                     <!--begin::User account menu-->
                     <div class="py-4 menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg menu-state-color fw-semibold fs-6 w-275px"
@@ -176,9 +176,9 @@
                                 <!--end::Avatar-->
                                 <!--begin::Username-->
                                 <div class="d-flex flex-column">
-                                    <div class="fw-bold d-flex align-items-center fs-5">{{ auth()->user()->name }}</div>
+                                    <div class="fw-bold d-flex align-items-center fs-5">{{ auth()->user()->fullname }}</div>
                                     <a href="#"
-                                        class="fw-semibold text-muted text-hover-primary fs-7">{{ auth()->user()->email }}</a>
+                                        class="fw-semibold text-muted text-hover-primary fs-7">{{ auth()->user()->username }}</a>
                                 </div>
                                 <!--end::Username-->
                             </div>
@@ -194,7 +194,7 @@
                         <!--end::Menu item-->
                         <!--begin::Menu item-->
                         <div class="px-5 menu-item">
-                            <a href="../../demo1/dist/authentication/layouts/corporate/sign-in.html"
+                            <a href="{{route('admin:auth.logout')}}"
                                 class="px-5 menu-link">Sign Out</a>
                         </div>
                         <!--end::Menu item-->
