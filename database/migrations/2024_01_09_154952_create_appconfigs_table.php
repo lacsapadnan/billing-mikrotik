@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('appconfig', function (Blueprint $table) {
+        Schema::create('appconfigs', function (Blueprint $table) {
             $table->id();
             $table->mediumText('setting');
             $table->mediumText('value')->nullable();
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('appconfig');
+        Schema::dropIfExists('appconfigs');
     }
 };
