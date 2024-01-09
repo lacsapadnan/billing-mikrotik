@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('radusergroups', function (Blueprint $table) {
             $table->id();
-            $table->string('username', 64)->default('');
+            $table->string('username', 64)->default('')->index();
             $table->string('groupname', 64)->default('');
             $table->integer('priority')->default(1);
             $table->timestamps();

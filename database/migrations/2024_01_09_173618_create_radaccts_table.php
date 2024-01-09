@@ -13,18 +13,18 @@ return new class extends Migration
     {
         Schema::create('radaccts', function (Blueprint $table) {
             $table->id();
-            $table->string('acctsessionid', 64)->default('');
-            $table->string('acctuniqueid', 32)->default('');
-            $table->string('username', 64)->default('');
+            $table->string('acctsessionid', 64)->default('')->index();
+            $table->string('acctuniqueid', 32)->default('')->unique();
+            $table->string('username', 64)->default('')->index();
             $table->string('realm', 64)->default('');
-            $table->string('nasipaddress', 15)->default('');
+            $table->string('nasipaddress', 15)->default('')->index();
             $table->string('nasportid', 32)->nullable();
             $table->string('nasporttype', 32)->nullable();
-            $table->dateTime('acctstarttime')->nullable();
+            $table->dateTime('acctstarttime')->nullable()->index();
             $table->dateTime('acctupdatetime')->nullable();
-            $table->dateTime('acctstoptime')->nullable();
-            $table->integer('acctinterval')->nullable();
-            $table->unsignedInteger('acctsessiontime')->nullable();
+            $table->dateTime('acctstoptime')->nullable()->index();
+            $table->integer('acctinterval')->nullable()->index();
+            $table->unsignedInteger('acctsessiontime')->nullable()->index();
             $table->string('acctauthentic', 32)->nullable();
             $table->string('connectinfo_start', 128)->nullable();
             $table->string('connectinfo_stop', 128)->nullable();
@@ -35,12 +35,12 @@ return new class extends Migration
             $table->string('acctterminatecause', 32)->default('');
             $table->string('servicetype', 32)->nullable();
             $table->string('framedprotocol', 32)->nullable();
-            $table->string('framedipaddress', 15)->default('');
-            $table->string('framedipv6address', 45)->default('');
-            $table->string('framedipv6prefix', 45)->default('');
-            $table->string('framedinterfaceid', 44)->default('');
+            $table->string('framedipaddress', 15)->default('')->index();
+            $table->string('framedipv6address', 45)->default('')->index();
+            $table->string('framedipv6prefix', 45)->default('')->index();
+            $table->string('framedinterfaceid', 44)->default('')->index();
             $table->string('delegatedipv6prefix', 45)->default('');
-            $table->string('class', 64)->nullable();
+            $table->string('class', 64)->nullable()->index();
             $table->timestamps();
         });
     }

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('nasses', function (Blueprint $table) {
             $table->id();
-            $table->string('nasname', 128);
+            $table->string('nasname', 128)->index();
             $table->string('shortname', 32)->nullable();
             $table->string('type', 30)->default('other');
             $table->string('ports', 5)->nullable();
