@@ -11,11 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('appconfigs', function (Blueprint $table) {
+        Schema::create('app_configs', function (Blueprint $table) {
             $table->id();
             $table->mediumText('setting');
             $table->mediumText('value')->nullable();
-            $table->timestamps();
         });
     }
 
@@ -24,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('appconfigs');
+        Schema::dropIfExists('app_configs');
     }
 };
