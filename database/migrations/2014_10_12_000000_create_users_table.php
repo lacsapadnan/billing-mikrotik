@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('username')->unique();
             $table->string('fullname');
             $table->string('password');
-            $table->enum('user_type', array_column(UserType::cases(), 'name'))->default(UserType::SALES->name);
+            $table->enum('user_type', array_column(UserType::cases(), 'value'))->default(UserType::SALES->value);
             $table->rememberToken();
             $table->timestamps();
         });

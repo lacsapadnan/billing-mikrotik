@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('phonenumber', 20);
             $table->string('email', 128);
             $table->decimal('balance', 15, 2)->comment('For Money Deposit');
-            $table->enum('service_type', array_column(ServiceType::cases(), 'name'))->comment('for selecting user type');
+            $table->enum('service_type', array_column(ServiceType::cases(), 'value'))->comment('for selecting user type');
             $table->boolean('auto_renewal')->comment('Auto renewall using balance');
             $table->dateTime('last_login')->nullable();
             $table->timestamps();

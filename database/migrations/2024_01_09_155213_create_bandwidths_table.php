@@ -16,9 +16,9 @@ return new class extends Migration
             $table->id();
             $table->string('name_bw');
             $table->unsignedInteger('rate_down');
-            $table->enum('rate_down_unit', array_column(RateUnit::cases(), 'name'));
+            $table->enum('rate_down_unit', array_column(RateUnit::cases(), 'value'));
             $table->unsignedInteger('rate_up');
-            $table->enum('rate_up_unit', array_column(RateUnit::cases(), 'name'));
+            $table->enum('rate_up_unit', array_column(RateUnit::cases(), 'value'));
             $table->timestamps();
         });
     }

@@ -35,6 +35,7 @@
     },
     "scripts": {
         "lint": "@php vendor/bin/pint",
+        "fresh": "@php artisan migrate:fresh --seed",
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"
