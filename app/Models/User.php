@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enum\UserType;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -16,8 +17,10 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'fullname',
         'username',
         'password',
+        'user_type'
     ];
 
     /**
@@ -37,5 +40,6 @@ class User extends Authenticatable
      */
     protected $casts = [
         'password' => 'hashed',
+        'user_type' => UserType::class
     ];
 }
