@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminAuthController;
+use App\Http\Controllers\Admin\AdminCustomerController;
 use Illuminate\Support\Facades\Route;
 
 Route::name('admin:')->group(function () {
@@ -12,6 +13,9 @@ Route::name('admin:')->group(function () {
     Route::middleware('auth:admin')->group(function () {
         Route::view('dashboard', 'admin.dashboard')->name('dashboard');
         Route::get('logout', [AdminAuthController::class, 'destroy'])->name('auth.logout');
+        Route::prefix('customer')->name('customer.')->group(function(){
+            Route::get('/', [AdminCustomerController::class, 'index'])->name('list');
+        });
     });
     Route::redirect('/', '/admin/dashboard', 301);
 });

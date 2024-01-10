@@ -5,7 +5,8 @@ return [
         [
             'items' => [
                 [
-                    'name' => 'Dashboard',
+                    'name' => 'dashboard',
+                    'title' => 'Dashboard',
                     'url' => '/admin/dashboard',
                     'icon' => 'element-11'
                 ]
@@ -15,7 +16,8 @@ return [
             'group' => 'MANAGE',
             'items' => [
                 [
-                    'name' => 'Customer',
+                    'name' => 'customer',
+                    'title' => 'Customer',
                     'icon' => 'profile-user',
                     'sub' => [
                         [

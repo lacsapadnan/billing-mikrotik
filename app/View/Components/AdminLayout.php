@@ -7,6 +7,10 @@ use Illuminate\View\View;
 
 class AdminLayout extends Component
 {
+    public function __construct(public string $title, public string $activeMenu, public array $path=[])
+    {
+
+    }
     /**
      * Get the view / contents that represents the component.
      */

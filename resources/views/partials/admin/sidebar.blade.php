@@ -54,7 +54,7 @@
                     @foreach(@$group['items']??[] as $item)
                         <div data-kt-menu-trigger="click" @if(@$item['sub'])class="menu-item menu-accordion"@endif>
                             @if(@$item['url'])
-                            <div class="menu-item {{ app()->view->getSections()['title'] == @$item['name'] ? 'here' : ''}}">
+                            <div class="menu-item {{ app()->view->getSections()['active-menu'] == @$item['name'] ? 'here' : ''}}">
                             <!--begin:Menu link-->
                             <a class="menu-link" href="{{@$item['url']}}">
                                 <span class="menu-icon">
@@ -66,7 +66,7 @@
                                         <span class="path5"></span>
                                     </i>
                                 </span>
-                                <span class="menu-title">{{@$item['name']}}</span>
+                                <span class="menu-title">{{@$item['title']}}</span>
                                 @if(@$item['sub'])
                                 <span class="menu-arrow"></span>
                                 @endif
