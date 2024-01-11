@@ -33,8 +33,8 @@
 
                             <span data-bs-toggle="tooltip" data-bs-trigger="hover"
                                 data-bs-original-title="Edit customer details" data-kt-initialized="1">
-                                <a href="#" class="btn btn-sm btn-light-danger" data-bs-toggle="modal"
-                                    data-bs-target="#kt_modal_update_details">
+                                <a href="#" class="btn btn-sm btn-light-danger confirmable" data-confirm-title="Delete?" data-confirm-button-color="var(--bs-danger)"
+                                                                                                                         data-on-confirm="window.location = '{{ route('admin:customer.delete', $customer) }}'">
                                     Delete
                                 </a>
                                 <a href="#" class="btn btn-sm btn-light-primary" data-bs-toggle="modal"
