@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Customer extends Model
 {
@@ -22,4 +23,8 @@ class Customer extends Model
         'auto_renewal',
         'last_login',
     ];
+
+    public function recharge(): HasOne {
+        return $this->hasOne(UserRecharge::class);
+    }
 }

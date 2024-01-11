@@ -4,6 +4,7 @@ namespace App\DataTables;
 
 use App\Models\Customer;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
+use Illuminate\Support\Carbon;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Button;
@@ -23,6 +24,18 @@ class CustomerDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addColumn('action', 'customer.action')
+            ->editColumn('recharge.is_active', function ($row) {
+                if ($d = $row->recharge) {
+                    if ($d->is_active) {
+                        return '<span class="badge badge-success" title="Expired ' . Carbon::createFromFormat($d['expiration'], $d['time']) . '">' . $d['namebp'] . '</span>';
+                    } else {
+                        return '<span class="badge badge-danger" title="Expired ' . Carbon::createFromFormat($d['expiration'], $d['time']) . '">' . $d['namebp'] . '</span>';
+                    }
+                } else {
+                    return '<span class="badge badge-danger">&bull;</span>';
+                }
+            })
+            ->rawColumns(['action', 'recharge.is_active'])
             ->setRowId('id');
     }
 
@@ -31,7 +44,7 @@ class CustomerDataTable extends DataTable
      */
     public function query(Customer $model): QueryBuilder
     {
-        return $model->newQuery();
+        return $model->newQuery()->with('recharge');
     }
 
     /**
@@ -40,20 +53,20 @@ class CustomerDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    ->setTableId('customer-table')
-                    ->columns($this->getColumns())
-                    ->minifiedAjax()
-                    //->dom('Bfrtip')
-                    ->orderBy(1)
-                    ->selectStyleSingle()
-                    ->buttons([
-                        Button::make('excel'),
-                        Button::make('csv'),
-                        Button::make('pdf'),
-                        Button::make('print'),
-                        // Button::make('reset'),
-                        // Button::make('reload')
-                    ]);
+            ->setTableId('customer-table')
+            ->columns($this->getColumns())
+            ->minifiedAjax()
+            //->dom('Bfrtip')
+            ->orderBy(1)
+            ->selectStyleSingle()
+            ->buttons([
+                Button::make('excel'),
+                Button::make('csv'),
+                Button::make('pdf'),
+                Button::make('print'),
+                // Button::make('reset'),
+                // Button::make('reload')
+            ]);
     }
 
     /**
@@ -66,6 +79,9 @@ class CustomerDataTable extends DataTable
             Column::make('fullname'),
             Column::make('phonenumber'),
             Column::make('email'),
+            Column::make('recharge.is_active')->title('Package')
+                ->orderable(false)
+                ->searchable(false),
             Column::make('service_type'),
         ];
     }

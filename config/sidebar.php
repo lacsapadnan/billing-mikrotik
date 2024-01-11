@@ -22,12 +22,12 @@ return [
                     'sub' => [
                         [
                             'name' => 'Add New Contact',
-                            'url' => '/customer/add',
+                            'url' => '/admin/customer',
                             'icon' => 'add-item'
                         ],
                         [
                             'name' => 'List Contact',
-                            'url' => '/#',
+                            'url' => '/admin/customer',
                             'icon' => 'address-book'
                         ]
                     ]
