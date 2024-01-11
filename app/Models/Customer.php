@@ -24,6 +24,10 @@ class Customer extends Model
         'last_login',
     ];
 
+    protected $casts = [
+        'last_login' => 'datetime'
+    ];
+
     public function recharge(): HasOne {
         return $this->hasOne(UserRecharge::class);
     }

@@ -15,6 +15,7 @@ Route::name('admin:')->group(function () {
         Route::get('logout', [AdminAuthController::class, 'destroy'])->name('auth.logout');
         Route::prefix('customer')->name('customer.')->group(function(){
             Route::get('/', [AdminCustomerController::class, 'index'])->name('list');
+            Route::get('/{customer}/detail', [AdminCustomerController::class, 'detail'])->name('detail');
         });
     });
     Route::redirect('/', '/admin/dashboard', 301);
