@@ -9,8 +9,6 @@ use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
-use Yajra\DataTables\Html\Editor\Editor;
-use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
 class CustomerDataTable extends DataTable
@@ -23,7 +21,9 @@ class CustomerDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->addColumn('action', 'customer.action')
+            ->addColumn('action', function(){
+                return '<div class="inline-flex gap-1"><a href="' . '' . '" class="btn btn-sm btn-success">view</a><a href="' . '' . '" class="btn btn-sm btn-primary">view</a></div>';
+            })
             ->editColumn('recharge.is_active', function ($row) {
                 if ($d = $row->recharge) {
                     if ($d->is_active) {
@@ -35,6 +35,7 @@ class CustomerDataTable extends DataTable
                     return '<span class="badge badge-danger">&bull;</span>';
                 }
             })
+            ->editColumn('created_at', fn($row)=>$row->created_at->format('d M Y H:i'))
             ->rawColumns(['action', 'recharge.is_active'])
             ->setRowId('id');
     }
@@ -83,6 +84,12 @@ class CustomerDataTable extends DataTable
                 ->orderable(false)
                 ->searchable(false),
             Column::make('service_type'),
+            Column::make('created_at')->title('Created On')
+            ->addClass('whitespace-nowrap'),
+            Column::computed('action')
+                  ->exportable(false)
+                  ->printable(false)
+                  ->addClass('text-center'),
         ];
     }
 
