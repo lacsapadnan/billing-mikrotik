@@ -23,3 +23,13 @@ $('.confirmable').click(function (e) {
         }
     })
 });
+
+
+// Element to indecate
+var button = document.querySelector("#kt_button_toggle");
+
+// Handle button click event
+button.addEventListener("click", function() {
+    button.classList.toggle("active");
+});
+
