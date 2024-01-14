@@ -18,12 +18,12 @@ return new class extends Migration
             $table->string('password');
             $table->string('pppoe_password')->comment('For PPPOE Login');
             $table->string('fullname', 45);
-            $table->mediumText('address');
+            $table->mediumText('address')->nullable();
             $table->string('phonenumber', 20);
             $table->string('email', 128);
-            $table->decimal('balance', 15, 2)->comment('For Money Deposit');
+            $table->decimal('balance', 15, 2)->comment('For Money Deposit')->default(0);
             $table->enum('service_type', array_column(ServiceType::cases(), 'value'))->comment('for selecting user type');
-            $table->boolean('auto_renewal')->comment('Auto renewall using balance');
+            $table->boolean('auto_renewal')->comment('Auto renewall using balance')->default(true);
             $table->dateTime('last_login')->nullable();
             $table->timestamps();
         });
