@@ -20,7 +20,7 @@ return new class extends Migration
         Schema::create('plans', function (Blueprint $table) {
             $table->id();
             $table->string('name_plan');
-            $table->integer('id_bw');
+            $table->foreignId('bandwidth_id')->constrained('bandwidths');
             $table->string('price', 40);
             $table->enum('type', array_column(PlanType::cases(), 'value'));
             $table->enum('typebp', array_column(PlanTypeBp::cases(), 'value'))->nullable();
@@ -32,7 +32,8 @@ return new class extends Migration
             $table->integer('validity');
             $table->enum('validity_unit', array_column(ValidityUnit::cases(), 'value'));
             $table->integer('shared_users')->nullable();
-            $table->string('routers', 32);
+            $table->foreignId('router_id')->constrained('routers');
+            // $table->string('routers', 32);
             $table->boolean('is_radius');
             $table->string('pool', 40)->nullable();
             $table->string('pool_expired', 40)->default('');

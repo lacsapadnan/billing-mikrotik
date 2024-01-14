@@ -13,7 +13,6 @@ use Yajra\DataTables\Services\DataTable;
 
 class CustomerDataTable extends DataTable
 {
-
     /**
      * Build the DataTable class.
      *
@@ -62,12 +61,12 @@ class CustomerDataTable extends DataTable
             // ->dom('Bfrtip')
             ->orderBy(1)
             ->selectStyleSingle();
-            // ->buttons([
-            //     Button::make('excel'),
-            //     Button::make('csv'),
-            //     Button::make('pdf'),
-            //     Button::make('print'),
-            // ]);
+        // ->buttons([
+        //     Button::make('excel'),
+        //     Button::make('csv'),
+        //     Button::make('pdf'),
+        //     Button::make('print'),
+        // ]);
     }
 
     /**
