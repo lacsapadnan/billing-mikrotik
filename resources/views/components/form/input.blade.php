@@ -1,4 +1,4 @@
-@props(['type' => 'text', 'label' => ucfirst($name), 'name' => '', 'required' => false, 'tooltip' => null, $value=''])
+@props(['type' => 'text', 'label' => ucfirst($name), 'name' => '', 'required' => false, 'tooltip' => null, 'value'=>null])
 <!--begin::Input group-->
 <div class="row fv-row mb-7 fv-plugins-icon-container">
     <div class="col-md-3 text-md-end">

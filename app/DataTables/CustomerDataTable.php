@@ -22,7 +22,7 @@ class CustomerDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addColumn('action', function ($row) {
-                $detailUrl = route('admin:customer.detail', $row);
+                $detailUrl = route('admin:customer.show', $row);
 
                 return '<div class="inline-flex gap-1"><a href="'.$detailUrl.'" class="btn btn-sm btn-success">view</a><a href="'.''.'" class="btn btn-sm btn-primary">view</a></div>';
             })

@@ -6,7 +6,8 @@ window.Alpine = Alpine;
 
 Alpine.start();
 
-$('.confirmable').click(function () {
+$('.confirmable').click(function (e) {
+    e.preventDefault();
     const data = $(this).data();
     Swal.fire({
         title: data.confirmTitle || 'Are you sure?',

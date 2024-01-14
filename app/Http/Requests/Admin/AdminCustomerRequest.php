@@ -25,7 +25,7 @@ class AdminCustomerRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'username' => 'required|min:3|max:55|unique:customers,username',
+            'username' => 'required|min:3|max:55|unique:customers,username'.$this->method() == 'PATCH' ? $this->id : '',
             'fullname' => 'required|min:3|max:25',
             'password' => 'required|min:3|max:35',
             'pppoe_password' => 'nullable',

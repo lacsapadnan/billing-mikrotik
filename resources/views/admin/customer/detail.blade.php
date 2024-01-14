@@ -1,4 +1,4 @@
-<x-admin-layout title="Detail Contact" active-menu="customer" :path="['List Contact' => route('admin:customer.list'), 'Detail Contact' => '']">
+<x-admin-layout title="Detail Contact" active-menu="customer" :path="['List Contact' => route('admin:customer.index'), 'Detail Contact' => '']">
     <div class="app-container container-xxl">
         <div class="d-flex flex-column flex-lg-row">
             <!--begin::Content-->
@@ -31,16 +31,21 @@
                                 Details
                             </div>
 
-                            <span data-bs-toggle="tooltip" data-bs-trigger="hover"
-                                data-bs-original-title="Edit customer details" data-kt-initialized="1">
-                                <a href="#" class="btn btn-sm btn-light-danger confirmable" data-confirm-title="Delete?" data-confirm-button-color="var(--bs-danger)"
-                                                                                                                         data-on-confirm="window.location = '{{ route('admin:customer.delete', $customer) }}'">
+                            <div class="flex flex-row gap-2">
+                                <form action="{{route('admin:customer.destroy', $customer)}}" id="destroy-form" method="POST">
+                                    @csrf
+                                    @method('delete')
+                                <button type="submit" class="btn btn-sm btn-light-danger confirmable"
+                                    data-confirm-title="Delete?" data-confirm-button-color="var(--bs-danger)"
+                                    data-on-confirm="$('#destroy-form').submit()">
                                     Delete
-                                </a>
-                                <a href="{{route('admin:customer.edit', $customer)}}" class="btn btn-sm btn-light-primary" >
+                                </button>
+                                </form>
+                                <a href="{{ route('admin:customer.edit', $customer) }}"
+                                    class="btn btn-sm btn-light-primary">
                                     Edit
                                 </a>
-                            </span>
+                            </div>
                         </div>
 
                         <div class="separator"></div>

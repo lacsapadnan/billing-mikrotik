@@ -24,8 +24,9 @@ class AdminCustomerController extends Controller
     public function edit(Customer $customer)
     {
         $mode = 'edit';
+        $serviceTypes = array_column(ServiceType::cases(), 'value', 'value');
 
-        return view('admin.customer.form', compact('customer', 'mode'));
+        return view('admin.customer.form', compact('customer', 'mode', 'serviceTypes'));
     }
 
     public function create()
@@ -41,7 +42,7 @@ class AdminCustomerController extends Controller
         try {
             $customer->delete();
 
-            return redirect()->to(route('admin:customer.list'))->with('success', __('success.customer.deleted'));
+            return redirect()->to(route('admin:customer.index'))->with('success', __('success.customer.deleted'));
         } catch (Error $exception) {
             return redirect()->back()->with('error', $exception->getMessage());
         }
@@ -51,6 +52,13 @@ class AdminCustomerController extends Controller
     {
         Customer::query()->create($request->all());
 
-        return redirect(route('admin:customer.list'))->with('success', __('success.customer.created'));
+        return redirect(route('admin:customer.index'))->with('success', __('success.customer.created'));
+    }
+
+    public function update(Customer $customer, AdminCustomerRequest $request)
+    {
+        $customer->update($request->all());
+
+        return redirect(route('admin:customer.index'))->with('success', __('success.customer.updated'));
     }
 }

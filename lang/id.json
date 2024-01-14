@@ -1,5 +1,6 @@
 {
     "auth.failed": "Username atau kata sandi salah.",
     "success.customer.created":"Akun berhasil ditambahkan",
-    "success.customer.deleted": "Akun berhasil dihapus"
+    "success.customer.deleted": "Akun berhasil dihapus",
+    "success.customer.updated": "Akun berhasil diperbarui"
 }
