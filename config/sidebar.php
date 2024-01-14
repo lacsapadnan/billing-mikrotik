@@ -21,14 +21,57 @@ return [
                     'icon' => 'profile-user',
                     'sub' => [
                         [
-                            'name' => 'Add New Contact',
+                            'name' => 'customer.create',
+                            'title' => 'Add New Contact',
                             'url' => '/admin/customer/create',
                             'icon' => 'add-item',
                         ],
                         [
-                            'name' => 'List Contact',
+                            'name' => 'customer.index',
+                            'title' => 'List Contact',
                             'url' => '/admin/customer',
                             'icon' => 'address-book',
+                        ],
+                    ],
+                ],
+            ],
+        ],
+        [
+            'items' => [
+                [
+                    'name' => 'prepaid',
+                    'title' => 'Prepaid',
+                    'icon' => 'bill',
+                    'sub' => [
+                        [
+                            'name' => 'prepaid.user',
+                            'title' => 'Prepaid Users',
+                            'url' => '/admin/prepaid/user',
+                            'icon' => 'people',
+                        ],
+                        [
+                            'name' => 'prepaid.voucher',
+                            'title' => 'Prepaid Vouchers',
+                            'url' => '/admin/prepaid/voucher',
+                            'icon' => 'discount',
+                        ],
+                        [
+                            'name' => 'prepaid.refill',
+                            'title' => 'Refill Account',
+                            'url' => '/admin/prepaid/refill',
+                            'icon' => 'dollar',
+                        ],
+                        [
+                            'name' => 'prepaid.recharge',
+                            'title' => 'Recharge Account',
+                            'url' => '/admin/prepaid/recharge',
+                            'icon' => 'dollar',
+                        ],
+                        [
+                            'name' => 'prepaid.refill-balance',
+                            'title' => 'Refill Balance',
+                            'url' => '/admin/prepaid/refill-balance',
+                            'icon' => 'wallet',
                         ],
                     ],
                 ],

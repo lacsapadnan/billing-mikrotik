@@ -1,4 +1,4 @@
-<x-admin-layout title="Manage Contact" active-menu="customer" :path="['List Contact' => '']">
+<x-admin-layout title="Manage Contact" active-menu="customer.index" :path="['List Contact' => '']">
     <div class="app-container container-xxl">
         <div class="card card-flush card-shadow">
             <div class="card-body">
