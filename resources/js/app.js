@@ -1,35 +1,51 @@
-import './bootstrap';
+import "./bootstrap";
 
-import Alpine from 'alpinejs';
+import Alpine from "alpinejs";
 
 window.Alpine = Alpine;
 
 Alpine.start();
 
-$('.confirmable').click(function (e) {
+$(".confirmable").click(function(e) {
     e.preventDefault();
     const data = $(this).data();
     Swal.fire({
-        title: data.confirmTitle || 'Are you sure?',
-        text: data.confirmText || 'You won\'t be able to revert this!',
-        icon: 'warning',
-        showCancelButton: typeof data.showCancelButton == "undefined"? true: data.showCancelButton == "true",
+        title: data.confirmTitle || "Are you sure?",
+        text: data.confirmText || "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton:
+            typeof data.showCancelButton == "undefined"
+                ? true
+                : data.showCancelButton == "true",
         confirmButtonColor: data.confirmButtonColor,
         cancelButtonColor: data.cancelButtonColor,
-        confirmButtonText: data.confirmButtonText||'Yes!'
+        confirmButtonText: data.confirmButtonText || "Yes!",
     }).then((result) => {
         if (result.isConfirmed) {
-            eval(data.onConfirm)
+            eval(data.onConfirm);
         }
-    })
+    });
 });
-
 
 // Element to indecate
 var button = document.querySelector("#kt_button_toggle");
 
 // Handle button click event
-button.addEventListener("click", function() {
-    button.classList.toggle("active");
-});
+if (button) {
+    button.addEventListener("click", function() {
+        button.classList.toggle("active");
+    });
+}
 
+// handle datatable search
+$(document).ready(() => {
+    var dtb = LaravelDataTables["dataTableBuilder"];
+    var search = "";
+    $("#dtb-search").on("input", (e) => {
+        search = e.target.value;
+        dtb.draw();
+    });
+    dtb.on("preXhr.dt", (e, settings, data) => {
+        data.search["value"] = search;
+    });
+});

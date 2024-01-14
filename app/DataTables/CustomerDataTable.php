@@ -13,6 +13,7 @@ use Yajra\DataTables\Services\DataTable;
 
 class CustomerDataTable extends DataTable
 {
+
     /**
      * Build the DataTable class.
      *
@@ -56,20 +57,17 @@ class CustomerDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-            ->setTableId('customer-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
-            //->dom('Bfrtip')
+            // ->dom('Bfrtip')
             ->orderBy(1)
-            ->selectStyleSingle()
-            ->buttons([
-                Button::make('excel'),
-                Button::make('csv'),
-                Button::make('pdf'),
-                Button::make('print'),
-                // Button::make('reset'),
-                // Button::make('reload')
-            ]);
+            ->selectStyleSingle();
+            // ->buttons([
+            //     Button::make('excel'),
+            //     Button::make('csv'),
+            //     Button::make('pdf'),
+            //     Button::make('print'),
+            // ]);
     }
 
     /**

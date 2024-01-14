@@ -1,6 +1,7 @@
-@props(['type' => 'text', 'label' => ucfirst($name), 'name' => '', 'required' => false, 'tooltip' => null, 'value'=>null])
+@props(['type' => 'text', 'label' => ucfirst($name), 'name' => '', 'required' => false, 'tooltip' => null, 'value'=>null, 'nolabel' => false])
 <!--begin::Input group-->
-<div class="row fv-row mb-7 fv-plugins-icon-container">
+<div {!! $attributes->merge(['class'=>"row fv-row fv-plugins-icon-container"])!!}>
+    @if(!$nolabel)
     <div class="col-md-3 text-md-end">
         <!--begin::Label-->
         <label class="fs-6 fw-semibold form-label mt-3">
@@ -14,6 +15,7 @@
         </label>
         <!--end::Label-->
     </div>
+    @endif
 
     <div class="col-md-9">
         <!--begin::Input-->
@@ -23,7 +25,7 @@
             value="{{ old($name)??$value }}" @required($required)></textarea>
         @else
         <input type="{{ $type }}" class="form-control form-control-solid" name="{{ $name }}"
-            value="{{ old($name)??$value }}" @required($required)>
+            value="{{ old($name)??$value }}" @required($required) {!!$attributes !!}>
         <!--end::Input-->
         @endif
         @error($name)
