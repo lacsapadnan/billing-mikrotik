@@ -13,7 +13,7 @@
 
 
                 <!--begin::Form-->
-                <form class="form fv-plugins-bootstrap5 fv-plugins-framework" method="POST" action="{{ $action }}">
+                <form class="form fv-plugins-bootstrap5 fv-plugins-framework flex flex-col gap-5" method="POST" action="{{ $action }}">
                     @method($method)
                     @csrf
                     <x-form.input name="username" required :value="@$customer['username']"/>

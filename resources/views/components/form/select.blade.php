@@ -1,6 +1,6 @@
 @props(['label' => ucfirst($name), 'name' => '', 'required' => false, 'tooltip' => null, 'placeholder' => 'Select '.$label, 'value'=>'', 'options' => []])
 <!--begin::Input group-->
-<div class="row fv-row mb-7 fv-plugins-icon-container">
+<div {!! $attributes->merge(['class'=>"row fv-row fv-plugins-icon-container"])!!}>
     <div class="col-md-3 text-md-end">
         <!--begin::Label-->
         <label class="fs-6 fw-semibold form-label mt-3">
