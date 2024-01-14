@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Admin;
 
 use App\Enum\ServiceType;
-use App\Support\Facades\Config;
 use App\Support\Lang;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Enum;

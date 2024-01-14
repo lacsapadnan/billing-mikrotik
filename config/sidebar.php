@@ -8,9 +8,9 @@ return [
                     'name' => 'dashboard',
                     'title' => 'Dashboard',
                     'url' => '/admin/dashboard',
-                    'icon' => 'element-11'
-                ]
-            ]
+                    'icon' => 'element-11',
+                ],
+            ],
         ],
         [
             'group' => 'MANAGE',
@@ -23,16 +23,16 @@ return [
                         [
                             'name' => 'Add New Contact',
                             'url' => '/admin/customer/add',
-                            'icon' => 'add-item'
+                            'icon' => 'add-item',
                         ],
                         [
                             'name' => 'List Contact',
                             'url' => '/admin/customer',
-                            'icon' => 'address-book'
-                        ]
-                    ]
-                ]
-            ]
-        ]
-    ]
+                            'icon' => 'address-book',
+                        ],
+                    ],
+                ],
+            ],
+        ],
+    ],
 ];

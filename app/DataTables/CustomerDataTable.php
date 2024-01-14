@@ -16,27 +16,28 @@ class CustomerDataTable extends DataTable
     /**
      * Build the DataTable class.
      *
-     * @param QueryBuilder $query Results from query() method.
+     * @param  QueryBuilder  $query Results from query() method.
      */
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->addColumn('action', function($row){
+            ->addColumn('action', function ($row) {
                 $detailUrl = route('admin:customer.detail', $row);
-                return '<div class="inline-flex gap-1"><a href="' . $detailUrl . '" class="btn btn-sm btn-success">view</a><a href="' . '' . '" class="btn btn-sm btn-primary">view</a></div>';
+
+                return '<div class="inline-flex gap-1"><a href="'.$detailUrl.'" class="btn btn-sm btn-success">view</a><a href="'.''.'" class="btn btn-sm btn-primary">view</a></div>';
             })
             ->editColumn('recharge.is_active', function ($row) {
                 if ($d = $row->recharge) {
                     if ($d->is_active) {
-                        return '<span class="badge badge-success" title="Expired ' . Carbon::createFromFormat($d['expiration'], $d['time']) . '">' . $d['namebp'] . '</span>';
+                        return '<span class="badge badge-success" title="Expired '.Carbon::createFromFormat($d['expiration'], $d['time']).'">'.$d['namebp'].'</span>';
                     } else {
-                        return '<span class="badge badge-danger" title="Expired ' . Carbon::createFromFormat($d['expiration'], $d['time']) . '">' . $d['namebp'] . '</span>';
+                        return '<span class="badge badge-danger" title="Expired '.Carbon::createFromFormat($d['expiration'], $d['time']).'">'.$d['namebp'].'</span>';
                     }
                 } else {
                     return '<span class="badge badge-danger">&bull;</span>';
                 }
             })
-            ->editColumn('created_at', fn($row)=>$row->created_at->format('d M Y H:i'))
+            ->editColumn('created_at', fn ($row) => $row->created_at->format('d M Y H:i'))
             ->rawColumns(['action', 'recharge.is_active'])
             ->setRowId('id');
     }
@@ -86,11 +87,11 @@ class CustomerDataTable extends DataTable
                 ->searchable(false),
             Column::make('service_type'),
             Column::make('created_at')->title('Created On')
-            ->addClass('whitespace-nowrap'),
+                ->addClass('whitespace-nowrap'),
             Column::computed('action')
-                  ->exportable(false)
-                  ->printable(false)
-                  ->addClass('text-center'),
+                ->exportable(false)
+                ->printable(false)
+                ->addClass('text-center'),
         ];
     }
 
@@ -99,6 +100,6 @@ class CustomerDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'Customer_' . date('YmdHis');
+        return 'Customer_'.date('YmdHis');
     }
 }

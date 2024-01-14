@@ -24,7 +24,8 @@ class UserRecharge extends Model
         'type',
     ];
 
-    public function getIsActiveAttribute(): bool {
+    public function getIsActiveAttribute(): bool
+    {
         return $this->status === 'on';
     }
 }

@@ -13,7 +13,7 @@ Route::name('admin:')->group(function () {
     Route::middleware('auth:admin')->group(function () {
         Route::view('dashboard', 'admin.dashboard')->name('dashboard');
         Route::get('logout', [AdminAuthController::class, 'destroy'])->name('auth.logout');
-        Route::prefix('customer')->name('customer.')->group(function(){
+        Route::prefix('customer')->name('customer.')->group(function () {
             Route::get('/', [AdminCustomerController::class, 'index'])->name('list');
             Route::get('/{customer}/detail', [AdminCustomerController::class, 'show'])->name('detail');
             Route::get('/{customer}/delete', [AdminCustomerController::class, 'destroy'])->name('delete');

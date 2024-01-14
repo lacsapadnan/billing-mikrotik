@@ -20,7 +20,7 @@ class User extends Authenticatable
         'fullname',
         'username',
         'password',
-        'user_type'
+        'user_type',
     ];
 
     /**
@@ -40,6 +40,6 @@ class User extends Authenticatable
      */
     protected $casts = [
         'password' => 'hashed',
-        'user_type' => UserType::class
+        'user_type' => UserType::class,
     ];
 }

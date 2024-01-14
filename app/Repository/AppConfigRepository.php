@@ -8,12 +8,14 @@ use Illuminate\Support\Collection;
 class AppConfigRepository
 {
     protected Collection $config;
+
     public function __construct()
     {
         $this->reload();
     }
 
-    protected function reload(){
+    protected function reload()
+    {
         $this->config = AppConfig::pluck('value', 'setting');
     }
 

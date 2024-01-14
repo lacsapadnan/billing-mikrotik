@@ -11,11 +11,10 @@ use Illuminate\Support\Facades\Facade;
  *
  * @see AppConfigRepository
  */
-class Config extends Facade {
-
+class Config extends Facade
+{
     protected static function getFacadeAccessor()
     {
         return AppConfigRepository::class;
     }
 }
-
