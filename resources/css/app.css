@@ -5,3 +5,7 @@
 .dataTable th {
     white-space: nowrap;
 }
+/* ini agar class tailwind tidak overide class rotate dari tema*/
+.app-sidebar-toggle > .rotate-180 {
+    --tw-rotate: unset;
+}
