@@ -1,4 +1,4 @@
-<x-admin-layout title="Manage Contact" active-menu="customer" :path="['List Contact' => route('admin:customer.list'), 'Detail Contact' => '']">
+<x-admin-layout title="Detail Contact" active-menu="customer" :path="['List Contact' => route('admin:customer.list'), 'Detail Contact' => '']">
     <div class="app-container container-xxl">
         <div class="d-flex flex-column flex-lg-row">
             <!--begin::Content-->
@@ -37,8 +37,7 @@
                                                                                                                          data-on-confirm="window.location = '{{ route('admin:customer.delete', $customer) }}'">
                                     Delete
                                 </a>
-                                <a href="#" class="btn btn-sm btn-light-primary" data-bs-toggle="modal"
-                                    data-bs-target="#kt_modal_update_details">
+                                <a href="{{route('admin:customer.edit', $customer)}}" class="btn btn-sm btn-light-primary" >
                                     Edit
                                 </a>
                             </span>

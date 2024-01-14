@@ -22,7 +22,7 @@ return [
                     'sub' => [
                         [
                             'name' => 'Add New Contact',
-                            'url' => '/admin/customer',
+                            'url' => '/admin/customer/add',
                             'icon' => 'add-item'
                         ],
                         [

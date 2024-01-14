@@ -84,7 +84,7 @@
                                             <span class="path5"></span>
                                         </i>
                                     </span>
-                                    <span class="menu-title">{{@$item['name']}}</span>
+                                    <span class="menu-title">{{@$item['title']}}</span>
                                     <span class="menu-arrow"></span>
                                 </span>
                             @endif
