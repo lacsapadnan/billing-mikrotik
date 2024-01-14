@@ -1,8 +1,9 @@
 @php
     $action = $mode == 'edit' ? route('admin:customer.update', $customer) : route('admin:customer.store');
     $method = $mode == 'edit' ? 'PATCH' : 'POST';
+    $activeMenu = $mode == 'edit'? 'customer.edit': 'customer.create';
 @endphp
-<x-admin-layout title="{{ ucfirst($mode) }} Contact" active-menu="customer" :path="['List Contact' => route('admin:customer.index'), ucfirst($mode) . ' Contact' => '']">
+<x-admin-layout title="{{ ucfirst($mode) }} Contact" :active-menu="$activeMenu" :path="['List Contact' => route('admin:customer.index'), ucfirst($mode) . ' Contact' => '']">
     <div class="app-container container-xxl">
         <!--begin::Card-->
         <div class="card card-flush">

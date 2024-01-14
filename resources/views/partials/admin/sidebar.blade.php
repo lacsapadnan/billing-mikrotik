@@ -5,8 +5,10 @@
     <div class="app-sidebar-logo px-6" id="kt_app_sidebar_logo">
         <!--begin::Logo image-->
         <a href="../../demo1/dist/index.html">
-            <img alt="Logo" src="{{asset('assets/media/logos/default-dark.svg')}}" class="h-25px app-sidebar-logo-default" />
-            <img alt="Logo" src="{{asset('assets/media/logos/default-small.svg')}}" class="h-20px app-sidebar-logo-minimize" />
+            <img alt="Logo" src="{{ asset('assets/media/logos/default-dark.svg') }}"
+                class="h-25px app-sidebar-logo-default" />
+            <img alt="Logo" src="{{ asset('assets/media/logos/default-small.svg') }}"
+                class="h-20px app-sidebar-logo-minimize" />
         </a>
         <!--end::Logo image-->
         <!--begin::Sidebar toggle-->
@@ -40,43 +42,44 @@
             <!--begin::Menu-->
             <div class="menu menu-column menu-rounded menu-sub-indention px-3" id="#kt_app_sidebar_menu"
                 data-kt-menu="true" data-kt-menu-expand="false">
-                @foreach(config('sidebar.admin') as $group)
-                    @if(@$group['group'])
-                    <!--begin:Menu item-->
-                    <div class="menu-item pt-5">
-                        <!--begin:Menu content-->
-                        <div class="menu-content">
-                            <span class="menu-heading fw-bold text-uppercase fs-7">{{$group['group']}}</span>
-                        </div>
-                        <!--end:Menu content-->
-                    </div>
-                    @endif
-                    @foreach(@$group['items']??[] as $item)
-                        <div data-kt-menu-trigger="click" @if(@$item['sub'])class="menu-item menu-accordion"@endif>
-                            @if(@$item['url'])
-                            <div class="menu-item {{ app()->view->getSections()['active-menu'] == @$item['name'] ? 'here' : ''}}">
-                            <!--begin:Menu link-->
-                            <a class="menu-link" href="{{@$item['url']}}">
-                                <span class="menu-icon">
-                                    <i class="ki-duotone ki-{{@$item['icon']}} fs-2">
-                                        <span class="path1"></span>
-                                        <span class="path2"></span>
-                                        <span class="path3"></span>
-                                        <span class="path4"></span>
-                                        <span class="path5"></span>
-                                    </i>
-                                </span>
-                                <span class="menu-title">{{@$item['title']}}</span>
-                                @if(@$item['sub'])
-                                <span class="menu-arrow"></span>
-                                @endif
-                            </a>
-                            <!--end:Menu link-->
+                @foreach (config('sidebar.admin') as $group)
+                    @if (@$group['group'])
+                        <!--begin:Menu item-->
+                        <div class="menu-item pt-5">
+                            <!--begin:Menu content-->
+                            <div class="menu-content">
+                                <span class="menu-heading fw-bold text-uppercase fs-7">{{ $group['group'] }}</span>
                             </div>
+                            <!--end:Menu content-->
+                        </div>
+                    @endif
+                    @foreach (@$group['items'] ?? [] as $item)
+                        <div data-kt-menu-trigger="click" class="menu-item {{ @$item['sub'] ? 'menu-accordion' : '' }} {{  explode('.',app()->view->getSections()['active-menu'])[0] == @$item['name'] ? 'here' : '' }}">
+                            @if (@$item['url'])
+                                {{-- <div --}}
+                                {{--     class="menu-item {{}}"> --}}
+                                    <!--begin:Menu link-->
+                                    <a class="menu-link" href="{{ @$item['url'] }}">
+                                        <span class="menu-icon">
+                                            <i class="ki-duotone ki-{{ @$item['icon'] }} fs-2">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                                <span class="path3"></span>
+                                                <span class="path4"></span>
+                                                <span class="path5"></span>
+                                            </i>
+                                        </span>
+                                        <span class="menu-title">{{ @$item['title'] }}</span>
+                                        @if (@$item['sub'])
+                                            <span class="menu-arrow"></span>
+                                        @endif
+                                    </a>
+                                    <!--end:Menu link-->
+                                {{-- </div> --}}
                             @else
                                 <span class="menu-link">
                                     <span class="menu-icon">
-                                        <i class="ki-duotone ki-{{@$item['icon']}} fs-2">
+                                        <i class="ki-duotone ki-{{ @$item['icon'] }} fs-2">
                                             <span class="path1"></span>
                                             <span class="path2"></span>
                                             <span class="path3"></span>
@@ -84,34 +87,37 @@
                                             <span class="path5"></span>
                                         </i>
                                     </span>
-                                    <span class="menu-title">{{@$item['title']}}</span>
-                                    <span class="menu-arrow"></span>
+                                    <span class="menu-title">{{ @$item['title'] }}</span>
+                                    @if (@$item['sub'])
+                                        <span class="menu-arrow"></span>
+                                    @endif
                                 </span>
                             @endif
-                            @foreach(@$item['sub']??[] as $sub)
-                            <!--begin:Menu sub-->
-                            <div class="menu-sub menu-sub-accordion">
-                                <!--begin:Menu item-->
-                                <div class="menu-item">
-                                    <!--begin:Menu link-->
-                                    <a class="menu-link" href="{{@$sub['url']}}">
-                                <span class="menu-icon">
-                                    <i class="ki-duotone ki-{{@$sub['icon']}} fs-3">
-                                        <span class="path1"></span>
-                                        <span class="path2"></span>
-                                        <span class="path3"></span>
-                                        <span class="path4"></span>
-                                        <span class="path5"></span>
-                                    </i>
-                                </span>
-                                        <span class="menu-title">{{@$sub['name']}}</span>
-                                    </a>
-                                    <!--end:Menu link-->
+                            @foreach (@$item['sub'] ?? [] as $sub)
+                                <!--begin:Menu sub-->
+                                <div class="menu-sub menu-sub-accordion">
+                                    <!--begin:Menu item-->
+                                <div
+                                    class="menu-item {{@$sub['name']}} {{ app()->view->getSections()['active-menu'] == @$sub['name'] ? 'here' : '' }}">
+                                        <!--begin:Menu link-->
+                                        <a class="menu-link" href="{{ @$sub['url'] }}">
+                                            <span class="menu-icon">
+                                                <i class="ki-duotone ki-{{ @$sub['icon'] }} fs-3">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                    <span class="path3"></span>
+                                                    <span class="path4"></span>
+                                                    <span class="path5"></span>
+                                                </i>
+                                            </span>
+                                            <span class="menu-title">{{ @$sub['title'] }}</span>
+                                        </a>
+                                        <!--end:Menu link-->
+                                    </div>
+                                    <!--end:Menu item-->
                                 </div>
-                                <!--end:Menu item-->
-                            </div>
-                            <!--end:Menu sub-->
-                        @endforeach
+                                <!--end:Menu sub-->
+                            @endforeach
                         </div>
                     @endforeach
                 @endforeach
