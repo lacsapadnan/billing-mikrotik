@@ -21,13 +21,15 @@ class AdminNetworkController extends Controller
      */
     public function createRouter()
     {
-        //
+        $mode = 'add';
+
+        return view('admin.network.router-form', compact('mode'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function storeRouter(Request $request)
     {
         //
     }
@@ -51,7 +53,7 @@ class AdminNetworkController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function updateRouter(Request $request, string $id)
     {
         //
     }
