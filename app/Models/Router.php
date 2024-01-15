@@ -15,6 +15,6 @@ class Router extends Model
         'username',
         'password',
         'description',
-        'enabled'
+        'enabled',
     ];
 }

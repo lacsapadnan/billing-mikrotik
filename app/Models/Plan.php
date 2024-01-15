@@ -51,7 +51,8 @@ class Plan extends Model
         return $this->belongsTo(Bandwidth::class);
     }
 
-    public function router(): BelongsTo {
+    public function router(): BelongsTo
+    {
         return $this->belongsTo(Router::class);
     }
 }
