@@ -64,7 +64,7 @@ class RouterDataTable extends DataTable
             Column::make('name'),
             Column::make('ip_address'),
             Column::make('description'),
-            Column::make('enabled'),
+            Column::make('status'),
         ];
     }
 
