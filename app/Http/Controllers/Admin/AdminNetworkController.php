@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\DataTables\RouterDataTable;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Network\RouterRequest;
+use App\Models\Router;
+use App\Support\Mikrotik;
 use Illuminate\Http\Request;
 
 class AdminNetworkController extends Controller
@@ -29,9 +32,15 @@ class AdminNetworkController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function storeRouter(Request $request)
+    public function storeRouter(RouterRequest $request)
     {
-        //
+        try {
+
+            Mikrotik::getClient($request->ip_address, $request->username, $request->password);
+            Router::create($request->all());
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage())->withInput();
+        }
     }
 
     /**

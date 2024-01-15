@@ -1,5 +1,5 @@
 @php
-    $action = $mode == 'edit' ? route('admin:customer.update', $router) : route('admin:customer.store');
+    $action = $mode == 'edit' ? route('admin:network.router.update', $router) : route('admin:network.router.store');
     $method = $mode == 'edit' ? 'PATCH' : 'POST';
     $activeMenu = $mode == 'edit'? 'network.router.edit': 'network.router.create';
 @endphp

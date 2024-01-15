@@ -17,4 +17,13 @@ class Router extends Model
         'description',
         'enabled',
     ];
+
+    protected $appends = [
+        'status',
+    ];
+
+    public function getStatusAttribute(): string
+    {
+        return $this->enabled ? 'Enabled' : 'Disabled';
+    }
 }
