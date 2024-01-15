@@ -82,7 +82,7 @@ return [
                 [
                     'name' => 'service',
                     'title' => 'Services',
-                    'icon' => 'box',
+                    'icon' => 'cube-2',
                 ],
             ],
         ],
@@ -97,6 +97,7 @@ return [
                             'name' => 'network.router',
                             'title' => 'Routers',
                             'icon' => 'router',
+                            'url' => '/admin/network/router',
                         ],
 
                         [
