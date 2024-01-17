@@ -40,6 +40,7 @@ if (button) {
 
 // handle datatable search
 $(document).ready(() => {
+    if(typeof LaravelDataTables != 'undefined'){
     var dtb = LaravelDataTables["dataTableBuilder"];
     var search = "";
     $("#dtb-search").on("input", (e) => {
@@ -49,4 +50,5 @@ $(document).ready(() => {
     dtb.on("preXhr.dt", (e, settings, data) => {
         data.search["value"] = search;
     });
+    }
 });

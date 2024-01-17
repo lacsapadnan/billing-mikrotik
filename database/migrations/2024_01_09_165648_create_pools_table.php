@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('pools', function (Blueprint $table) {
             $table->id();
-            $table->string('pool_name', 40);
+            $table->foreignId('router_id')->constrained('routers');
+            $table->string('pool_name', 40)->unique();
             $table->string('range_ip', 40);
-            $table->string('routers', 40);
             $table->timestamps();
         });
     }

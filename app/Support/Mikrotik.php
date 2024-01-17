@@ -414,7 +414,7 @@ class Mikrotik
         );
     }
 
-    public static function addPool($client, $name, $ip_address)
+    public static function addPool(Client $client, $name, $ip_address)
     {
         global $_app_stage;
         if ($_app_stage == 'demo') {
@@ -428,7 +428,7 @@ class Mikrotik
         );
     }
 
-    public static function setPool($client, $name, $ip_address)
+    public static function setPool(Client $client, $name, $ip_address)
     {
         global $_app_stage;
         if ($_app_stage == 'demo') {
@@ -438,7 +438,7 @@ class Mikrotik
             '/ip pool print .proplist=.id',
             Query::where('name', $name)
         );
-        $poolID = $client->sendSync($printRequest)->getProperty('id');
+        $poolID = $client->sendSync($printRequest)->getProperty('.id');
 
         if (empty($poolID)) {
             self::addPool($client, $name, $ip_address);

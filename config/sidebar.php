@@ -104,6 +104,7 @@ return [
                             'name' => 'network.pool',
                             'title' => 'IP Pool',
                             'icon' => 'devices',
+                            'url' => '/admin/network/pool',
                         ],
                     ],
                 ],

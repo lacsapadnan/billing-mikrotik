@@ -181,7 +181,7 @@ abstract class Message implements IteratorAggregate, Countable
      * @see getArgument()
      * @see setArgument()
      */
-    public function getIterator()
+    public function getIterator(): ArrayObject
     {
         return new ArrayObject($this->attributes);
     }
@@ -191,7 +191,7 @@ abstract class Message implements IteratorAggregate, Countable
      *
      * @return int The number of attributes.
      */
-    public function count()
+    public function count(): int
     {
         return count($this->attributes);
     }
