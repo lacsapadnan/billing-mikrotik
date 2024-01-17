@@ -2,5 +2,8 @@
     "auth.failed": "Username atau kata sandi salah.",
     "success.customer.created":"Akun berhasil ditambahkan",
     "success.customer.deleted": "Akun berhasil dihapus",
-    "success.customer.updated": "Akun berhasil diperbarui"
+    "success.customer.updated": "Akun berhasil diperbarui",
+    "success.router.created": "Router berhasil ditambahkan",
+    "success.router.deleted": "Router berhasil dihapus",
+    "success.router.updated": "Router berhasil diperbarui"
 }

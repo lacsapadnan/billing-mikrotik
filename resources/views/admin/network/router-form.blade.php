@@ -3,7 +3,7 @@
     $method = $mode == 'edit' ? 'PATCH' : 'POST';
     $activeMenu = $mode == 'edit'? 'network.router.edit': 'network.router.create';
 @endphp
-<x-admin-layout title="{{ ucfirst($mode) }} Router" :active-menu="$activeMenu" :path="['List Router' => route('admin:network.router'), ucfirst($mode) . ' Router' => '']">
+<x-admin-layout title="{{ ucfirst($mode) }} Router" :active-menu="$activeMenu" :path="['List Router' => route('admin:network.router.index'), ucfirst($mode) . ' Router' => '']">
     <div class="app-container container-xxl">
         <!--begin::Card-->
         <div class="card card-flush">
@@ -16,6 +16,7 @@
                 <form class="form fv-plugins-bootstrap5 fv-plugins-framework flex flex-col gap-5" method="POST" action="{{ $action }}">
                     @method($method)
                     @csrf
+                    <input type="hidden" name="id" value="{{$router['id']}}" />
                     <x-form.select name="enabled" label="Status" :options="['1' => 'Enabled', '0' => 'Disabled']" required :value="@$router['enabled']??1"/>
                     <x-form.input name="name" required :value="@$router['name']" label="Router Name" tooltip="Name of Area that router operated"/>
                     <x-form.input name="ip_address" required  :value="@$router['ip_address']" label="IP Address"/>

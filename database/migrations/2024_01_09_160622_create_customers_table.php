@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
-            $table->string('username', 45);
+            $table->string('username', 45)->unique();
             $table->string('password');
             $table->string('pppoe_password')->comment('For PPPOE Login');
             $table->string('fullname', 45);

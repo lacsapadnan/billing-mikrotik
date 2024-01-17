@@ -49,7 +49,10 @@ class RouterRequest extends FormRequest
                 'ip_address' => $this->ip_address.':'.$this->port,
             ]);
         }
-        if (Router::where('ip_address', $this->ip_address)->exists()) {
+        if (Router::where('ip_address', $this->ip_address)
+            ->when($this->method() == 'PATCH', fn ($query) => $query->where('id', '!=', $this->id))
+            ->exists()
+        ) {
             throw ValidationException::withMessages([
                 'ip_address' => 'Router already exists',
             ]);

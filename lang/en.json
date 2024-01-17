@@ -1,5 +1,8 @@
 {
     "success.customer.created": "Account created successfully",
     "success.customer.deleted": "Account deleted successfully",
-    "success.customer.updated": "Account updated successfully"
+    "success.customer.updated": "Account updated successfully",
+    "success.router.created": "Router updated successfully",
+    "success.router.deleted": "Router deleted successfully",
+    "success.router.updated": "Router updated successfully"
 }
