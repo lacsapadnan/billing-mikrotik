@@ -42,7 +42,7 @@ class AdminCustomerController extends Controller
         try {
             $customer->delete();
 
-            return redirect()->to(route('admin:customer.index'))->with('success', __('success.customer.deleted'));
+            return redirect()->to(route('admin:customer.index'))->with('success', __('success.deleted'));
         } catch (Error $exception) {
             return redirect()->back()->with('error', $exception->getMessage());
         }
@@ -52,13 +52,13 @@ class AdminCustomerController extends Controller
     {
         Customer::query()->create($request->all());
 
-        return redirect(route('admin:customer.index'))->with('success', __('success.customer.created'));
+        return redirect(route('admin:customer.index'))->with('success', __('success.created'));
     }
 
     public function update(Customer $customer, AdminCustomerRequest $request)
     {
         $customer->update($request->all());
 
-        return redirect(route('admin:customer.index'))->with('success', __('success.customer.updated'));
+        return redirect(route('admin:customer.index'))->with('success', __('success.updated'));
     }
 }

@@ -25,6 +25,12 @@ Route::name('admin:')->group(function () {
         Route::delete('network/router/{router}', [AdminNetworkController::class, 'destroyRouter'])->name('network.router.destroy');
         Route::post('network/router', [AdminNetworkController::class, 'storeRouter'])->name('network.router.store');
         Route::patch('network/router/{router}', [AdminNetworkController::class, 'updateRouter'])->name('network.router.update');
+        Route::get('network/pool', [AdminNetworkController::class, 'pool'])->name('network.pool.index');
+        Route::get('network/pool/add', [AdminNetworkController::class, 'createPool'])->name('network.pool.create');
+        Route::get('network/pool/{pool}/edit', [AdminNetworkController::class, 'editPool'])->name('network.pool.edit');
+        Route::delete('network/pool/{pool}', [AdminNetworkController::class, 'destroyPool'])->name('network.pool.destroy');
+        Route::post('network/pool', [AdminNetworkController::class, 'storePool'])->name('network.pool.store');
+        Route::patch('network/pool/{pool}', [AdminNetworkController::class, 'updatePool'])->name('network.pool.update');
     });
     Route::redirect('/', '/admin/dashboard', 301);
 });

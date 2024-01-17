@@ -2,7 +2,7 @@
 
 namespace App\DataTables;
 
-use App\Models\Router;
+use App\Models\Pool;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -10,7 +10,7 @@ use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
 
-class RouterDataTable extends DataTable
+class PoolDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -20,17 +20,17 @@ class RouterDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->addColumn('action', fn ($row) => view('datatable.action.router-action', $row))
-            ->rawColumns(['action'])
+            ->addColumn('action', fn ($row) => view('datatable.action.pool-action', $row))
             ->setRowId('id');
     }
 
     /**
      * Get the query source of dataTable.
      */
-    public function query(Router $model): QueryBuilder
+    public function query(Pool $model): QueryBuilder
     {
-        return $model->newQuery();
+        return $model->newQuery()
+            ->with('router:id,name');
     }
 
     /**
@@ -39,7 +39,6 @@ class RouterDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    // ->setTableId('router-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
                     //->dom('Bfrtip')
@@ -61,11 +60,9 @@ class RouterDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            Column::make('id'),
-            Column::make('name'),
-            Column::make('ip_address'),
-            Column::make('description'),
-            Column::computed('status'),
+            Column::make('pool_name'),
+            Column::make('range_ip'),
+            Column::make('router.name'),
             Column::computed('action'),
         ];
     }
@@ -75,6 +72,6 @@ class RouterDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'Router_'.date('YmdHis');
+        return 'Pool_'.date('YmdHis');
     }
 }

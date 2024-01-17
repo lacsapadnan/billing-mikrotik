@@ -1,9 +1,9 @@
 @php
-    $action = $mode == 'edit' ? route('admin:network.router.update', $router) : route('admin:network.router.store');
+    $action = $mode == 'edit' ? route('admin:network.pool.update', $pool) : route('admin:network.pool.store');
     $method = $mode == 'edit' ? 'PATCH' : 'POST';
-    $activeMenu = $mode == 'edit'? 'network.router.edit': 'network.router.create';
+    $activeMenu = $mode == 'edit'? 'network.pool.edit': 'network.pool.create';
 @endphp
-<x-admin-layout title="{{ ucfirst($mode) }} Router" :active-menu="$activeMenu" :path="['List Router' => route('admin:network.router.index'), ucfirst($mode) . ' Router' => '']">
+<x-admin-layout title="{{ ucfirst($mode) }} Pool" :active-menu="$activeMenu" :path="['List Pool' => route('admin:network.pool.index'), ucfirst($mode) . ' Pool' => '']">
     <div class="app-container container-xxl">
         <!--begin::Card-->
         <div class="card card-flush">
@@ -17,14 +17,11 @@
                     @method($method)
                     @csrf
                     @if ($mode == 'edit')
-                    <input type="hidden" name="id" value="{{$router['id']}}" />
+                    <input type="hidden" name="id" value="{{$pool['id']}}" />
                     @endif
-                    <x-form.select name="enabled" label="Status" :options="['1' => 'Enabled', '0' => 'Disabled']" required :value="@$router['enabled']??1"/>
-                    <x-form.input name="name" required :value="@$router['name']" label="Router Name" tooltip="Name of Area that router operated"/>
-                    <x-form.input name="ip_address" required  :value="@$router['ip_address']" label="IP Address"/>
-                    <x-form.input name="username" required :value="@$router['username']"/>
-                    <x-form.input name="password" required type="password" :value="@$router['password']" label="Router Secret"/>
-                    <x-form.input name="description" type="textarea" :value="@$router['description']"/>
+                    <x-form.input name="pool_name" required :value="@$pool['pool_name']" label="Pool Name"/>
+                    <x-form.input name="range_ip" required  :value="@$pool['range_ip']" label="Range IP" placeholder="ex: 244.178.44.2-244.178.44.111"/>
+                    <x-form.select name="router_id" label="Router" :options="$routers" required :value="@$pool['router_id']??@$defaultRouterId"/>
 
                     <div class="row py-5">
                         <div class="col-md-9 offset-md-3">
