@@ -3,8 +3,10 @@
 namespace App\Http\Requests\Admin;
 
 use App\Enum\ServiceType;
+use App\Models\Customer;
 use App\Support\Lang;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 
 class AdminCustomerRequest extends FormRequest
@@ -25,7 +27,10 @@ class AdminCustomerRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'username' => 'required|min:3|max:55|unique:customers,username'.$this->method() == 'PATCH' ? $this->id : '',
+            'username' => [
+                'required', 'min:3', 'max:55',
+                Rule::unique(Customer::class, 'username')->ignore($this->id),
+            ],
             'fullname' => 'required|min:3|max:25',
             'password' => 'required|min:3|max:35',
             'pppoe_password' => 'nullable',
@@ -38,6 +43,11 @@ class AdminCustomerRequest extends FormRequest
 
     protected function passedValidation()
     {
+        if (empty($this->pppoe_password)) {
+            $this->merge([
+                'pppoe_password' => $this->password,
+            ]);
+        }
         $this->merge([
             'username' => Lang::phoneFormat($this->username),
             'phonenumber' => Lang::phoneFormat($this->phonenumber),

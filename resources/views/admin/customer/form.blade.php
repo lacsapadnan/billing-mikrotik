@@ -16,6 +16,7 @@
                 <form class="form fv-plugins-bootstrap5 fv-plugins-framework flex flex-col gap-5" method="POST" action="{{ $action }}">
                     @method($method)
                     @csrf
+                    <input type="hidden" name="id" value="{{$customer['id']}}" />
                     <x-form.input name="username" required :value="@$customer['username']"/>
                     <x-form.input name="fullname" required  :value="@$customer['fullname']"/>
                     <x-form.input name="email" required :value="@$customer['email']"/>

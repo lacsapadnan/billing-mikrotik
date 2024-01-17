@@ -20,7 +20,8 @@ class RouterDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->addColumn('action', 'router.action')
+            ->addColumn('action', fn ($row) => view('datatable.action.router-action', $row))
+            ->rawColumns(['action'])
             ->setRowId('id');
     }
 
@@ -65,6 +66,7 @@ class RouterDataTable extends DataTable
             Column::make('ip_address'),
             Column::make('description'),
             Column::make('status'),
+            Column::computed('action'),
         ];
     }
 

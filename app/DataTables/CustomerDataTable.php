@@ -21,11 +21,7 @@ class CustomerDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->addColumn('action', function ($row) {
-                $detailUrl = route('admin:customer.show', $row);
-
-                return '<div class="inline-flex gap-1"><a href="'.$detailUrl.'" class="btn btn-sm btn-success">view</a><a href="'.''.'" class="btn btn-sm btn-primary">view</a></div>';
-            })
+            ->addColumn('action', fn ($row) => view('datatable.action.customer-action', $row))
             ->editColumn('recharge.is_active', function ($row) {
                 if ($d = $row->recharge) {
                     if ($d->is_active) {
