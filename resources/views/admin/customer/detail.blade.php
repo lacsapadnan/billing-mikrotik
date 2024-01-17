@@ -32,14 +32,18 @@
                             </div>
 
                             <div class="flex flex-row gap-2">
-                                <form action="{{route('admin:customer.destroy', $customer)}}" id="destroy-form" method="POST">
+
+                                <form action="{{ route('admin:customer.destroy', $customer) }}" method="POST"
+                                    x-data="confirmable({
+                                        confirmTitle: 'Delete?',
+                                        confirmButtonColor: 'var(--bs-danger)',
+                                        onConfirm: ()=>$el.submit()
+                                    })" @submit="confirm">
                                     @csrf
                                     @method('delete')
-                                <button type="submit" class="btn btn-sm btn-light-danger confirmable"
-                                    data-confirm-title="Delete?" data-confirm-button-color="var(--bs-danger)"
-                                    data-on-confirm="$('#destroy-form').submit()">
-                                    Delete
-                                </button>
+                                    <button type="submit" class="btn btn-sm btn-light-danger confirmable">
+                                        Delete
+                                    </button>
                                 </form>
                                 <a href="{{ route('admin:customer.edit', $customer) }}"
                                     class="btn btn-sm btn-light-primary">
@@ -79,9 +83,9 @@
                                 <div class="fw-bold mt-5">Auto Renewal</div>
                                 <div class="text-gray-600">{{ $customer->auto_renewal ? 'Yes' : 'No' }}</div>
                                 <div class="fw-bold mt-5">Created On</div>
-                                <div class="text-gray-600">{{ $customer->created_at->format('d M Y H:i:s') }}</div>
+                                <div class="text-gray-600">{{ $customer->created_at?->format('d M Y H:i:s') }}</div>
                                 <div class="fw-bold mt-5">Last Login</div>
-                                <div class="text-gray-600">{{ $customer->last_login->format('d M Y H:i:s') }}</div>
+                                <div class="text-gray-600">{{ $customer->last_login?->format('d M Y H:i:s') }}</div>
                             </div>
                         </div>
                         <!--end::Details content-->
