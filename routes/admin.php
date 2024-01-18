@@ -32,6 +32,7 @@ Route::name('admin:')->group(function () {
         Route::delete('network/pool/{pool}', [AdminNetworkController::class, 'destroyPool'])->name('network.pool.destroy');
         Route::post('network/pool', [AdminNetworkController::class, 'storePool'])->name('network.pool.store');
         Route::patch('network/pool/{pool}', [AdminNetworkController::class, 'updatePool'])->name('network.pool.update');
+        Route::get('network/pool/option', [AdminNetworkController::class, 'poolOption'])->name('network.pool.option');
 
         //# SERVICES ##
         Route::get('service/bandwidth', [AdminServiceController::class, 'bandwidth'])->name('service.bandwidth.index');
@@ -40,6 +41,14 @@ Route::name('admin:')->group(function () {
         Route::delete('service/bandwidth/{bandwidth}', [AdminServiceController::class, 'destroyBandwidth'])->name('service.bandwidth.destroy');
         Route::post('service/bandwidth', [AdminServiceController::class, 'storeBandwidth'])->name('service.bandwidth.store');
         Route::patch('service/bandwidth/{bandwidth}', [AdminServiceController::class, 'updateBandwidth'])->name('service.bandwidth.update');
+
+        Route::get('service/hotspot', [AdminServiceController::class, 'hotspot'])->name('service.hotspot.index');
+        Route::get('service/hotspot/add', [AdminServiceController::class, 'createHotspot'])->name('service.hotspot.create');
+        Route::get('service/hotspot/{hotspot}/edit', [AdminServiceController::class, 'editHotspot'])->name('service.hotspot.edit');
+        Route::delete('service/hotspot/{hotspot}', [AdminServiceController::class, 'destroyHotspot'])->name('service.hotspot.destroy');
+        Route::post('service/hotspot', [AdminServiceController::class, 'storeHotspot'])->name('service.hotspot.store');
+        Route::patch('service/hotspot/{hotspot}', [AdminServiceController::class, 'updateHotspot'])->name('service.hotspot.update');
+
     });
     Route::redirect('/', '/admin/dashboard', 301);
 });

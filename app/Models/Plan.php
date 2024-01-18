@@ -46,7 +46,7 @@ class Plan extends Model
         'validity_unit' => ValidityUnit::class,
     ];
 
-    public function bandwitch(): BelongsTo
+    public function bandwidth(): BelongsTo
     {
         return $this->belongsTo(Bandwidth::class);
     }

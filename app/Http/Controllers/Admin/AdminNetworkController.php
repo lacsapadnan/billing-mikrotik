@@ -10,6 +10,7 @@ use App\Http\Requests\Admin\Network\RouterRequest;
 use App\Models\Pool;
 use App\Models\Router;
 use App\Support\Mikrotik;
+use Illuminate\Http\Request;
 
 class AdminNetworkController extends Controller
 {
@@ -151,5 +152,10 @@ class AdminNetworkController extends Controller
         $pool->delete();
 
         return redirect()->back()->with('success', __('success.deleted'));
+    }
+
+    public function poolOption(Request $request){
+        $pools = Pool::when($request->has('router_id'), fn($query)=>$query->where('router_id',$request->router_id))->pluck('pool_name','id');
+        return response()->json($pools);
     }
 }
