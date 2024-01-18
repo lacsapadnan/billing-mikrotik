@@ -22,4 +22,16 @@ class Bandwidth extends Model
         'rate_down_unit' => RateUnit::class,
         'rate_up_unit' => RateUnit::class,
     ];
+
+    protected $appends = ['rate_down_label', 'rate_up_label'];
+
+    public function getRateDownLabelAttribute(): string
+    {
+        return $this->rate_down.' '.$this->rate_down_unit->value;
+    }
+
+    public function getRateUpLabelAttribute(): string
+    {
+        return $this->rate_up.' '.$this->rate_up_unit->value;
+    }
 }

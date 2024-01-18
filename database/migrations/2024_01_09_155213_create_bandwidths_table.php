@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('bandwidths', function (Blueprint $table) {
             $table->id();
-            $table->string('name_bw');
+            $table->string('name_bw')->unique();
             $table->unsignedInteger('rate_down');
             $table->enum('rate_down_unit', array_column(RateUnit::cases(), 'value'));
             $table->unsignedInteger('rate_up');
