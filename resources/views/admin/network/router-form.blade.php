@@ -19,12 +19,12 @@
                     @if ($mode == 'edit')
                     <input type="hidden" name="id" value="{{$router['id']}}" />
                     @endif
-                    <x-form.select name="enabled" label="Status" :options="['1' => 'Enabled', '0' => 'Disabled']" required :value="@$router['enabled']??1"/>
-                    <x-form.input name="name" required :value="@$router['name']" label="Router Name" tooltip="Name of Area that router operated"/>
-                    <x-form.input name="ip_address" required  :value="@$router['ip_address']" label="IP Address"/>
-                    <x-form.input name="username" required :value="@$router['username']"/>
-                    <x-form.input name="password" required type="password" :value="@$router['password']" label="Router Secret"/>
-                    <x-form.input name="description" type="textarea" :value="@$router['description']"/>
+                    <x-form.group.select name="enabled" label="Status" :options="['1' => 'Enabled', '0' => 'Disabled']" required :value="@$router['enabled']??1"/>
+                    <x-form.group.input name="name" required :value="@$router['name']" label="Router Name" tooltip="Name of Area that router operated"/>
+                    <x-form.group.input name="ip_address" required  :value="@$router['ip_address']" label="IP Address"/>
+                    <x-form.group.input name="username" required :value="@$router['username']"/>
+                    <x-form.group.input name="password" required type="password" :value="@$router['password']" label="Router Secret"/>
+                    <x-form.group.input name="description" type="textarea" :value="@$router['description']"/>
 
                     <div class="row py-5">
                         <div class="col-md-9 offset-md-3">

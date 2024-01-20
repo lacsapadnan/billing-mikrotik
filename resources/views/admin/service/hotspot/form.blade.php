@@ -11,10 +11,7 @@
         <!--begin::Card-->
         <div class="card card-flush">
             <!--begin::Card body-->
-            <div class="card-body">
-
-
-
+            <div class="card-body" x-data="hotspotForm()" x-init="init()">
                 <!--begin::Form-->
                 <form class="form fv-plugins-bootstrap5 fv-plugins-framework flex flex-col gap-5" method="POST"
                     action="{{ $action }}">
@@ -23,21 +20,52 @@
                     @if ($mode == 'edit')
                         <input type="hidden" name="id" value="{{ $hotspot['id'] }}" />
                     @endif
-                    <x-form.select name="enabled" label="Status" :options="['1' => 'Enabled', '0' => 'Disabled']" required :value="@$hotspot['enabled'] ?? 1" />
-                    <x-form.input name="name" required :value="@$hotspot['name']" label="Plan Name" />
-                    <x-form.select name="typebp" label="Plan Type" :options="$planTypes" required :value="@$hotspot['typebp'] ?? $defaultPlanType" />
-                    <x-form.select name="bandwidth_id" label="Bandwidth Name" :options="$bandwidths" required
-                        :value="@$hotspot['bandwidth_id'] ?? $defaultBandwidth" />
-                    <x-form.input name="price" type="number" required :value="@$hotspot['price']" label="Plan Price" />
-                    <x-form.input name="shared_users" type="number" required :value="@$hotspot['shared_users'] ?? 1" label="Shared Users"
-                        tooltip="1 user can be used for many devices?" />
-                    <x-form.input name="validity" type="number" required :value="@$hotspot['validity']" label="Plan Validity" />
-                    <x-form.select name="validity_unit" nolabel :options="$validityUnits" required class="justify-end"
-                        :value="@$hotspot['validity_unit'] ?? $defaultValidityUnit" />
-                    <x-form.select name="router_id" label="Router Name" :options="$routers" required :value="@$hotspot['router_id']"
-                        tooltip="Cannot be changed after saved" />
+                    <x-form.group.select name="enabled" label="Status" :options="['1' => 'Enabled', '0' => 'Disabled']" required :value="@$hotspot['enabled'] ?? 1" />
+                    <x-form.group.input name="name" required :value="@$hotspot['name']" label="Plan Name" />
+                    <x-form.group.select name="typebp" label="Plan Type" :options="$planTypes" required
+                        :value="@$hotspot['typebp'] ?? $defaultPlanType" />
+                    <div x-show="isLimited">
+                        <x-form.group.select name="limit_type" label="Limit Type" :options="$limitTypes" required
+                            :value="@$hotspot['limit_type'] ?? $defaultLimitType" />
+                    </div>
+                    <div x-show="isLimited && isTimeLimit">
+                        <x-form.row>
+                            <x-form.label label="Time Limit" />
+                            <x-form.input name="time_limit" type="number" required :value="@$hotspot['time_limit']" label="Time Limit"
+                                class="col-md-6" />
+                            <x-form.select name="time_unit" nolabel :options="$timeUnits" required class="justify-end"
+                                :value="@$hotspot['time_unit'] ?? $defaultTimeUnit" class="col-md-3" />
+                        </x-form.row>
+                    </div>
 
-                    <x-form.select name="pool_expired" label="Expired IP Pool" :options="[]" required :value="@$hotspot['pool_expired']"/>
+                    <div x-show="isLimited && isDataLimit">
+                        <x-form.row>
+                            <x-form.label label="Data Limit" />
+                            <x-form.input name="data_limit" type="number" required :value="@$hotspot['data_limit']"
+                                label="Data Limit" class="col-md-6" />
+                            <x-form.select name="data_unit" nolabel :options="$dataUnits" required class="justify-end"
+                                :value="@$hotspot['data_unit'] ?? $defaultDataUnit" class="col-md-3" />
+                        </x-form.row>
+                    </div>
+
+                    <x-form.group.select name="bandwidth_id" label="Bandwidth Name" :options="$bandwidths" required
+                        :value="@$hotspot['bandwidth_id'] ?? $defaultBandwidth" />
+                    <x-form.group.input name="price" type="number" required :value="@$hotspot['price']" label="Plan Price" />
+                    <x-form.group.input name="shared_users" type="number" required :value="@$hotspot['shared_users'] ?? 1"
+                        label="Shared Users" tooltip="1 user can be used for many devices?" />
+
+                    <x-form.row>
+                        <x-form.label label="Plan Validity" />
+                        <x-form.input name="validity" type="number" required :value="@$hotspot['validity']" label="Plan Validity"
+                            class="col-md-6" />
+                        <x-form.select name="validity_unit" nolabel :options="$validityUnits" required class="justify-end"
+                            :value="@$hotspot['validity_unit'] ?? $defaultValidityUnit" class="col-md-3" />
+                    </x-form.row>
+
+                    <x-form.group.select name="router_id" label="Router Name" :options="$routers" required
+                        :value="@$hotspot['router_id']" tooltip="Cannot be changed after saved" />
+                    <x-form.group.select name="pool_expired" label="Expired IP Pool" :options="[]" required
+                        :value="@$hotspot['pool_expired']" />
 
                     <div class="row py-5">
                         <div class="col-md-9 offset-md-3">
@@ -63,12 +91,14 @@
     </div>
     @push('addon-script')
         <script>
-            $(document).ready(() => {
-                $('[name="router_id"]').on('change', (e) => {
-                    fetch("{{route('admin:network.pool.option')}}?router_id=" + e.target.value)
+            window.hotspotForm = () => ({
+                isLimited: false,
+                isTimeLimit: false,
+                isDataLimit: false,
+                getPools(routerId) {
+                    fetch("{{ route('admin:network.pool.option') }}?router_id=" + routerId)
                         .then(res => res.json())
                         .then(res => {
-                            console.log(res);
                             $('[name="pool_expired"]').select2({
                                 data: Object.entries(res).map(([key, value]) => {
                                     return {
@@ -78,7 +108,27 @@
                                 })
                             })
                         })
-                })
+                },
+                init() {
+                    this.getPools($('[name="router_id"]').val())
+                    $('[name="router_id"]').on('change', (e) => {
+                        this.getPools(e.target.value)
+                    })
+
+                    this.isLimited = $('[name="typebp"]').val() == "Limited"
+                    $('[name="typebp"]').on('change', (e) => {
+                        this.isLimited = e.target.value == "Limited"
+                    })
+
+                    this.isTimeLimit = $('[name="limit_type"]').val() == "Time_Limit" || $('[name="limit_type"]')
+                    .val() == "Both_Limit"
+                    this.isDataLimit = $('[name="limit_type"]').val() == "Data_Limit" || $('[name="limit_type"]')
+                    .val() == "Both_Limit"
+                    $('[name="limit_type"]').on('change', (e) => {
+                        this.isTimeLimit = e.target.value == "Time_Limit" || e.target.value == "Both_Limit"
+                        this.isDataLimit = e.target.value == "Data_Limit" || e.target.value == "Both_Limit"
+                    })
+                }
             })
         </script>
     @endpush

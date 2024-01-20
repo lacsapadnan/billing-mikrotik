@@ -154,8 +154,10 @@ class AdminNetworkController extends Controller
         return redirect()->back()->with('success', __('success.deleted'));
     }
 
-    public function poolOption(Request $request){
-        $pools = Pool::when($request->has('router_id'), fn($query)=>$query->where('router_id',$request->router_id))->pluck('pool_name','id');
+    public function poolOption(Request $request)
+    {
+        $pools = Pool::when($request->has('router_id'), fn ($query) => $query->where('router_id', $request->router_id))->pluck('pool_name', 'id');
+
         return response()->json($pools);
     }
 }

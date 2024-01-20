@@ -19,9 +19,9 @@
                     @if ($mode == 'edit')
                     <input type="hidden" name="id" value="{{$pool['id']}}" />
                     @endif
-                    <x-form.input name="pool_name" required :value="@$pool['pool_name']" label="Pool Name"/>
-                    <x-form.input name="range_ip" required  :value="@$pool['range_ip']" label="Range IP" placeholder="ex: 244.178.44.2-244.178.44.111"/>
-                    <x-form.select name="router_id" label="Router" :options="$routers" required :value="@$pool['router_id']??@$defaultRouterId"/>
+                    <x-form.group.input name="pool_name" required :value="@$pool['pool_name']" label="Pool Name"/>
+                    <x-form.group.input name="range_ip" required  :value="@$pool['range_ip']" label="Range IP" placeholder="ex: 244.178.44.2-244.178.44.111"/>
+                    <x-form.group.select name="router_id" label="Router" :options="$routers" required :value="@$pool['router_id']??@$defaultRouterId"/>
 
                     <div class="row py-5">
                         <div class="col-md-9 offset-md-3">

@@ -4,8 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\DataTables\BandwidthDataTable;
 use App\DataTables\HotspotDataTable;
+use App\Enum\DataUnit;
+use App\Enum\LimitType;
 use App\Enum\PlanTypeBp;
 use App\Enum\RateUnit;
+use App\Enum\TimeUnit;
 use App\Enum\ValidityUnit;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Service\BandwidthRequest;
@@ -53,6 +56,7 @@ class AdminServiceController extends Controller
     {
         return $dataTable->render('admin.service.hotspot.list');
     }
+
     public function createHotspot()
     {
         $mode = 'add';
@@ -64,6 +68,13 @@ class AdminServiceController extends Controller
         $defaultValidityUnit = ValidityUnit::MINS->value;
         $routers = Router::pluck('name', 'id');
         $defaultRouter = Router::first()?->id;
+        $limitTypes = array_map(fn ($row) => str_replace('_', ' ', $row), array_column(LimitType::cases(), 'value', 'value'));
+        $defaultLimitType = LimitType::TIME_LIMIT->value;
+        $timeUnits = array_column(TimeUnit::cases(), 'value', 'value');
+        $dataUnits = array_column(DataUnit::cases(), 'value', 'value');
+        $defaultTimeUnit = TimeUnit::HRS->value;
+        $defaultDataUnit = DataUnit::MB->value;
+
         return view('admin.service.hotspot.form', compact(
             'mode',
             'planTypes',
@@ -74,6 +85,12 @@ class AdminServiceController extends Controller
             'defaultValidityUnit',
             'routers',
             'defaultRouter',
+            'limitTypes',
+            'defaultLimitType',
+            'timeUnits',
+            'defaultTimeUnit',
+            'dataUnits',
+            'defaultDataUnit'
         ));
     }
 }

@@ -20,15 +20,15 @@
                     @if ($mode == 'edit')
                         <input type="hidden" name="id" value="{{ $customer['id'] }}" />
                     @endif
-                    <x-form.input name="username" required :value="@$customer['username']" />
-                    <x-form.input name="fullname" required :value="@$customer['fullname']" />
-                    <x-form.input name="email" required :value="@$customer['email']" />
-                    <x-form.input name="phonenumber" required :value="@$customer['phonenumber']" />
-                    <x-form.input name="password" required type="password" :value="@$customer['password']" />
-                    <x-form.input name="pppoe_password" label="PPPOE Password" type="password" :value="@$customer['pppoe_password']"
+                    <x-form.group.input name="username" required :value="@$customer['username']" />
+                    <x-form.group.input name="fullname" required :value="@$customer['fullname']" />
+                    <x-form.group.input name="email" required :value="@$customer['email']" />
+                    <x-form.group.input name="phonenumber" required :value="@$customer['phonenumber']" />
+                    <x-form.group.input name="password" required type="password" :value="@$customer['password']" />
+                    <x-form.group.input name="pppoe_password" label="PPPOE Password" type="password" :value="@$customer['pppoe_password']"
                         tooltip="User Cannot change this, only admin. if it Empty it will use user password" />
-                    <x-form.input name="address" type="textarea" :value="@$customer['address']" />
-                    <x-form.select name="service_type" label="Service Type" :options="$serviceTypes" required
+                    <x-form.group.input name="address" type="textarea" :value="@$customer['address']" />
+                    <x-form.group.select name="service_type" label="Service Type" :options="$serviceTypes" required
                         :value="@$customer['service_type']" />
 
                     <div class="row py-5">

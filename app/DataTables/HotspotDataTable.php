@@ -9,8 +9,6 @@ use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
-use Yajra\DataTables\Html\Editor\Editor;
-use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
 class HotspotDataTable extends DataTable
@@ -18,12 +16,12 @@ class HotspotDataTable extends DataTable
     /**
      * Build the DataTable class.
      *
-     * @param QueryBuilder $query Results from query() method.
+     * @param  QueryBuilder  $query Results from query() method.
      */
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->addColumn('action', fn($row)=>view('datatable.action.hotspot-action', $row))
+            ->addColumn('action', fn ($row) => view('datatable.action.hotspot-action', $row))
             ->setRowId('id');
     }
 
@@ -43,19 +41,19 @@ class HotspotDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    ->columns($this->getColumns())
-                    ->minifiedAjax()
+            ->columns($this->getColumns())
+            ->minifiedAjax()
                     //->dom('Bfrtip')
-                    ->orderBy(1)
-                    ->selectStyleSingle();
-                    // ->buttons([
-                    //     Button::make('excel'),
-                    //     Button::make('csv'),
-                    //     Button::make('pdf'),
-                    //     Button::make('print'),
-                    //     Button::make('reset'),
-                    //     Button::make('reload')
-                    // ]);
+            ->orderBy(1)
+            ->selectStyleSingle();
+        // ->buttons([
+        //     Button::make('excel'),
+        //     Button::make('csv'),
+        //     Button::make('pdf'),
+        //     Button::make('print'),
+        //     Button::make('reset'),
+        //     Button::make('reload')
+        // ]);
     }
 
     /**
@@ -74,10 +72,10 @@ class HotspotDataTable extends DataTable
             Column::make('router.name')->title('Routers'),
             Column::make('pool_expired')->title('Expired IP Pool'),
             Column::computed('action')
-                  ->exportable(false)
-                  ->printable(false)
-                  ->width(60)
-                  ->addClass('text-center'),
+                ->exportable(false)
+                ->printable(false)
+                ->width(60)
+                ->addClass('text-center'),
         ];
     }
 
@@ -86,6 +84,6 @@ class HotspotDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'Hotspot_' . date('YmdHis');
+        return 'Hotspot_'.date('YmdHis');
     }
 }
