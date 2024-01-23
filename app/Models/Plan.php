@@ -32,8 +32,8 @@ class Plan extends Model
         'shared_users',
         'router_id',
         'is_radius',
-        'pool',
-        'pool_expired',
+        'pool_id',
+        'pool_expired_id',
         'enabled',
     ];
 
@@ -54,5 +54,15 @@ class Plan extends Model
     public function router(): BelongsTo
     {
         return $this->belongsTo(Router::class);
+    }
+
+    public function pool_expired(): BelongsTo
+    {
+        return $this->belongsTo(Pool::class, 'pool_expired_id');
+    }
+
+    public function pool(): BelongsTo
+    {
+        return $this->belongsTo(Pool::class, 'pool_id');
     }
 }

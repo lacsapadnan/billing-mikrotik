@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Admin\Service;
 
 use App\Enum\LimitType;
+use App\Enum\PlanType;
 use App\Enum\PlanTypeBp;
 use App\Enum\RateUnit;
 use App\Enum\ValidityUnit;
@@ -44,7 +45,7 @@ class HotspotRequest extends FormRequest
             'validity' => ['required', 'integer'],
             'validity_unit' => ['required', Rule::enum(ValidityUnit::class)],
             'router_id' => [Rule::exists(Router::class, 'id')],
-            'pool_expired' => [Rule::exists(Pool::class, 'id'), 'nullable'],
+            'pool_expired_id' => [Rule::exists(Pool::class, 'id'), 'nullable'],
         ];
     }
 
@@ -68,6 +69,7 @@ class HotspotRequest extends FormRequest
         $this->merge([
             'rate' => $bandwidth->rate_up.$unitup.'/'.$bandwidth->rate_down.$unitdown,
             'radiusrate' => $bandwidth->rate_up.$radup.'/'.$bandwidth->rate_down.$raddown,
+            'type' => PlanType::HOTSPOT->value,
         ]);
     }
 }

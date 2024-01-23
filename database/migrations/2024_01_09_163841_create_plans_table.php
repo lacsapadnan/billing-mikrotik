@@ -27,13 +27,13 @@ return new class extends Migration
             $table->enum('limit_type', array_column(LimitType::cases(), 'value'))->nullable();
             $table->unsignedInteger('time_limit')->nullable();
             $table->enum('time_unit', array_column(TimeUnit::cases(), 'value'))->nullable();
-            $table->unsignedInteger('data_limit');
+            $table->unsignedInteger('data_limit')->nullable();
             $table->enum('data_unit', array_column(DataUnit::cases(), 'value'))->nullable();
             $table->integer('validity');
             $table->enum('validity_unit', array_column(ValidityUnit::cases(), 'value'));
             $table->integer('shared_users')->nullable();
             $table->foreignId('router_id')->nullable()->constrained('routers');
-            $table->boolean('is_radius');
+            $table->boolean('is_radius')->default(false);
             $table->foreignId('pool_id')->nullable()->constrained('pools');
             $table->foreignId('pool_expired_id')->nullable()->constrained('pools');
             $table->boolean('enabled')->default(true);

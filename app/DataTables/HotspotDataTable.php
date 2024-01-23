@@ -32,6 +32,7 @@ class HotspotDataTable extends DataTable
     {
         return $model->newQuery()->where('type', PlanType::HOTSPOT)
             ->with('router:id,name')
+            ->with('pool_expired:id,pool_name')
             ->with('bandwidth:id,name_bw');
     }
 
@@ -62,7 +63,7 @@ class HotspotDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            Column::make('name_plan')->title('Name'),
+            Column::make('name')->title('Name'),
             Column::make('type')->title('Type'),
             Column::make('bandwidth.name_bw')->title('Bandwidth Plan'),
             Column::make('price')->title('Price'),
@@ -70,7 +71,7 @@ class HotspotDataTable extends DataTable
             Column::make('data_limit'),
             Column::make('validity')->title('Plan Validity'),
             Column::make('router.name')->title('Routers'),
-            Column::make('pool_expired')->title('Expired IP Pool'),
+            Column::make('pool_expired.pool_name')->title('Expired IP Pool'),
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)

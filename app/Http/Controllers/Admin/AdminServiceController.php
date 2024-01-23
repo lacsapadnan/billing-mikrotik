@@ -14,6 +14,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Service\BandwidthRequest;
 use App\Http\Requests\Admin\Service\HotspotRequest;
 use App\Models\Bandwidth;
+use App\Models\Plan;
 use App\Models\Router;
 use App\Support\Mikrotik;
 
@@ -108,5 +109,8 @@ class AdminServiceController extends Controller
                 Mikrotik::setHotspotExpiredPlan($client, 'EXPIRED NUXBILL '.$request->pool_expired, $request->pool_expired);
             }
         }
+        Plan::create($request->all());
+
+        return redirect()->to(route('admin:service.hotspot.index'))->with('success', __('success.created'));
     }
 }

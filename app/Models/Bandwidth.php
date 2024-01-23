@@ -27,11 +27,11 @@ class Bandwidth extends Model
 
     public function getRateDownLabelAttribute(): string
     {
-        return $this->rate_down.' '.$this->rate_down_unit->value;
+        return $this->rate_down.' '.$this->rate_down_unit?->value;
     }
 
     public function getRateUpLabelAttribute(): string
     {
-        return $this->rate_up.' '.$this->rate_up_unit->value;
+        return $this->rate_up.' '.$this->rate_up_unit?->value;
     }
 }

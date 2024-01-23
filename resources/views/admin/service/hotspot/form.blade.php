@@ -64,8 +64,8 @@
 
                     <x-form.group.select name="router_id" label="Router Name" :options="$routers" required
                         :value="@$hotspot['router_id']" tooltip="Cannot be changed after saved" />
-                    <x-form.group.select name="pool_expired" label="Expired IP Pool" :options="[]"
-                        :value="@$hotspot['pool_expired']" />
+                    <x-form.group.select name="pool_expired_id" label="Expired IP Pool" :options="[]"
+                        :value="@$hotspot['pool_expired_id']" />
 
                     <div class="row py-5">
                         <div class="col-md-9 offset-md-3">
@@ -99,7 +99,7 @@
                     fetch("{{ route('admin:network.pool.option') }}?router_id=" + routerId)
                         .then(res => res.json())
                         .then(res => {
-                            $('[name="pool_expired"]').select2({
+                            $('[name="pool_expired_id"]').select2({
                                 data: Object.entries(res).map(([key, value]) => {
                                     return {
                                         id: key,
