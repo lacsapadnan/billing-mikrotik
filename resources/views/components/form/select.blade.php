@@ -9,7 +9,7 @@
 <div class="{{ $attributes->get('class')??'col-md-9'}}">
     <!--begin::Select2-->
     <select class="form-select form-select-solid" name="{{ $name }}" data-control="select2" @required($required)
-        data-placeholder="{{ $placeholder }}">
+        data-placeholder="{{ $placeholder }}" {{$attributes}}>
         @foreach ($options as $val => $label)
             <option></option>
             <option value="{{ $val }}" @selected($value == $val)>{{ $label }}</option>

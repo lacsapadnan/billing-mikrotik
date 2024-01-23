@@ -12,8 +12,10 @@ use App\Enum\TimeUnit;
 use App\Enum\ValidityUnit;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Service\BandwidthRequest;
+use App\Http\Requests\Admin\Service\HotspotRequest;
 use App\Models\Bandwidth;
 use App\Models\Router;
+use App\Support\Mikrotik;
 
 class AdminServiceController extends Controller
 {
@@ -92,5 +94,19 @@ class AdminServiceController extends Controller
             'dataUnits',
             'defaultDataUnit'
         ));
+    }
+
+    public function storeHotspot(HotspotRequest $request)
+    {
+        if ($request->is_radius) {
+            // TODO: buat Radius class
+        } else {
+            $mikrotik = Router::find($request->router_id);
+            $client = Mikrotik::getClient($mikrotik->ip_address, $mikrotik->username, $mikrotik->password);
+            Mikrotik::addHotspotPlan($client, $request->name, $request->shared_users, $request->rate);
+            if (! empty($request->pool_expired)) {
+                Mikrotik::setHotspotExpiredPlan($client, 'EXPIRED NUXBILL '.$request->pool_expired, $request->pool_expired);
+            }
+        }
     }
 }
