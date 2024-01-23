@@ -8,10 +8,12 @@ use App\Enum\PlanTypeBp;
 use App\Enum\RateUnit;
 use App\Enum\ValidityUnit;
 use App\Models\Bandwidth;
+use App\Models\Plan;
 use App\Models\Pool;
 use App\Models\Router;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 
 class HotspotRequest extends FormRequest
 {
@@ -35,10 +37,10 @@ class HotspotRequest extends FormRequest
             'name' => 'required',
             'typebp' => ['required', Rule::enum(PlanTypeBp::class)],
             'limit_type' => [Rule::requiredIf(fn () => $this->typebp == PlanTypeBp::LIMITED)],
-            'time_limit' => [Rule::requiredIf(fn () => array_key_exists($this->limit_type, [LimitType::TIME_LIMIT, LimitType::BOTH_LIMIT]))],
-            'time_unit' => [Rule::requiredIf(fn () => array_key_exists($this->limit_type, [LimitType::TIME_LIMIT, LimitType::BOTH_LIMIT])), 'integer'],
-            'data_limit' => [Rule::requiredIf(fn () => array_key_exists($this->limit_type, [LimitType::DATA_LIMIT, LimitType::BOTH_LIMIT]))],
-            'data_unit' => [Rule::requiredIf(fn () => array_key_exists($this->limit_type, [LimitType::DATA_LIMIT, LimitType::BOTH_LIMIT])), 'integer'],
+            'time_limit' => [Rule::requiredIf(fn () => array_key_exists($this->limit_type, [LimitType::TIME_LIMIT, LimitType::BOTH_LIMIT])), 'integer'],
+            'time_unit' => [Rule::requiredIf(fn () => array_key_exists($this->limit_type, [LimitType::TIME_LIMIT, LimitType::BOTH_LIMIT]))],
+            'data_limit' => [Rule::requiredIf(fn () => array_key_exists($this->limit_type, [LimitType::DATA_LIMIT, LimitType::BOTH_LIMIT])), 'integer'],
+            'data_unit' => [Rule::requiredIf(fn () => array_key_exists($this->limit_type, [LimitType::DATA_LIMIT, LimitType::BOTH_LIMIT]))],
             'bandwidth_id' => [Rule::exists(Bandwidth::class, 'id')],
             'price' => ['required', 'integer'],
             'shared_users' => ['required', 'integer'],
@@ -51,6 +53,12 @@ class HotspotRequest extends FormRequest
 
     protected function passedValidation()
     {
+        if (Plan::where('type', PlanType::HOTSPOT)->where('name', $this->name)
+            ->when($this->method() == 'PATCH', fn ($query) => $query->where('id', '!=', $this->id))
+            ->exists()
+        ) {
+            throw ValidationException::withMessages(['name' => 'Hotspot name already exists']);
+        }
         $bandwidth = Bandwidth::find($this->bandwidth_id);
         if ($bandwidth->rate_down_unit == RateUnit::Kbps) {
             $unitdown = 'K';

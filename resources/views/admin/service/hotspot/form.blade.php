@@ -23,10 +23,10 @@
                     <x-form.group.select name="enabled" label="Status" :options="['1' => 'Enabled', '0' => 'Disabled']" required :value="@$hotspot['enabled'] ?? 1" />
                     <x-form.group.input name="name" required :value="@$hotspot['name']" label="Plan Name" />
                     <x-form.group.select name="typebp" label="Plan Type" :options="$planTypes" required
-                        :value="@$hotspot['typebp'] ?? $defaultPlanType" />
+                        :value="@$hotspot['typebp']?->value ?? $defaultPlanType" />
                     <template x-if="isLimited">
                         <x-form.group.select name="limit_type" label="Limit Type" :options="$limitTypes" required
-                            :value="@$hotspot['limit_type'] ?? $defaultLimitType" />
+                            :value="@$hotspot['limit_type']?->value ?? $defaultLimitType" />
                     </template>
                     <template x-if="isLimited && isTimeLimit">
                         <x-form.row>
@@ -44,7 +44,7 @@
                             <x-form.input name="data_limit" type="number" required :value="@$hotspot['data_limit']"
                                 label="Data Limit" class="col-md-6" />
                             <x-form.select name="data_unit" nolabel :options="$dataUnits" required class="justify-end"
-                                :value="@$hotspot['data_unit'] ?? $defaultDataUnit" class="col-md-3" />
+                                                                                                   :value="@$hotspot['data_unit']?->value ?? $defaultDataUnit" class="col-md-3" />
                         </x-form.row>
                     </template>
 
@@ -59,7 +59,7 @@
                         <x-form.input name="validity" type="number" required :value="@$hotspot['validity']" label="Plan Validity"
                             class="col-md-6" />
                         <x-form.select name="validity_unit" nolabel :options="$validityUnits" required class="justify-end"
-                            :value="@$hotspot['validity_unit'] ?? $defaultValidityUnit" class="col-md-3" />
+                            :value="@$hotspot['validity_unit']?->value ?? $defaultValidityUnit" class="col-md-3" />
                     </x-form.row>
 
                     <x-form.group.select name="router_id" label="Router Name" :options="$routers" required
@@ -123,24 +123,33 @@
                         this.isLimited = e.target.value == "Limited"
                     })
 
+                    setTimeout(() => {
+                        this.setLimitOption();
+                    }, 200)
                     this.$watch("isLimited", (value) => {
                         if (value) {
-                            $('[name="limit_type"]').select2()
-                            this.isTimeLimit = $('[name="limit_type"]').val() == "Time_Limit" || $(
-                                    '[name="limit_type"]')
-                                .val() == "Both_Limit"
-                            this.isDataLimit = $('[name="limit_type"]').val() == "Data_Limit" || $(
-                                    '[name="limit_type"]')
-                                .val() == "Both_Limit"
-                            $('[name="limit_type"]').on('change', (e) => {
-                                this.isTimeLimit = e.target.value == "Time_Limit" || e.target.value ==
-                                    "Both_Limit"
-                                this.isDataLimit = e.target.value == "Data_Limit" || e.target.value ==
-                                    "Both_Limit"
-                            })
+                            this.setLimitOption()
                         }
                     })
+                },
+                setLimitOption() {
+                    $('[name="limit_type"]').select2()
+                    $('[name="time_unit"]')?.select2()
+                    $('[name="data_unit"]')?.select2()
+                    this.isTimeLimit = $('[name="limit_type"]').val() == "Time_Limit" || $(
+                            '[name="limit_type"]')
+                        .val() == "Both_Limit"
+                    this.isDataLimit = $('[name="limit_type"]').val() == "Data_Limit" || $(
+                            '[name="limit_type"]')
+                        .val() == "Both_Limit"
+                    $('[name="limit_type"]').on('change', (e) => {
+                        this.isTimeLimit = e.target.value == "Time_Limit" || e.target.value ==
+                            "Both_Limit"
+                        this.isDataLimit = e.target.value == "Data_Limit" || e.target.value ==
+                            "Both_Limit"
+                    })
                 }
+
             })
         </script>
     @endpush

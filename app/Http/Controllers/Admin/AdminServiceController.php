@@ -113,4 +113,60 @@ class AdminServiceController extends Controller
 
         return redirect()->to(route('admin:service.hotspot.index'))->with('success', __('success.created'));
     }
+
+    public function editHotspot(Plan $hotspot)
+    {
+
+        $mode = 'edit';
+        $planTypes = array_column(PlanTypeBp::cases(), 'value', 'value');
+        $defaultPlanType = PlanTypeBp::UNLIMITED->value;
+        $bandwidths = Bandwidth::pluck('name_bw', 'id');
+        $defaultBandwidth = Bandwidth::first()?->id;
+        $validityUnits = array_column(ValidityUnit::cases(), 'value', 'value');
+        $defaultValidityUnit = ValidityUnit::MINS->value;
+        $routers = Router::pluck('name', 'id');
+        $defaultRouter = Router::first()?->id;
+        $limitTypes = array_map(fn ($row) => str_replace('_', ' ', $row), array_column(LimitType::cases(), 'value', 'value'));
+        $defaultLimitType = LimitType::TIME_LIMIT->value;
+        $timeUnits = array_column(TimeUnit::cases(), 'value', 'value');
+        $dataUnits = array_column(DataUnit::cases(), 'value', 'value');
+        $defaultTimeUnit = TimeUnit::HRS->value;
+        $defaultDataUnit = DataUnit::MB->value;
+
+        return view('admin.service.hotspot.form', compact(
+            'mode',
+            'planTypes',
+            'defaultPlanType',
+            'bandwidths',
+            'defaultBandwidth',
+            'validityUnits',
+            'defaultValidityUnit',
+            'routers',
+            'defaultRouter',
+            'limitTypes',
+            'defaultLimitType',
+            'timeUnits',
+            'defaultTimeUnit',
+            'dataUnits',
+            'defaultDataUnit',
+            'hotspot',
+        ));
+    }
+
+    public function updateHotspot(Plan $hotspot, HotspotRequest $request)
+    {
+        if ($request->is_radius) {
+            // TODO: buat Radius class
+        } else {
+            $mikrotik = Router::find($request->router_id);
+            $client = Mikrotik::getClient($mikrotik->ip_address, $mikrotik->username, $mikrotik->password);
+            Mikrotik::setHotspotPlan($client, $request->name, $request->shared_users, $request->rate);
+            if (! empty($request->pool_expired)) {
+                Mikrotik::setHotspotExpiredPlan($client, 'EXPIRED NUXBILL '.$request->pool_expired, $request->pool_expired);
+            }
+        }
+        $hotspot->update($request->all());
+
+        return redirect()->to(route('admin:service.hotspot.index'))->with('success', __('success.updated'));
+    }
 }

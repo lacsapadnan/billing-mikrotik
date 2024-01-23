@@ -64,12 +64,12 @@ class HotspotDataTable extends DataTable
     {
         return [
             Column::make('name')->title('Name'),
-            Column::make('type')->title('Type'),
+            Column::make('typebp')->title('Type'),
             Column::make('bandwidth.name_bw')->title('Bandwidth Plan'),
             Column::make('price')->title('Price'),
-            Column::make('time_limit'),
-            Column::make('data_limit'),
-            Column::make('validity')->title('Plan Validity'),
+            Column::computed('time_limit_text')->title('Time Limit'),
+            Column::computed('data_limit_text')->title('Data Limit'),
+            Column::computed('validity_text')->title('Plan Validity'),
             Column::make('router.name')->title('Routers'),
             Column::make('pool_expired.pool_name')->title('Expired IP Pool'),
             Column::computed('action')

@@ -46,6 +46,8 @@ class Plan extends Model
         'validity_unit' => ValidityUnit::class,
     ];
 
+    protected $appends = ['time_limit_text', 'data_limit_text', 'validity_text'];
+
     public function bandwidth(): BelongsTo
     {
         return $this->belongsTo(Bandwidth::class);
@@ -59,6 +61,29 @@ class Plan extends Model
     public function pool_expired(): BelongsTo
     {
         return $this->belongsTo(Pool::class, 'pool_expired_id');
+    }
+
+    public function getTimeLimitTextAttribute(): string
+    {
+        if ($this->limit_type == LimitType::TIME_LIMIT || $this->limit_type == LimitType::BOTH_LIMIT) {
+            return $this->time_limit.' '.$this->time_unit?->value;
+        }
+
+        return '';
+    }
+
+    public function getDataLimitTextAttribute(): string
+    {
+        if ($this->limit_type == LimitType::DATA_LIMIT || $this->limit_type == LimitType::BOTH_LIMIT) {
+            return $this->data_limit.' '.$this->data_unit?->value;
+        }
+
+        return '';
+    }
+
+    public function getValidityTextAttribute()
+    {
+        return $this->validity.' '.$this->validity_unit?->value;
     }
 
     public function pool(): BelongsTo
