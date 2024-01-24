@@ -169,4 +169,20 @@ class AdminServiceController extends Controller
 
         return redirect()->to(route('admin:service.hotspot.index'))->with('success', __('success.updated'));
     }
+
+    public function destroyHotspot(Plan $hotspot){
+        if($hotspot->is_radius){
+            // TODO: handle delete radius plan
+        } else {
+            try {
+                $mikrotik = $hotspot->router;
+                $client = Mikrotik::getClient($mikrotik->ip_address, $mikrotik->username, $mikrotik->password);
+                Mikrotik::removeHotspotPlan($client, $hotspot->name);
+            } catch (\Throwable $th) {
+                // ignore, it means router has already been deleted
+            }
+        }
+        $hotspot->delete();
+        return redirect()->to(route('admin:service.hotspot.index'))->with('success', __('success.deleted'));
+    }
 }
