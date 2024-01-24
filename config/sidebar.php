@@ -102,12 +102,12 @@ return [
                             'url' => '/admin/service/bandwidth',
                             'icon' => 'filter',
                         ],
-                        [
-                            'name' => 'service.balance',
-                            'title' => 'Balance Plans',
-                            'url' => '/admin/service/balance',
-                            'icon' => 'wallet',
-                        ],
+                        // [
+                        //     'name' => 'service.balance',
+                        //     'title' => 'Balance Plans',
+                        //     'url' => '/admin/service/balance',
+                        //     'icon' => 'wallet',
+                        // ],
                     ],
                 ],
             ],
