@@ -11,7 +11,7 @@ use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
 
-class HotspotDataTable extends DataTable
+class PppoeDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -21,7 +21,7 @@ class HotspotDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->addColumn('action', fn ($row) => view('datatable.action.hotspot-action', $row))
+            ->addColumn('action', fn ($row) => view('datatable.action.pppoe-action', $row))
             ->setRowId('id');
     }
 
@@ -30,8 +30,9 @@ class HotspotDataTable extends DataTable
      */
     public function query(Plan $model): QueryBuilder
     {
-        return $model->newQuery()->where('type', PlanType::HOTSPOT)
+        return $model->newQuery()->where('type', PlanType::PPPOE)
             ->with('router:id,name')
+            ->with('pool:id,pool_name')
             ->with('pool_expired:id,pool_name')
             ->with('bandwidth:id,name_bw');
     }
@@ -65,14 +66,12 @@ class HotspotDataTable extends DataTable
         return [
             Column::make('id')->hidden(),
             Column::make('name')->title('Name'),
-            Column::make('typebp')->title('Type'),
             Column::make('bandwidth.name_bw')->title('Bandwidth Plan'),
             Column::make('price')->title('Price'),
-            Column::computed('time_limit_text')->title('Time Limit'),
-            Column::computed('data_limit_text')->title('Data Limit'),
             Column::computed('validity_text')->title('Plan Validity'),
-            Column::make('router.name')->title('Routers'),
+            Column::make('pool.pool_name')->title('IP Pool'),
             Column::make('pool_expired.pool_name')->title('Expired IP Pool'),
+            Column::make('router.name')->title('Routers'),
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
@@ -86,6 +85,6 @@ class HotspotDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'Hotspot_'.date('YmdHis');
+        return 'Pppoe_'.date('YmdHis');
     }
 }

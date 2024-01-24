@@ -63,7 +63,7 @@
                     </x-form.row>
 
                     <x-form.group.select name="router_id" label="Router Name" :options="$routers" required
-                        :value="@$hotspot['router_id']" tooltip="Cannot be changed after saved" />
+                        :value="@$hotspot['router_id']" tooltip="Cannot be changed after saved" :readonly="$mode == 'edit'"/>
                     <x-form.group.select name="pool_expired_id" label="Expired IP Pool" :options="[]"
                         :value="@$hotspot['pool_expired_id']" />
 
@@ -95,25 +95,25 @@
                 isLimited: false,
                 isTimeLimit: false,
                 isDataLimit: false,
-                getPools(routerId) {
+                getPools(routerId, defaultValue) {
                     fetch("{{ route('admin:network.pool.option') }}?router_id=" + routerId)
                         .then(res => res.json())
                         .then(res => {
                             $('[name="pool_expired_id"]').select2({
-                                data: Object.entries(res).map(([key, value]) => {
+                                data: [{id:"",key:""},...Object.entries(res).map(([key, value]) => {
                                     return {
                                         id: key,
                                         text: value
                                     }
-                                })
-                            })
+                                })]
+                            }).val(defaultValue)
                         })
                 },
                 submit(e) {
                     console.log(e)
                 },
                 init() {
-                    this.getPools($('[name="router_id"]').val())
+                    this.getPools($('[name="router_id"]').val(), @json($hotspot['pool_expired_id'] ?? ''))
                     $('[name="router_id"]').on('change', (e) => {
                         this.getPools(e.target.value)
                     })

@@ -49,6 +49,13 @@ Route::name('admin:')->group(function () {
         Route::post('service/hotspot', [AdminServiceController::class, 'storeHotspot'])->name('service.hotspot.store');
         Route::patch('service/hotspot/{hotspot}', [AdminServiceController::class, 'updateHotspot'])->name('service.hotspot.update');
 
+        Route::get('service/pppoe', [AdminServiceController::class, 'pppoe'])->name('service.pppoe.index');
+        Route::get('service/pppoe/add', [AdminServiceController::class, 'createPppoe'])->name('service.pppoe.create');
+        Route::get('service/pppoe/{pppoe}/edit', [AdminServiceController::class, 'editPppoe'])->name('service.pppoe.edit');
+        Route::delete('service/pppoe/{pppoe}', [AdminServiceController::class, 'destroyPppoe'])->name('service.pppoe.destroy');
+        Route::post('service/pppoe', [AdminServiceController::class, 'storePppoe'])->name('service.pppoe.store');
+        Route::patch('service/pppoe/{pppoe}', [AdminServiceController::class, 'updatePppoe'])->name('service.pppoe.update');
+
     });
     Route::redirect('/', '/admin/dashboard', 301);
 });
