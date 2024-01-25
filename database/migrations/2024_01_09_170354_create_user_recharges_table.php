@@ -17,13 +17,11 @@ return new class extends Migration
             $table->foreignId('plan_id')->constrained('plans');
             $table->string('username', 32);
             $table->string('namebp', 40);
-            $table->date('recharged_on');
-            $table->time('recharged_time')->default('00:00:00');
-            $table->date('expiration');
-            $table->time('time');
+            $table->dateTime('recharged_at');
+            $table->dateTime('expired_at');
             $table->string('status', 20);
             $table->string('method', 128)->default('');
-            $table->string('routers', 32);
+            $table->foreignId('router_id')->constrained('routers');
             $table->string('type', 15);
             $table->timestamps();
         });
