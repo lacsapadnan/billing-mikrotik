@@ -83,6 +83,32 @@ return [
                     'name' => 'service',
                     'title' => 'Services',
                     'icon' => 'cube-2',
+                    'sub' => [
+                        [
+                            'name' => 'service.hotspot',
+                            'title' => 'Hotspot Plans',
+                            'url' => '/admin/service/hotspot',
+                            'icon' => 'tech-wifi',
+                        ],
+                        [
+                            'name' => 'service.pppoe',
+                            'title' => 'PPPoE Plans',
+                            'url' => '/admin/service/pppoe',
+                            'icon' => 'router',
+                        ],
+                        [
+                            'name' => 'service.bandwidth',
+                            'title' => 'Bandwidth Plans',
+                            'url' => '/admin/service/bandwidth',
+                            'icon' => 'filter',
+                        ],
+                        // [
+                        //     'name' => 'service.balance',
+                        //     'title' => 'Balance Plans',
+                        //     'url' => '/admin/service/balance',
+                        //     'icon' => 'wallet',
+                        // ],
+                    ],
                 ],
             ],
         ],

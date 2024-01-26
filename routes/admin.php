@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminCustomerController;
 use App\Http\Controllers\Admin\AdminNetworkController;
 use App\Http\Controllers\Admin\AdminPrepaidController;
+use App\Http\Controllers\Admin\AdminServiceController;
 use Illuminate\Support\Facades\Route;
 
 Route::name('admin:')->group(function () {
@@ -31,6 +32,30 @@ Route::name('admin:')->group(function () {
         Route::delete('network/pool/{pool}', [AdminNetworkController::class, 'destroyPool'])->name('network.pool.destroy');
         Route::post('network/pool', [AdminNetworkController::class, 'storePool'])->name('network.pool.store');
         Route::patch('network/pool/{pool}', [AdminNetworkController::class, 'updatePool'])->name('network.pool.update');
+        Route::get('network/pool/option', [AdminNetworkController::class, 'poolOption'])->name('network.pool.option');
+
+        //# SERVICES ##
+        Route::get('service/bandwidth', [AdminServiceController::class, 'bandwidth'])->name('service.bandwidth.index');
+        Route::get('service/bandwidth/add', [AdminServiceController::class, 'createBandwidth'])->name('service.bandwidth.create');
+        Route::get('service/bandwidth/{bandwidth}/edit', [AdminServiceController::class, 'editBandwidth'])->name('service.bandwidth.edit');
+        Route::delete('service/bandwidth/{bandwidth}', [AdminServiceController::class, 'destroyBandwidth'])->name('service.bandwidth.destroy');
+        Route::post('service/bandwidth', [AdminServiceController::class, 'storeBandwidth'])->name('service.bandwidth.store');
+        Route::patch('service/bandwidth/{bandwidth}', [AdminServiceController::class, 'updateBandwidth'])->name('service.bandwidth.update');
+
+        Route::get('service/hotspot', [AdminServiceController::class, 'hotspot'])->name('service.hotspot.index');
+        Route::get('service/hotspot/add', [AdminServiceController::class, 'createHotspot'])->name('service.hotspot.create');
+        Route::get('service/hotspot/{hotspot}/edit', [AdminServiceController::class, 'editHotspot'])->name('service.hotspot.edit');
+        Route::delete('service/hotspot/{hotspot}', [AdminServiceController::class, 'destroyHotspot'])->name('service.hotspot.destroy');
+        Route::post('service/hotspot', [AdminServiceController::class, 'storeHotspot'])->name('service.hotspot.store');
+        Route::patch('service/hotspot/{hotspot}', [AdminServiceController::class, 'updateHotspot'])->name('service.hotspot.update');
+
+        Route::get('service/pppoe', [AdminServiceController::class, 'pppoe'])->name('service.pppoe.index');
+        Route::get('service/pppoe/add', [AdminServiceController::class, 'createPppoe'])->name('service.pppoe.create');
+        Route::get('service/pppoe/{pppoe}/edit', [AdminServiceController::class, 'editPppoe'])->name('service.pppoe.edit');
+        Route::delete('service/pppoe/{pppoe}', [AdminServiceController::class, 'destroyPppoe'])->name('service.pppoe.destroy');
+        Route::post('service/pppoe', [AdminServiceController::class, 'storePppoe'])->name('service.pppoe.store');
+        Route::patch('service/pppoe/{pppoe}', [AdminServiceController::class, 'updatePppoe'])->name('service.pppoe.update');
+
     });
     Route::redirect('/', '/admin/dashboard', 301);
 });

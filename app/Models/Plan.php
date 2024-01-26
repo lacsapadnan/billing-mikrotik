@@ -17,7 +17,7 @@ class Plan extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name_plan',
+        'name',
         'bandwidth_id',
         'price',
         'type',
@@ -32,8 +32,8 @@ class Plan extends Model
         'shared_users',
         'router_id',
         'is_radius',
-        'pool',
-        'pool_expired',
+        'pool_id',
+        'pool_expired_id',
         'enabled',
     ];
 
@@ -46,7 +46,9 @@ class Plan extends Model
         'validity_unit' => ValidityUnit::class,
     ];
 
-    public function bandwitch(): BelongsTo
+    protected $appends = ['time_limit_text', 'data_limit_text', 'validity_text'];
+
+    public function bandwidth(): BelongsTo
     {
         return $this->belongsTo(Bandwidth::class);
     }
@@ -54,5 +56,38 @@ class Plan extends Model
     public function router(): BelongsTo
     {
         return $this->belongsTo(Router::class);
+    }
+
+    public function pool_expired(): BelongsTo
+    {
+        return $this->belongsTo(Pool::class, 'pool_expired_id');
+    }
+
+    public function getTimeLimitTextAttribute(): string
+    {
+        if ($this->limit_type == LimitType::TIME_LIMIT || $this->limit_type == LimitType::BOTH_LIMIT) {
+            return $this->time_limit.' '.$this->time_unit?->value;
+        }
+
+        return '';
+    }
+
+    public function getDataLimitTextAttribute(): string
+    {
+        if ($this->limit_type == LimitType::DATA_LIMIT || $this->limit_type == LimitType::BOTH_LIMIT) {
+            return $this->data_limit.' '.$this->data_unit?->value;
+        }
+
+        return '';
+    }
+
+    public function getValidityTextAttribute()
+    {
+        return $this->validity.' '.$this->validity_unit?->value;
+    }
+
+    public function pool(): BelongsTo
+    {
+        return $this->belongsTo(Pool::class, 'pool_id');
     }
 }
