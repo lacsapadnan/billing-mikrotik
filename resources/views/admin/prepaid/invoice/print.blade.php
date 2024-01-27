@@ -1,12 +1,18 @@
-<x-admin-layout title="Invoice" active-menu="invoice" :path="['Dashboard' => route('admin:dashboard'), 'Invoice' => '']">
-    <div class="row app-container">
-        <div class="col-md-8 col-sm-12 col-md-offset-3">
-            <div class="card">
-                <div class="card-header">
-                    <h2 class="my-auto">{{ $invoice['invoice'] }}</h2>
-                </div>
-                <div class="card-body">
-                    <fieldset class="bg-light card-body card shadow-inner border mb-5">
+<head>
+    @vite(['resources/css/app.css'])
+    <script type="text/javascript">
+        function printpage() {
+            window.print();
+        }
+    </script>
+</head>
+
+<body topmargin="0" leftmargin="0" onload="printpage()" <div class="row">
+    <div class="col-md-12">
+        <table>
+            <tr>
+                <td width="200">
+                    <fieldset>
                         <center>
                             <b>{{ $config['CompanyName'] }}</b><br>
                             {{ $config['address'] }}<br>
@@ -35,17 +41,10 @@
                         =====================================================<br>
                         <center>{{ $config['note'] }}</center>
                     </fieldset>
-                    <form class="form-horizontal" action="{{ route('admin:prepaid.invoice.print', $invoice) }}"
-                        target="_blank">
-                        <a href="{{ route('admin:prepaid.user.index') }}"
-                            class="btn btn-primary btn-sm">{{ __('Finish') }}</a>
-                        {{-- <a href="{$_url}prepaid/view/{$invoice['id']}/send" class="btn btn-info text-black btn-sm"><i --}}
-                        {{--     class="glyphicon glyphicon-envelope"></i> {Lang::T("Resend To Customer")}</a> --}}
-                        <button type="submit" class="btn btn-light btn-sm">{{ __('Click Here to Print') }}</button>
-                    </form>
+                </td>
+            </tr>
 
-                </div>
-            </div>
-        </div>
+        </table>
     </div>
-</x-admin-layout>
+</body>
+

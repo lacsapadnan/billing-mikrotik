@@ -46,21 +46,21 @@ class AdminPrepaidController extends Controller
         Package::rechargeUser($customer, $router, $plan, RechargeGateway::RECHARGE, auth()->user()->fullname);
         $invoice = Transaction::where('username', $customer->username)
             ->latest('id')->first();
-        $admin = auth()->user();
-        $config = Config::get();
 
-        return view('admin.prepaid.invoice.show', compact('invoice', 'admin', 'config'));
+        return redirect()->route('admin:prepaid.invoice.show', $invoice);
     }
 
-    public function pritInvoice(Request $request)
+    public function showInvoice(Transaction $invoice)
     {
-        $validated = $request->validate([
-            'id' => ['required', Rule::exists(Transaction::class, 'id')],
-        ]);
-
-        $invoice = Transaction::findOrFail($validated['id']);
-
-        return view('admin.prepaid.invoice.print', compact('invoice'));
+        $admin = auth()->user();
+        $config = Config::get();
+        return view('admin.prepaid.invoice.show', compact('invoice', 'admin', 'config'));
+    }
+    public function printInvoice(Transaction $invoice)
+    {
+        $admin = auth()->user();
+        $config = Config::get();
+        return view('admin.prepaid.invoice.print', compact('invoice', 'admin', 'config'));
     }
 
     /**

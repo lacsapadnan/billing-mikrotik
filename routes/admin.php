@@ -22,7 +22,8 @@ Route::name('admin:')->group(function () {
         Route::get('prepaid/user', [AdminPrepaidController::class, 'user'])->name('prepaid.user.index');
         Route::get('prepaid/user/add', [AdminPrepaidController::class, 'createUser'])->name('prepaid.user.create');
         Route::post('prepaid/user', [AdminPrepaidController::class, 'storeUser'])->name('prepaid.user.store');
-        Route::post('prepaid/invoice/print', [AdminPrepaidController::class, 'printInvoice'])->name('prepaid.invoice.print');
+        Route::get('prepaid/invoice/{invoice}/show', [AdminPrepaidController::class, 'showInvoice'])->name('prepaid.invoice.show');
+        Route::get('prepaid/invoice/{invoice}/print', [AdminPrepaidController::class, 'printInvoice'])->name('prepaid.invoice.print');
 
         Route::get('network/router', [AdminNetworkController::class, 'router'])->name('network.router.index');
         Route::get('network/router/add', [AdminNetworkController::class, 'createRouter'])->name('network.router.create');
