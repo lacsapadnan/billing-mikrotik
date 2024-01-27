@@ -62,7 +62,7 @@ class Package
                 $userRecharge->save();
 
                 Transaction::create([
-                    'invoice' => 'INV-'.Package::_raid(5),
+                    'invoice' => 'INV-' . Package::_raid(5),
                     'username' => $customer->username,
                     'plan_name' => $plan->name,
                     'price' => $plan->price,
@@ -94,7 +94,7 @@ class Package
                 ]);
 
                 Transaction::create([
-                    'invoice' => 'INV-'.Package::_raid(5),
+                    'invoice' => 'INV-' . Package::_raid(5),
                     'username' => $customer->username,
                     'plan_name' => $plan->name,
                     'price' => $plan->price,
@@ -105,7 +105,7 @@ class Package
                     'type' => PlanType::HOTSPOT,
                 ]);
             }
-        // end if type hotspot
+            // end if type hotspot
         } else {
             if ($userRecharge) {
                 if ($plan->is_radius) {
@@ -139,7 +139,7 @@ class Package
                 $userRecharge->save();
 
                 Transaction::create([
-                    'invoice' => 'INV-'.Package::_raid(5),
+                    'invoice' => 'INV-' . Package::_raid(5),
                     'username' => $customer->username,
                     'plan_name' => $plan->name,
                     'price' => $plan->price,
@@ -172,7 +172,7 @@ class Package
                 ]);
 
                 Transaction::create([
-                    'invoice' => 'INV-'.Package::_raid(5),
+                    'invoice' => 'INV-' . Package::_raid(5),
                     'username' => $customer->username,
                     'plan_name' => $plan->name,
                     'price' => $plan->price,
@@ -187,6 +187,29 @@ class Package
             // $invoice = Transaction::where('username',$customer->username)->latest('id')->first();
             // TODO: send invoice
             return true;
+        }
+    }
+
+    public static function changeTo(Customer $customer, Plan $plan, UserRecharge $userRecharge)
+    {
+        /** @var Router $mikrotik */
+        $mikrotik = $userRecharge->router;
+        if ($plan->router->id != $userRecharge->router_id && !$plan->is_radius) {
+            $mikrotik = $plan->router;
+        }
+        $client = static::resetCustomerMikrotik($mikrotik, $customer);
+        if($plan->type == PlanType::HOTSPOT){
+            if($plan->is_radius){
+                //TODO:
+            } else {
+                Mikrotik::addHotspotUser($client, $plan, $customer);
+            }
+        } else {
+            if($plan->is_radius){
+                //TODO:
+            } else {
+                Mikrotik::addPpoeUser($client, $plan, $customer);
+            }
         }
     }
 

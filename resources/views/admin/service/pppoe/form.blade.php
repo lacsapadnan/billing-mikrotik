@@ -76,7 +76,7 @@
                                         text: value
                                     }
                                 })]
-                            }).val(defaultValue)
+                            }).val(defaultValue).trigger('change')
                         })
                 },
                 submit(e) {

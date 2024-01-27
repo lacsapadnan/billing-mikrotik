@@ -11,6 +11,7 @@ use App\Models\Customer;
 use App\Models\Plan;
 use App\Models\Router;
 use App\Models\Transaction;
+use App\Models\UserRecharge;
 use App\Support\Facades\Config;
 use App\Support\Package;
 use Illuminate\Http\Request;
@@ -37,6 +38,18 @@ class AdminPrepaidController extends Controller
 
         return view('admin.prepaid.user.form', compact('mode', 'customers', 'planTypes', 'defaultPlanType'));
     }
+    public function editUser(UserRecharge $user)
+    {
+        $mode = 'edit';
+        $customers = Customer::where('id', $user->customer_id)->get()->mapWithKeys(fn ($customer) => [
+            $customer->id => $customer->username.' - '.$customer->fullname.' - '.$customer->email,
+        ]);
+        $planTypes = array_column(PlanType::cases(), 'value', 'value');
+        $defaultPlanType = $user->plan->type;
+        $defaultRouterId = $user->plan->router_id;
+
+        return view('admin.prepaid.user.form', compact('mode', 'customers', 'planTypes', 'defaultPlanType', 'user', 'defaultRouterId'));
+    }
 
     public function storeUser(PrepaidUserRequest $request)
     {
@@ -48,6 +61,19 @@ class AdminPrepaidController extends Controller
             ->latest('id')->first();
 
         return redirect()->route('admin:prepaid.invoice.show', $invoice);
+    }
+
+    public function updateUser(PrepaidUserRequest $request, UserRecharge $user)
+    {
+        $customer = Customer::findOrFail($request->customer_id);
+        $plan = Plan::findOrFail($request->plan_id);
+        $user->plan_id = $request->plan_id;
+        $user->expired_at = $request->expired_at;
+        $user->save();
+
+        Package::changeTo($customer, $plan, $user);
+
+        return redirect()->route('admin:prepaid.user.index')->with('success', __('success.updated'));
     }
 
     public function showInvoice(Transaction $invoice)
