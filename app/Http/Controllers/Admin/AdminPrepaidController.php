@@ -13,9 +13,9 @@ use App\Models\Router;
 use App\Models\Transaction;
 use App\Models\UserRecharge;
 use App\Support\Facades\Config;
+use App\Support\Mikrotik;
 use App\Support\Package;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 
 class AdminPrepaidController extends Controller
 {
@@ -38,6 +38,7 @@ class AdminPrepaidController extends Controller
 
         return view('admin.prepaid.user.form', compact('mode', 'customers', 'planTypes', 'defaultPlanType'));
     }
+
     public function editUser(UserRecharge $user)
     {
         $mode = 'edit';
@@ -76,16 +77,39 @@ class AdminPrepaidController extends Controller
         return redirect()->route('admin:prepaid.user.index')->with('success', __('success.updated'));
     }
 
+    public function destroyUser(UserRecharge $user)
+    {
+        if ($user->plan->is_radius) {
+            //TODO: Radius::customerDeactivate
+        } else {
+            $mikrotik = $user->router;
+            $client = Mikrotik::getClient($mikrotik->ip_address, $mikrotik->username, $mikrotik->password);
+            if ($user->type == PlanType::HOTSPOT) {
+                Mikrotik::removeHotspotUser($client, $user->username);
+                Mikrotik::removeHotspotActiveUser($client, $user->username);
+            } else {
+                Mikrotik::removePpoeUser($client, $user->username);
+                Mikrotik::removePpoeActive($client, $user->username);
+            }
+        }
+        $user->delete();
+
+        return redirect()->route('admin:prepaid.user.index')->with('success', __('success.deleted'));
+    }
+
     public function showInvoice(Transaction $invoice)
     {
         $admin = auth()->user();
         $config = Config::get();
+
         return view('admin.prepaid.invoice.show', compact('invoice', 'admin', 'config'));
     }
+
     public function printInvoice(Transaction $invoice)
     {
         $admin = auth()->user();
         $config = Config::get();
+
         return view('admin.prepaid.invoice.print', compact('invoice', 'admin', 'config'));
     }
 

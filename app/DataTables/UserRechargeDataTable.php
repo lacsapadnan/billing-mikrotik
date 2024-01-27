@@ -20,7 +20,7 @@ class UserRechargeDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->addColumn('action', fn($row) => view('datatable.action.prepaid-user-action', $row))
+            ->addColumn('action', fn ($row) => view('datatable.action.prepaid-user-action', $row))
             ->editColumn('created_at', function ($row) {
                 return $row->created_at->format('d M Y H:i');
             })
@@ -75,7 +75,7 @@ class UserRechargeDataTable extends DataTable
             Column::computed('expired_at'),
             Column::make('method'),
             Column::make('router.name'),
-            Column::computed('action')
+            Column::computed('action'),
         ];
     }
 

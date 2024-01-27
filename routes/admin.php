@@ -22,7 +22,7 @@ Route::name('admin:')->group(function () {
         Route::get('prepaid/user', [AdminPrepaidController::class, 'user'])->name('prepaid.user.index');
         Route::get('prepaid/user/add', [AdminPrepaidController::class, 'createUser'])->name('prepaid.user.create');
         Route::get('prepaid/user/{user}/edit', [AdminPrepaidController::class, 'editUser'])->name('prepaid.user.edit');
-        Route::delete('prepaid/user/{user}', [AdminPrepaidController::class, 'editUser'])->name('prepaid.user.destroy');
+        Route::delete('prepaid/user/{user}', [AdminPrepaidController::class, 'destroyUser'])->name('prepaid.user.destroy');
         Route::patch('prepaid/user/{user}', [AdminPrepaidController::class, 'updateUser'])->name('prepaid.user.update');
         Route::post('prepaid/user', [AdminPrepaidController::class, 'storeUser'])->name('prepaid.user.store');
         Route::get('prepaid/invoice/{invoice}/show', [AdminPrepaidController::class, 'showInvoice'])->name('prepaid.invoice.show');
