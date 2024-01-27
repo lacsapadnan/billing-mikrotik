@@ -18,7 +18,11 @@ Route::name('admin:')->group(function () {
         Route::get('logout', [AdminAuthController::class, 'destroy'])->name('auth.logout');
         Route::resource('customer', AdminCustomerController::class);
 
-        Route::get('prepaid/user', [AdminPrepaidController::class, 'user'])->name('prepaid.user');
+        //# PREPAID ##
+        Route::get('prepaid/user', [AdminPrepaidController::class, 'user'])->name('prepaid.user.index');
+        Route::get('prepaid/user/add', [AdminPrepaidController::class, 'createUser'])->name('prepaid.user.create');
+        Route::post('prepaid/user', [AdminPrepaidController::class, 'storeUser'])->name('prepaid.user.store');
+        Route::post('prepaid/invoice/print', [AdminPrepaidController::class, 'printInvoice'])->name('prepaid.invoice.print');
 
         Route::get('network/router', [AdminNetworkController::class, 'router'])->name('network.router.index');
         Route::get('network/router/add', [AdminNetworkController::class, 'createRouter'])->name('network.router.create');
@@ -33,6 +37,8 @@ Route::name('admin:')->group(function () {
         Route::post('network/pool', [AdminNetworkController::class, 'storePool'])->name('network.pool.store');
         Route::patch('network/pool/{pool}', [AdminNetworkController::class, 'updatePool'])->name('network.pool.update');
         Route::get('network/pool/option', [AdminNetworkController::class, 'poolOption'])->name('network.pool.option');
+        Route::get('network/router/option', [AdminNetworkController::class, 'routerOption'])->name('network.router.option');
+        Route::get('network/plan/option', [AdminNetworkController::class, 'planOption'])->name('network.plan.option');
 
         //# SERVICES ##
         Route::get('service/bandwidth', [AdminServiceController::class, 'bandwidth'])->name('service.bandwidth.index');

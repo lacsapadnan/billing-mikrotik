@@ -7,8 +7,10 @@ use App\DataTables\RouterDataTable;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Network\PoolRequest;
 use App\Http\Requests\Admin\Network\RouterRequest;
+use App\Models\Plan;
 use App\Models\Pool;
 use App\Models\Router;
+use App\Support\Lang;
 use App\Support\Mikrotik;
 use Illuminate\Http\Request;
 
@@ -159,5 +161,23 @@ class AdminNetworkController extends Controller
         $pools = Pool::when($request->has('router_id'), fn ($query) => $query->where('router_id', $request->router_id))->pluck('pool_name', 'id');
 
         return response()->json($pools);
+    }
+
+    public function routerOption(Request $request)
+    {
+        $routers = Router::when($request->has('plan_type'), fn ($query) => $query->whereRelation('plans', 'type', $request->plan_type))
+            ->pluck('name', 'id');
+
+        return response()->json($routers);
+    }
+
+    public function planOption(Request $request)
+    {
+        $plans = Plan::when($request->has('plan_type'), fn ($query) => $query->where('type', $request->plan_type))
+            ->when($request->has('router_id'), fn ($query) => $query->where('router_id', $request->router_id))
+            ->get()
+            ->mapWithKeys(fn ($plan) => [$plan->id => $plan->name.' - '.Lang::moneyFormat($plan->price)]);
+
+        return response()->json($plans);
     }
 }

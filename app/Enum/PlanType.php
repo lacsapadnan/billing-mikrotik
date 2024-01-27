@@ -6,5 +6,5 @@ enum PlanType: string
 {
     case HOTSPOT = 'Hotspot';
     case PPPOE = 'PPPOE';
-    case BALANCE = 'Balance';
+    // case BALANCE = 'Balance';
 }

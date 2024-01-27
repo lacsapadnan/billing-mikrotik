@@ -3,7 +3,6 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Throwable;
 
 class Handler extends ExceptionHandler
 {
@@ -23,8 +22,8 @@ class Handler extends ExceptionHandler
      */
     public function register(): void
     {
-        $this->renderable(function (Throwable $e) {
-            // dd($e);
+        $this->renderable(function (AppException $e) {
+            return redirect()->back()->with('error', $e->getMessage());
         });
     }
 }

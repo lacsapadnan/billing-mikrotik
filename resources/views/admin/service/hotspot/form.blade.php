@@ -99,8 +99,8 @@
                     fetch("{{ route('admin:network.pool.option') }}?router_id=" + routerId)
                         .then(res => res.json())
                         .then(res => {
-                            $('[name="pool_expired_id"]').select2({
-                                data: [{id:"",key:""},...Object.entries(res).map(([key, value]) => {
+                            $('[name="pool_expired_id"]').empty().select2({
+                                data: [{id:"",text:""},...Object.entries(res).map(([key, value]) => {
                                     return {
                                         id: key,
                                         text: value

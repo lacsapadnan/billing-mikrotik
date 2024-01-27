@@ -21,6 +21,12 @@ class UserRechargeDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addColumn('action', 'userrecharge.action')
+            ->editColumn('created_at', function ($row) {
+                return $row->created_at->format('d M Y H:i');
+            })
+            ->editColumn('expired_at', function ($row) {
+                return $row->expired_at->format('d M Y H:i');
+            })
             ->setRowId('id');
     }
 
@@ -29,7 +35,9 @@ class UserRechargeDataTable extends DataTable
      */
     public function query(UserRecharge $model): QueryBuilder
     {
-        return $model->newQuery();
+        return $model->newQuery()
+            ->with('plan:id,name,type')
+            ->with('router:id,name');
     }
 
     /**
@@ -60,6 +68,12 @@ class UserRechargeDataTable extends DataTable
     {
         return [
             Column::make('username'),
+            Column::make('plan.name'),
+            Column::make('plan.type'),
+            Column::make('created_at'),
+            Column::computed('expired_at'),
+            Column::make('method'),
+            Column::make('router.name'),
         ];
     }
 

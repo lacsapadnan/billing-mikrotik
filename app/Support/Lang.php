@@ -3,6 +3,7 @@
 namespace App\Support;
 
 use App\Support\Facades\Config;
+use Carbon\Carbon;
 
 class Lang
 {
@@ -25,13 +26,9 @@ class Lang
         return date(Config::get('date_format'), strtotime($date));
     }
 
-    public static function dateTimeFormat($date)
+    public static function dateTimeFormat(Carbon $date)
     {
-        if (strtotime($date) < strtotime('2000-01-01 00:00:00')) {
-            return '';
-        } else {
-            return date(Config::get('date_format').' H:i', strtotime($date));
-        }
+        return $date->format(Config::get('date_format').' H:i');
     }
 
     public static function dateAndTimeFormat($date, $time)

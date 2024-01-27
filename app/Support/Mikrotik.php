@@ -7,6 +7,12 @@
 
 namespace App\Support;
 
+use App\Enum\DataUnit;
+use App\Enum\LimitType;
+use App\Enum\PlanTypeBp;
+use App\Enum\TimeUnit;
+use App\Models\Customer;
+use App\Models\Plan;
 use App\Models\Router;
 use Pear2\Net\RouterOS\Client;
 use Pear2\Net\RouterOS\Query;
@@ -186,16 +192,16 @@ class Mikrotik
         );
     }
 
-    public static function addHotspotUser($client, $plan, $customer)
+    public static function addHotspotUser(Client $client, Plan $plan, Customer $customer)
     {
         global $_app_stage;
         if ($_app_stage == 'demo') {
             return null;
         }
         $addRequest = new Request('/ip/hotspot/user/add');
-        if ($plan['typebp'] == 'Limited') {
-            if ($plan['limit_type'] == 'Time_Limit') {
-                if ($plan['time_unit'] == 'Hrs') {
+        if ($plan['typebp'] == PlanTypeBp::LIMITED) {
+            if ($plan['limit_type'] == LimitType::TIME_LIMIT) {
+                if ($plan['time_unit'] == TimeUnit::HRS) {
                     $timelimit = $plan['time_limit'].':00:00';
                 } else {
                     $timelimit = '00:'.$plan['time_limit'].':00';
@@ -203,14 +209,14 @@ class Mikrotik
                 $client->sendSync(
                     $addRequest
                         ->setArgument('name', $customer['username'])
-                        ->setArgument('profile', $plan['name_plan'])
+                        ->setArgument('profile', $plan['name'])
                         ->setArgument('password', $customer['password'])
                         ->setArgument('comment', $customer['fullname'])
                         ->setArgument('email', $customer['email'])
                         ->setArgument('limit-uptime', $timelimit)
                 );
-            } elseif ($plan['limit_type'] == 'Data_Limit') {
-                if ($plan['data_unit'] == 'GB') {
+            } elseif ($plan['limit_type'] == LimitType::DATA_LIMIT) {
+                if ($plan['data_unit'] == DataUnit::GB) {
                     $datalimit = $plan['data_limit'].'000000000';
                 } else {
                     $datalimit = $plan['data_limit'].'000000';
@@ -218,19 +224,19 @@ class Mikrotik
                 $client->sendSync(
                     $addRequest
                         ->setArgument('name', $customer['username'])
-                        ->setArgument('profile', $plan['name_plan'])
+                        ->setArgument('profile', $plan['name'])
                         ->setArgument('password', $customer['password'])
                         ->setArgument('comment', $customer['fullname'])
                         ->setArgument('email', $customer['email'])
                         ->setArgument('limit-bytes-total', $datalimit)
                 );
-            } elseif ($plan['limit_type'] == 'Both_Limit') {
-                if ($plan['time_unit'] == 'Hrs') {
+            } elseif ($plan['limit_type'] == LimitType::BOTH_LIMIT) {
+                if ($plan['time_unit'] == TimeUnit::HRS) {
                     $timelimit = $plan['time_limit'].':00:00';
                 } else {
                     $timelimit = '00:'.$plan['time_limit'].':00';
                 }
-                if ($plan['data_unit'] == 'GB') {
+                if ($plan['data_unit'] == DataUnit::GB) {
                     $datalimit = $plan['data_limit'].'000000000';
                 } else {
                     $datalimit = $plan['data_limit'].'000000';
@@ -238,7 +244,7 @@ class Mikrotik
                 $client->sendSync(
                     $addRequest
                         ->setArgument('name', $customer['username'])
-                        ->setArgument('profile', $plan['name_plan'])
+                        ->setArgument('profile', $plan['name'])
                         ->setArgument('password', $customer['password'])
                         ->setArgument('comment', $customer['fullname'])
                         ->setArgument('email', $customer['email'])
@@ -250,7 +256,7 @@ class Mikrotik
             $client->sendSync(
                 $addRequest
                     ->setArgument('name', $customer['username'])
-                    ->setArgument('profile', $plan['name_plan'])
+                    ->setArgument('profile', $plan['name'])
                     ->setArgument('comment', $customer['fullname'])
                     ->setArgument('email', $customer['email'])
                     ->setArgument('password', $customer['password'])
@@ -323,7 +329,7 @@ class Mikrotik
         $client->sendSync($removeRequest);
     }
 
-    public static function addPpoeUser($client, $plan, $customer)
+    public static function addPpoeUser(Client $client, Plan $plan, Customer $customer)
     {
         global $_app_stage;
         if ($_app_stage == 'demo') {

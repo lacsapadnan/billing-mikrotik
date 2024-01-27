@@ -22,6 +22,7 @@ class HotspotDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addColumn('action', fn ($row) => view('datatable.action.hotspot-action', $row))
+            ->editColumn('pool_expired.pool_name', fn ($row) => $row->pool_expired?->pool_name)
             ->setRowId('id');
     }
 
@@ -72,7 +73,7 @@ class HotspotDataTable extends DataTable
             Column::computed('data_limit_text')->title('Data Limit'),
             Column::computed('validity_text')->title('Plan Validity'),
             Column::make('router.name')->title('Routers'),
-            Column::make('pool_expired.pool_name')->title('Expired IP Pool'),
+            Column::computed('pool_expired.pool_name')->title('Expired IP Pool'),
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
