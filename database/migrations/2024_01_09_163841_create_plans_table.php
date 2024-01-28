@@ -6,6 +6,9 @@ use App\Enum\PlanType;
 use App\Enum\PlanTypeBp;
 use App\Enum\TimeUnit;
 use App\Enum\ValidityUnit;
+use App\Models\Bandwidth;
+use App\Models\Pool;
+use App\Models\Router;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -20,7 +23,10 @@ return new class extends Migration
         Schema::create('plans', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->foreignId('bandwidth_id')->constrained('bandwidths');
+            $table->foreignIdFor(Bandwidth::class)->constrained();
+            $table->foreignIdFor(Router::class)->nullable()->constrained();
+            $table->foreignIdFor(Pool::class, 'pool_id')->nullable()->constrained();
+            $table->foreignIdFor(Pool::class, 'pool_expired_id')->nullable()->constrained('pools');
             $table->string('price', 40);
             $table->enum('type', array_column(PlanType::cases(), 'value'));
             $table->enum('typebp', array_column(PlanTypeBp::cases(), 'value'))->nullable();
@@ -32,10 +38,7 @@ return new class extends Migration
             $table->integer('validity');
             $table->enum('validity_unit', array_column(ValidityUnit::cases(), 'value'));
             $table->integer('shared_users')->nullable();
-            $table->foreignId('router_id')->nullable()->constrained('routers');
             $table->boolean('is_radius')->default(false);
-            $table->foreignId('pool_id')->nullable()->constrained('pools');
-            $table->foreignId('pool_expired_id')->nullable()->constrained('pools');
             $table->boolean('enabled')->default(true);
             $table->timestamps();
         });
