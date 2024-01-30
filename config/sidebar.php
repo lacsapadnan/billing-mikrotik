@@ -62,9 +62,9 @@ return [
                             'icon' => 'dollar',
                         ],
                         [
-                            'name' => 'prepaid.recharge',
+                            'name' => 'prepaid.user.create',
                             'title' => 'Recharge Account',
-                            'url' => '/admin/prepaid/recharge',
+                            'url' => '/admin/prepaid/user/add',
                             'icon' => 'dollar',
                         ],
                         // [
