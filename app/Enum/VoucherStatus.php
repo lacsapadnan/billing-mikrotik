@@ -2,10 +2,10 @@
 
 namespace App\Enum;
 
-enum VoucherStatus: int
+enum VoucherStatus: string
 {
-    case UNUSED = 0;
-    case USED = 1;
+    case UNUSED = '0';
+    case USED = '1';
 
     public function label()
     {

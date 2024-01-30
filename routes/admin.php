@@ -35,6 +35,8 @@ Route::name('admin:')->group(function () {
         Route::delete('prepaid/voucher/{voucher}', [AdminPrepaidController::class, 'destroyVoucher'])->name('prepaid.voucher.destroy');
         Route::patch('prepaid/voucher/{voucher}', [AdminPrepaidController::class, 'updateVoucher'])->name('prepaid.voucher.update');
         Route::post('prepaid/voucher', [AdminPrepaidController::class, 'storeVoucher'])->name('prepaid.voucher.store');
+        Route::get('prepaid/refill-account', [AdminPrepaidController::class, 'refillAccount'])->name('prepaid.refill-account');
+        Route::post('prepaid/refill-account', [AdminPrepaidController::class, 'storeRefillAccount'])->name('prepaid.refill-account.store');
 
         Route::get('network/router', [AdminNetworkController::class, 'router'])->name('network.router.index');
         Route::get('network/router/add', [AdminNetworkController::class, 'createRouter'])->name('network.router.create');

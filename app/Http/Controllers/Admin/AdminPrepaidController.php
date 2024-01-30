@@ -7,6 +7,7 @@ use App\DataTables\VoucherDataTable;
 use App\Enum\PlanType;
 use App\Enum\RechargeGateway;
 use App\Enum\VoucherFormat;
+use App\Enum\VoucherStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Prepaid\PrepaidUserRequest;
 use App\Http\Requests\Admin\Prepaid\PrepaidVoucherRequest;
@@ -21,6 +22,7 @@ use App\Support\Lang;
 use App\Support\Mikrotik;
 use App\Support\Package;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class AdminPrepaidController extends Controller
 {
@@ -165,35 +167,35 @@ class AdminPrepaidController extends Controller
         return redirect()->route('admin:prepaid.voucher.index')->with('success', __('success.deleted'));
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function refillAccount()
     {
-        //
+        $customers = Customer::all()->mapWithKeys(fn ($customer) => [
+            $customer->id => $customer->username.' - '.$customer->fullname.' - '.$customer->email,
+        ]);
+
+        return view('admin.prepaid.refill-account', compact('customers'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function storeRefillAccount(Request $request)
     {
-        //
-    }
+        $validated = $request->validate([
+            'customer_id' => ['required', Rule::exists(Customer::class, 'id')],
+            'voucher_code' => 'required',
+        ]);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+        $customer = Customer::findOrFail($validated['customer_id']);
+        /** @var Voucher $voucher */
+        $voucher = Voucher::where('code', $validated['voucher_code'])->where('status', VoucherStatus::UNUSED)->first();
+        if (! $voucher) {
+            return redirect()->back()->with('error', 'Invalid voucher code');
+        }
+        Package::rechargeUser($customer, $voucher->router, $voucher->plan, RechargeGateway::VOUCHER, $voucher->code);
+        $voucher->status = VoucherStatus::USED;
+        $voucher->customer_id = $customer->id;
+        $voucher->save();
+        $invoice = Transaction::where('username', $customer->username)
+            ->latest('id')->first();
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return redirect()->route('admin:prepaid.invoice.show', $invoice);
     }
 }

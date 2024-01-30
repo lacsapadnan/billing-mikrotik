@@ -56,9 +56,9 @@ return [
                             'icon' => 'discount',
                         ],
                         [
-                            'name' => 'prepaid.refill',
+                            'name' => 'prepaid.refill-account',
                             'title' => 'Refill Account',
-                            'url' => '/admin/prepaid/refill',
+                            'url' => '/admin/prepaid/refill-account',
                             'icon' => 'dollar',
                         ],
                         [
@@ -67,12 +67,12 @@ return [
                             'url' => '/admin/prepaid/recharge',
                             'icon' => 'dollar',
                         ],
-                        [
-                            'name' => 'prepaid.refill-balance',
-                            'title' => 'Refill Balance',
-                            'url' => '/admin/prepaid/refill-balance',
-                            'icon' => 'wallet',
-                        ],
+                        // [
+                        //     'name' => 'prepaid.refill-balance',
+                        //     'title' => 'Refill Balance',
+                        //     'url' => '/admin/prepaid/refill-balance',
+                        //     'icon' => 'wallet',
+                        // ],
                     ],
                 ],
             ],
