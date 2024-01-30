@@ -15,7 +15,7 @@ class Voucher extends Model
     protected $fillable = [
         'plan_id',
         'router_id',
-        'customer_id',
+        'user',
         'type',
         'code',
         'status',

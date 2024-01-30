@@ -3,16 +3,21 @@
 namespace App\Http\Controllers\Admin;
 
 use App\DataTables\UserRechargeDataTable;
+use App\DataTables\VoucherDataTable;
 use App\Enum\PlanType;
 use App\Enum\RechargeGateway;
+use App\Enum\VoucherFormat;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Prepaid\PrepaidUserRequest;
+use App\Http\Requests\Admin\Prepaid\PrepaidVoucherRequest;
 use App\Models\Customer;
 use App\Models\Plan;
 use App\Models\Router;
 use App\Models\Transaction;
 use App\Models\UserRecharge;
+use App\Models\Voucher;
 use App\Support\Facades\Config;
+use App\Support\Lang;
 use App\Support\Mikrotik;
 use App\Support\Package;
 use Illuminate\Http\Request;
@@ -111,6 +116,53 @@ class AdminPrepaidController extends Controller
         $config = Config::get();
 
         return view('admin.prepaid.invoice.print', compact('invoice', 'admin', 'config'));
+    }
+
+    public function voucher(VoucherDataTable $dataTable)
+    {
+        return $dataTable->render('admin.prepaid.voucher.list');
+    }
+
+    public function createVoucher()
+    {
+        $mode = 'add';
+        $planTypes = array_column(PlanType::cases(), 'value', 'value');
+        $defaultPlanType = PlanType::HOTSPOT;
+        $voucherFormats = array_column(VoucherFormat::cases(), 'name', 'value');
+        $defaultVoucherFormat = Config::get('voucher_format') ?: VoucherFormat::UPPERCASE->value;
+        $defaultPrefix = Config::get('voucher_prefix');
+
+        return view('admin.prepaid.voucher.form', compact('mode', 'planTypes', 'defaultPlanType', 'voucherFormats', 'defaultVoucherFormat', 'defaultPrefix'));
+    }
+
+    public function storeVoucher(PrepaidVoucherRequest $request)
+    {
+        if (! empty($request->prefix)) {
+            Config::set('voucher_prefix', $request->prefix);
+        }
+        Config::set('voucher_format', $request->format);
+        for ($i = 0; $i < $request->count; $i++) {
+            $code = strtoupper(substr(md5(time().rand(10000, 99999)), 0, $request->length));
+            $voucherFormat = VoucherFormat::from($request->format);
+            if ($voucherFormat == VoucherFormat::lowercase) {
+                $code = strtolower($code);
+            } elseif ($voucherFormat == VoucherFormat::RaNdoM) {
+                $code = Lang::randomUpLowCase($code);
+            }
+        }
+        $request->merge([
+            'code' => $request->prefix.$code,
+        ]);
+        Voucher::create($request->all());
+
+        return redirect()->route('admin:prepaid.voucher.index')->with('success', __('success.created'));
+    }
+
+    public function destroyVoucher(Voucher $voucher)
+    {
+        $voucher->delete();
+
+        return redirect()->route('admin:prepaid.voucher.index')->with('success', __('success.deleted'));
     }
 
     /**

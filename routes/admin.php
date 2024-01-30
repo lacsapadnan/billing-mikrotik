@@ -19,6 +19,7 @@ Route::name('admin:')->group(function () {
         Route::resource('customer', AdminCustomerController::class);
 
         //# PREPAID ##
+        // recharge user
         Route::get('prepaid/user', [AdminPrepaidController::class, 'user'])->name('prepaid.user.index');
         Route::get('prepaid/user/add', [AdminPrepaidController::class, 'createUser'])->name('prepaid.user.create');
         Route::get('prepaid/user/{user}/edit', [AdminPrepaidController::class, 'editUser'])->name('prepaid.user.edit');
@@ -27,6 +28,13 @@ Route::name('admin:')->group(function () {
         Route::post('prepaid/user', [AdminPrepaidController::class, 'storeUser'])->name('prepaid.user.store');
         Route::get('prepaid/invoice/{invoice}/show', [AdminPrepaidController::class, 'showInvoice'])->name('prepaid.invoice.show');
         Route::get('prepaid/invoice/{invoice}/print', [AdminPrepaidController::class, 'printInvoice'])->name('prepaid.invoice.print');
+        // voucher
+        Route::get('prepaid/voucher', [AdminPrepaidController::class, 'voucher'])->name('prepaid.voucher.index');
+        Route::get('prepaid/voucher/add', [AdminPrepaidController::class, 'createVoucher'])->name('prepaid.voucher.create');
+        Route::get('prepaid/voucher/{voucher}/edit', [AdminPrepaidController::class, 'editVoucher'])->name('prepaid.voucher.edit');
+        Route::delete('prepaid/voucher/{voucher}', [AdminPrepaidController::class, 'destroyVoucher'])->name('prepaid.voucher.destroy');
+        Route::patch('prepaid/voucher/{voucher}', [AdminPrepaidController::class, 'updateVoucher'])->name('prepaid.voucher.update');
+        Route::post('prepaid/voucher', [AdminPrepaidController::class, 'storeVoucher'])->name('prepaid.voucher.store');
 
         Route::get('network/router', [AdminNetworkController::class, 'router'])->name('network.router.index');
         Route::get('network/router/add', [AdminNetworkController::class, 'createRouter'])->name('network.router.create');

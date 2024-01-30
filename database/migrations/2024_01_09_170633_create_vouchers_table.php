@@ -19,11 +19,11 @@ return new class extends Migration
         Schema::create('vouchers', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Plan::class)->constrained();
-            $table->foreignIdFor(Customer::class)->constrained();
             $table->foreignIdFor(Router::class)->constrained();
+            $table->foreignIdFor(Customer::class)->nullable()->constrained();
             $table->enum('type', array_column(PlanType::cases(), 'value'));
             $table->string('code', 55);
-            $table->enum('status', array_column(VoucherStatus::cases(), 'value'));
+            $table->enum('status', array_column(VoucherStatus::cases(), 'value'))->default(VoucherStatus::UNUSED);
             $table->timestamps();
         });
     }
