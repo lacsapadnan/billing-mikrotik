@@ -136,5 +136,30 @@ return [
                 ],
             ],
         ],
+        [
+            'group' => 'SYSTEM',
+            'items' => [
+                [
+                    'name' => 'report',
+                    'title' => 'Reports',
+                    'icon' => 'notepad',
+                    'sub' => [
+                        [
+                            'name' => 'report.daily',
+                            'title' => 'Daily Report',
+                            'url' => '/admin/report/daily',
+                            'icon' => 'calendar',
+                        ],
+                        [
+                            'name' => 'report.activation',
+                            'title' => 'Activation History',
+                            'url' => '/admin/report/activation',
+                            'icon' => 'questionnaire-tablet',
+                        ],
+                    ],
+                ],
+            ],
+
+        ],
     ],
 ];
