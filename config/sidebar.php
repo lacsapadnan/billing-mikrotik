@@ -146,9 +146,15 @@ return [
                     'sub' => [
                         [
                             'name' => 'report.daily',
-                            'title' => 'Daily Report',
+                            'title' => 'Daily Reports',
                             'url' => '/admin/report/daily',
-                            'icon' => 'calendar',
+                            'icon' => 'tablet-book',
+                        ],
+                        [
+                            'name' => 'report.period',
+                            'title' => 'Period Reports',
+                            'url' => '/admin/report/period',
+                            'icon' => 'filter-tablet',
                         ],
                         [
                             'name' => 'report.activation',

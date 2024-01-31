@@ -11,6 +11,11 @@
         </div>
     </div>
     <div class="card-body">
+        @if(@$filter)
+        <div class="row">
+            {{$filter}}
+        </div>
+        @endif
         {{ $dataTable->table(['class' => 'table align-middle table-row-dashed table-row-fs-6 gy-5 dataTable'], true) }}
     </div>
 </div>
