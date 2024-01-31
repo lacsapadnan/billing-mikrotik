@@ -23,7 +23,7 @@ return new class extends Migration
             $table->foreignIdFor(Customer::class)->nullable()->constrained();
             $table->enum('type', array_column(PlanType::cases(), 'value'));
             $table->string('code', 55);
-            $table->enum('status', array_column(VoucherStatus::cases(), 'value'))->default(VoucherStatus::UNUSED);
+            $table->enum('status', array_column(VoucherStatus::cases(), 'value'))->default(VoucherStatus::UNUSED->value);
             $table->timestamps();
         });
     }
