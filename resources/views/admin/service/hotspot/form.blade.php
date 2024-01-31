@@ -34,7 +34,7 @@
                             <x-form.input name="time_limit" type="number" required :value="@$hotspot['time_limit']" label="Time Limit"
                                 class="col-md-6" />
                             <x-form.select name="time_unit" nolabel :options="$timeUnits" required class="justify-end"
-                                :value="@$hotspot['time_unit'] ?? $defaultTimeUnit" class="col-md-3" />
+                                                                                                   :value="@$hotspot['time_unit']?->value ?? $defaultTimeUnit" class="col-md-3" />
                         </x-form.row>
                     </template>
 
@@ -99,14 +99,14 @@
                     fetch("{{ route('admin:network.pool.option') }}?router_id=" + routerId)
                         .then(res => res.json())
                         .then(res => {
-                            $('[name="pool_expired_id"]').select2({
-                                data: [{id:"",key:""},...Object.entries(res).map(([key, value]) => {
+                            $('[name="pool_expired_id"]').empty().select2({
+                                data: [{id:"",text:""},...Object.entries(res).map(([key, value]) => {
                                     return {
                                         id: key,
                                         text: value
                                     }
                                 })]
-                            }).val(defaultValue)
+                            }).val(defaultValue).trigger('change')
                         })
                 },
                 submit(e) {

@@ -18,7 +18,25 @@ Route::name('admin:')->group(function () {
         Route::get('logout', [AdminAuthController::class, 'destroy'])->name('auth.logout');
         Route::resource('customer', AdminCustomerController::class);
 
-        Route::get('prepaid/user', [AdminPrepaidController::class, 'user'])->name('prepaid.user');
+        //# PREPAID ##
+        // recharge user
+        Route::get('prepaid/user', [AdminPrepaidController::class, 'user'])->name('prepaid.user.index');
+        Route::get('prepaid/user/add', [AdminPrepaidController::class, 'createUser'])->name('prepaid.user.create');
+        Route::get('prepaid/user/{user}/edit', [AdminPrepaidController::class, 'editUser'])->name('prepaid.user.edit');
+        Route::delete('prepaid/user/{user}', [AdminPrepaidController::class, 'destroyUser'])->name('prepaid.user.destroy');
+        Route::patch('prepaid/user/{user}', [AdminPrepaidController::class, 'updateUser'])->name('prepaid.user.update');
+        Route::post('prepaid/user', [AdminPrepaidController::class, 'storeUser'])->name('prepaid.user.store');
+        Route::get('prepaid/invoice/{invoice}/show', [AdminPrepaidController::class, 'showInvoice'])->name('prepaid.invoice.show');
+        Route::get('prepaid/invoice/{invoice}/print', [AdminPrepaidController::class, 'printInvoice'])->name('prepaid.invoice.print');
+        // voucher
+        Route::get('prepaid/voucher', [AdminPrepaidController::class, 'voucher'])->name('prepaid.voucher.index');
+        Route::get('prepaid/voucher/add', [AdminPrepaidController::class, 'createVoucher'])->name('prepaid.voucher.create');
+        Route::get('prepaid/voucher/{voucher}/edit', [AdminPrepaidController::class, 'editVoucher'])->name('prepaid.voucher.edit');
+        Route::delete('prepaid/voucher/{voucher}', [AdminPrepaidController::class, 'destroyVoucher'])->name('prepaid.voucher.destroy');
+        Route::patch('prepaid/voucher/{voucher}', [AdminPrepaidController::class, 'updateVoucher'])->name('prepaid.voucher.update');
+        Route::post('prepaid/voucher', [AdminPrepaidController::class, 'storeVoucher'])->name('prepaid.voucher.store');
+        Route::get('prepaid/refill-account', [AdminPrepaidController::class, 'refillAccount'])->name('prepaid.refill-account');
+        Route::post('prepaid/refill-account', [AdminPrepaidController::class, 'storeRefillAccount'])->name('prepaid.refill-account.store');
 
         Route::get('network/router', [AdminNetworkController::class, 'router'])->name('network.router.index');
         Route::get('network/router/add', [AdminNetworkController::class, 'createRouter'])->name('network.router.create');
@@ -33,6 +51,8 @@ Route::name('admin:')->group(function () {
         Route::post('network/pool', [AdminNetworkController::class, 'storePool'])->name('network.pool.store');
         Route::patch('network/pool/{pool}', [AdminNetworkController::class, 'updatePool'])->name('network.pool.update');
         Route::get('network/pool/option', [AdminNetworkController::class, 'poolOption'])->name('network.pool.option');
+        Route::get('network/router/option', [AdminNetworkController::class, 'routerOption'])->name('network.router.option');
+        Route::get('network/plan/option', [AdminNetworkController::class, 'planOption'])->name('network.plan.option');
 
         //# SERVICES ##
         Route::get('service/bandwidth', [AdminServiceController::class, 'bandwidth'])->name('service.bandwidth.index');

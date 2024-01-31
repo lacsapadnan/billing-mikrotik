@@ -3,37 +3,28 @@
 namespace App\Models;
 
 use App\Enum\PlanType;
+use App\Enum\VoucherStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class UserRecharge extends Model
+class Voucher extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'customer_id',
         'plan_id',
         'router_id',
-        'username',
-        'namebp',
-        'recharged_at',
-        'expired_at',
-        'status',
-        'method',
+        'user',
         'type',
+        'code',
+        'status',
     ];
 
     protected $casts = [
         'type' => PlanType::class,
-        'recharged_at' => 'datetime',
-        'expired_at' => 'datetime',
+        'status' => VoucherStatus::class,
     ];
-
-    public function customer(): BelongsTo
-    {
-        return $this->belongsTo(Customer::class);
-    }
 
     public function plan(): BelongsTo
     {
@@ -45,8 +36,8 @@ class UserRecharge extends Model
         return $this->belongsTo(Router::class);
     }
 
-    public function getIsActiveAttribute(): bool
+    public function customer(): BelongsTo
     {
-        return $this->status === 'on';
+        return $this->belongsTo(Customer::class);
     }
 }

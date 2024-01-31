@@ -6,7 +6,7 @@ use App\Repository\AppConfigRepository;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @method static string get(string $key) get current app config value
+ * @method static string get(?string $key) get current app config value
  * @method static void set(string $key, string $value) update current app config value
  *
  * @see AppConfigRepository

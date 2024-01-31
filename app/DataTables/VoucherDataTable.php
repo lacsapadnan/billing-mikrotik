@@ -2,16 +2,14 @@
 
 namespace App\DataTables;
 
-use App\Enum\PlanType;
-use App\Models\Plan;
+use App\Models\Voucher;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
-use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
 
-class HotspotDataTable extends DataTable
+class VoucherDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -21,20 +19,22 @@ class HotspotDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->addColumn('action', fn ($row) => view('datatable.action.hotspot-action', $row))
-            ->editColumn('pool_expired.pool_name', fn ($row) => $row->pool_expired?->pool_name)
+            ->addColumn('action', fn ($voucher) => view('datatable.action.voucher-action', $voucher))
+            ->editColumn('customer.username', fn ($voucher) => $voucher->customer?->username ?? '-')
+            ->editColumn('code', fn ($voucher) => view('datatable.column.voucher-code', $voucher))
+            ->editColumn('status', fn ($voucher) => $voucher->status->label())
             ->setRowId('id');
     }
 
     /**
      * Get the query source of dataTable.
      */
-    public function query(Plan $model): QueryBuilder
+    public function query(Voucher $model): QueryBuilder
     {
-        return $model->newQuery()->where('type', PlanType::HOTSPOT)
-            ->with('router:id,name')
-            ->with('pool_expired:id,pool_name')
-            ->with('bandwidth:id,name_bw');
+        return $model->newQuery()
+            ->with('plan:id,name')
+            ->with('customer:id,username')
+            ->with('router:id,name');
     }
 
     /**
@@ -64,16 +64,13 @@ class HotspotDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            Column::make('id')->hidden(),
-            Column::make('name')->title('Name'),
-            Column::make('typebp')->title('Type'),
-            Column::make('bandwidth.name_bw')->title('Bandwidth Plan'),
-            Column::make('price')->title('Price'),
-            Column::computed('time_limit_text')->title('Time Limit'),
-            Column::computed('data_limit_text')->title('Data Limit'),
-            Column::computed('validity_text')->title('Plan Validity'),
-            Column::make('router.name')->title('Routers'),
-            Column::computed('pool_expired.pool_name')->title('Expired IP Pool'),
+            Column::make('id'),
+            Column::make('type'),
+            Column::make('router.name')->title('Router'),
+            Column::make('plan.name'),
+            Column::make('code')->title('Code Voucher'),
+            Column::make('status')->title('Status Vocher'),
+            Column::make('customer.username')->title('Customer'),
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
@@ -87,6 +84,6 @@ class HotspotDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'Hotspot_'.date('YmdHis');
+        return 'Voucher_'.date('YmdHis');
     }
 }

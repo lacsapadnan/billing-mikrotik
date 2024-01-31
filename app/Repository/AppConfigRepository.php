@@ -19,8 +19,12 @@ class AppConfigRepository
         $this->config = AppConfig::pluck('value', 'setting');
     }
 
-    public function get(string $key)
+    public function get(?string $key = null)
     {
+        if (empty($key)) {
+            return @$this->config ?? [];
+        }
+
         return @$this->config[$key] ?? '';
     }
 

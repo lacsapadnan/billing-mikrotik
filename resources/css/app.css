@@ -25,4 +25,8 @@
         display: none;
     }
 
+    input:read-only{
+        background-color: #eee !important;
+    }
+
 /*Select2 ReadOnly End*/

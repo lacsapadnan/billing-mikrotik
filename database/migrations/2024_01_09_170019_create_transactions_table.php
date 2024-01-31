@@ -18,10 +18,8 @@ return new class extends Migration
             $table->string('username', 32);
             $table->string('plan_name', 40);
             $table->string('price', 40);
-            $table->date('recharged_on');
-            $table->time('recharged_time');
-            $table->date('expiration');
-            $table->time('time');
+            $table->dateTime('recharged_at');
+            $table->dateTime('expired_at');
             $table->string('method', 128);
             $table->string('routers', 32);
             $table->enum('type', array_column(PlanType::cases(), 'value'));

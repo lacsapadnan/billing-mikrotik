@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Router extends Model
 {
@@ -21,6 +22,11 @@ class Router extends Model
     protected $appends = [
         'status',
     ];
+
+    public function plans(): HasMany
+    {
+        return $this->hasMany(Plan::class);
+    }
 
     public function getStatusAttribute(): string
     {

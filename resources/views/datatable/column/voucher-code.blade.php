@@ -1,0 +1,1 @@
+<input type="password" value="{{ $code }}" class="form-control form-control-sm" style="width:120px;border: 0px; text-align: right;" class="pull-right" onmouseleave="this.type = 'password'" onmouseenter="this.type = 'text'" onclick="this.select()"/>
