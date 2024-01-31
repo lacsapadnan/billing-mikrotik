@@ -7,10 +7,11 @@ use App\Support\Lang;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
+use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
 
-class ActivationHistoryDataTable extends DataTable
+class ReportDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -20,10 +21,10 @@ class ActivationHistoryDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->addColumn('action', 'activationhistory.action')
             ->editColumn('price', fn ($row) => Lang::moneyFormat($row->price))
             ->editColumn('created_at', fn ($row) => Lang::dateTimeFormat($row->created_at))
             ->editColumn('expired_at', fn ($row) => Lang::dateTimeFormat($row->expired_at))
+            ->withQuery('total', fn ($query) => $query->sum('price'))
             ->setRowId('id');
     }
 
@@ -43,8 +44,22 @@ class ActivationHistoryDataTable extends DataTable
         return $this->builder()
             ->columns($this->getColumns())
             ->minifiedAjax()
+            ->dom('Brtip')
             ->orderBy(1)
-            ->selectStyleSingle();
+            ->selectStyleSingle()
+            ->drawCallback('function() {$("#total").text("Rp. "+LaravelDataTables["dataTableBuilder"].ajax.json().total.toLocaleString("ID"))
+                $("#total").parent().attr("colspan", 2)
+                $("#total").parent().next().remove()}
+
+                ')
+            ->buttons([
+                // Button::make('excel'),
+                // Button::make('csv'),
+                Button::make('print'),
+                Button::make('pdf'),
+                // Button::make('reset'),
+                // Button::make('reload')
+            ]);
     }
 
     /**
@@ -53,14 +68,14 @@ class ActivationHistoryDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            Column::make('invoice'),
             Column::make('username'),
+            Column::make('type'),
             Column::make('plan_name'),
             Column::make('price')->title('Plan Price'),
-            Column::make('type'),
-            Column::make('created_at')->title('Created On')->className('text-success'),
-            Column::make('expired_at')->title('Expires On')->className('text-danger'),
-            Column::make('method'),
+            Column::make('created_at')->title('Created On'),
+            Column::make('expired_at')->title('Expires On')->footer('TOTAL INCOME:'),
+            Column::make('method')->footer('<div id="total"></div>'),
+            Column::make('routers'),
         ];
     }
 
@@ -69,6 +84,6 @@ class ActivationHistoryDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'ActivationHistory_'.date('YmdHis');
+        return 'Report_'.date('YmdHis');
     }
 }

@@ -79,6 +79,7 @@ Route::name('admin:')->group(function () {
 
         // REPORT #
         Route::get('report/activation', [AdminReportController::class, 'reportActivation'])->name('report.activation');
+        Route::get('report/daily', [AdminReportController::class, 'reportDaily'])->name('report.daily');
 
     });
     Route::redirect('/', '/admin/dashboard', 301);
