@@ -194,7 +194,7 @@
                         <!--end::Menu item-->
                         <!--begin::Menu item-->
                         <div class="px-5 menu-item">
-                            <a href="{{route('admin:auth.logout')}}"
+                            <a href="{{auth()->guard()->name == 'admin' ? route('admin:auth.logout') : route('logout')}}"
                                 class="px-5 menu-link">Sign Out</a>
                         </div>
                         <!--end::Menu item-->
