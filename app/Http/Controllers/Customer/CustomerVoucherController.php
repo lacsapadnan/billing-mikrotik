@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Customer;
 
+use App\DataTables\CustomerVoucherHistoryDataTable;
 use App\Enum\RechargeGateway;
 use App\Enum\VoucherStatus;
 use App\Http\Controllers\Controller;
@@ -35,8 +36,8 @@ class CustomerVoucherController extends Controller
         return redirect()->back()->with('success', 'Voucher activated');
     }
 
-    public function voucherHistory()
+    public function voucherHistory(CustomerVoucherHistoryDataTable $dataTable)
     {
-
+        return $dataTable->render('customer.voucher.history');
     }
 }
