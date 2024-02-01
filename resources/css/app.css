@@ -4,6 +4,8 @@
 
 .dataTable th {
     white-space: nowrap;
+    /*  ini agar table header tidak berwarna saat diinject class dari column datatable*/
+    color: initial !important;
 }
 /* ini agar class tailwind tidak overide class rotate dari tema*/
 .app-sidebar-toggle > .rotate-180 {

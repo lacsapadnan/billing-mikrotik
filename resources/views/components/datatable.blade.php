@@ -3,13 +3,20 @@
     <div class="card-header !bg-gray-200">
         <div class="flex flex-row items-center w-full gap-5">
             <x-form.input name="search" placeholder="Search" class="col-md-6" id="dtb-search" value="" />
+            @if($actionUrl)
             <a href="{{ $actionUrl }}" class="ml-auto">
                 <x-primary-button>{{ $actionLabel }}</x-primary-button>
             </a>
+            @endif
         </div>
     </div>
     <div class="card-body">
-        {{ $dataTable->table(['class' => 'table align-middle table-row-dashed table-row-fs-6 gy-5 dataTable no-footer']) }}
+        @if(@$filter)
+        <div class="row">
+            {{$filter}}
+        </div>
+        @endif
+        {{ $dataTable->table(['class' => 'table align-middle table-row-dashed table-row-fs-6 gy-5 dataTable'], true) }}
     </div>
 </div>
 @push('addon-style')

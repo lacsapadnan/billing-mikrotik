@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminCustomerController;
 use App\Http\Controllers\Admin\AdminNetworkController;
 use App\Http\Controllers\Admin\AdminPrepaidController;
+use App\Http\Controllers\Admin\AdminReportController;
 use App\Http\Controllers\Admin\AdminServiceController;
 use Illuminate\Support\Facades\Route;
 
@@ -75,6 +76,11 @@ Route::name('admin:')->group(function () {
         Route::delete('service/pppoe/{pppoe}', [AdminServiceController::class, 'destroyPppoe'])->name('service.pppoe.destroy');
         Route::post('service/pppoe', [AdminServiceController::class, 'storePppoe'])->name('service.pppoe.store');
         Route::patch('service/pppoe/{pppoe}', [AdminServiceController::class, 'updatePppoe'])->name('service.pppoe.update');
+
+        // REPORT #
+        Route::get('report/activation', [AdminReportController::class, 'reportActivation'])->name('report.activation');
+        Route::get('report/daily', [AdminReportController::class, 'reportDaily'])->name('report.daily');
+        Route::get('report/period', [AdminReportController::class, 'reportPeriod'])->name('report.period');
 
     });
     Route::redirect('/', '/admin/dashboard', 301);

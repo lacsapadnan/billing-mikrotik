@@ -136,5 +136,36 @@ return [
                 ],
             ],
         ],
+        [
+            'group' => 'SYSTEM',
+            'items' => [
+                [
+                    'name' => 'report',
+                    'title' => 'Reports',
+                    'icon' => 'notepad',
+                    'sub' => [
+                        [
+                            'name' => 'report.daily',
+                            'title' => 'Daily Reports',
+                            'url' => '/admin/report/daily',
+                            'icon' => 'tablet-book',
+                        ],
+                        [
+                            'name' => 'report.period',
+                            'title' => 'Period Reports',
+                            'url' => '/admin/report/period',
+                            'icon' => 'filter-tablet',
+                        ],
+                        [
+                            'name' => 'report.activation',
+                            'title' => 'Activation History',
+                            'url' => '/admin/report/activation',
+                            'icon' => 'questionnaire-tablet',
+                        ],
+                    ],
+                ],
+            ],
+
+        ],
     ],
 ];
