@@ -168,4 +168,36 @@ return [
 
         ],
     ],
+    'customer' => [
+        [
+            'items' => [
+                [
+                    'name' => 'dashboard',
+                    'title' => 'Dashboard',
+                    'url' => '/dashboard',
+                    'icon' => 'element-11',
+                ],
+                [
+                    'name' => 'voucher',
+                    'title' => 'Voucher',
+                    'icon' => 'note',
+                ],
+                [
+                    'name' => 'package',
+                    'title' => 'Buy Package',
+                    'icon' => 'handcart',
+                ],
+                [
+                    'name' => 'history.order',
+                    'title' => 'Order History',
+                    'icon' => 'document',
+                ],
+                [
+                    'name' => 'history.activation',
+                    'title' => 'Activation History',
+                    'icon' => 'questionnaire-tablet',
+                ],
+            ],
+        ],
+    ],
 ];

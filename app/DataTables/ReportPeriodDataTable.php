@@ -15,6 +15,7 @@ class ReportPeriodDataTable extends ReportDataTable
         $from = request('from') ?? now()->startOfMonth();
         $to = request('to') ?? now()->endOfMonth();
         $type = request('type') ?? 'all';
+
         return $model->newQuery()->whereBetween('created_at', [$from, $to])
             ->when($type != 'all', function ($query) use ($type) {
                 $query->where('type', $type);
@@ -26,6 +27,6 @@ class ReportPeriodDataTable extends ReportDataTable
      */
     protected function filename(): string
     {
-        return 'Report_Period_' . date('YmdHis');
+        return 'Report_Period_'.date('YmdHis');
     }
 }

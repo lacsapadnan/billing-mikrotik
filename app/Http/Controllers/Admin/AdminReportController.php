@@ -20,12 +20,14 @@ class AdminReportController extends Controller
     {
         return $dataTable->render('admin.report.daily');
     }
+
     public function reportPeriod(ReportPeriodDataTable $dataTable, Request $request)
     {
-        $transactionTypes = [...['all'=>'All'] , ...array_column(PlanType::cases(),'value','value')];
+        $transactionTypes = [...['all' => 'All'], ...array_column(PlanType::cases(), 'value', 'value')];
         $defaultFrom = $request->from ?? now()->startOfMonth()->format('Y-m-d');
         $defaultTo = $request->to ?? now()->endOfMonth()->format('Y-m-d');
         $defaultType = $request->type ?? 'all';
-        return $dataTable->render('admin.report.period',compact('transactionTypes', 'defaultFrom', 'defaultTo', 'defaultType'));
+
+        return $dataTable->render('admin.report.period', compact('transactionTypes', 'defaultFrom', 'defaultTo', 'defaultType'));
     }
 }
