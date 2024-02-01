@@ -25,7 +25,11 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('customer/voucher', [CustomerVoucherController::class, 'voucher'])->name('voucher.create');
+    Route::name('customer:')->prefix('customer')->group(function () {
+        Route::get('/voucher', [CustomerVoucherController::class, 'voucher'])->name('voucher.create');
+        Route::post('/voucher/activate', [CustomerVoucherController::class, 'voucherActivate'])->name('voucher.activate');
+        Route::get('/history/voucher', [CustomerVoucherController::class, 'voucherHistory'])->name('history.voucher');
+    });
 });
 
 require __DIR__.'/auth.php';

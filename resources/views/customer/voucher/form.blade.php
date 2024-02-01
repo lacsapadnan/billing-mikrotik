@@ -3,14 +3,18 @@
         <!--begin::Card-->
         <div class="card card-flush">
             <!--begin::Card body-->
+            <div class="card-title">
+                <div class="alert-success p-4">
+                Voucher Activation
+                </div>
+            </div>
             <div class="card-body">
-
-
 
                 <!--begin::Form-->
                 <form class="form fv-plugins-bootstrap5 fv-plugins-framework flex flex-col gap-5" method="POST"
-                    action="">
+                    action="{{route('customer:voucher.activate')}}">
                     @csrf
+                    <x-form.group.input required name="voucher_code" label="Voucher Code" placeholder="Enter voucher code here"/>
                     <div class="row py-5">
                         <div class="col-md-9 offset-md-3">
                             <div class="d-flex">
@@ -19,7 +23,7 @@
                                 </button>
 
                                 <button type="submit" class="btn btn-primary">
-                                    Save
+                                    Recharge
                                 </button>
                             </div>
                         </div>
