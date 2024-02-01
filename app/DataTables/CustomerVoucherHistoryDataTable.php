@@ -10,7 +10,7 @@ use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
 
-class ActivationHistoryDataTable extends DataTable
+class CustomerVoucherHistoryDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -20,7 +20,6 @@ class ActivationHistoryDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->addColumn('action', 'activationhistory.action')
             ->editColumn('price', fn ($row) => Lang::moneyFormat($row->price))
             ->editColumn('created_at', fn ($row) => Lang::dateTimeFormat($row->created_at))
             ->editColumn('expired_at', fn ($row) => Lang::dateTimeFormat($row->expired_at))
@@ -32,7 +31,7 @@ class ActivationHistoryDataTable extends DataTable
      */
     public function query(Transaction $model): QueryBuilder
     {
-        return $model->newQuery()->where('username', auth()->user()->username);
+        return $model->newQuery();
     }
 
     /**
@@ -43,6 +42,7 @@ class ActivationHistoryDataTable extends DataTable
         return $this->builder()
             ->columns($this->getColumns())
             ->minifiedAjax()
+            // ->dom('Brtip')
             ->orderBy(1)
             ->selectStyleSingle();
     }
@@ -53,13 +53,12 @@ class ActivationHistoryDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            Column::make('invoice'),
             Column::make('username'),
             Column::make('plan_name'),
             Column::make('price')->title('Plan Price'),
             Column::make('type'),
-            Column::make('created_at')->title('Created On')->className('text-success'),
-            Column::make('expired_at')->title('Expires On')->className('text-danger'),
+            Column::make('created_at')->title('Created On'),
+            Column::make('expired_at')->title('Expires On'),
             Column::make('method'),
         ];
     }
@@ -69,6 +68,6 @@ class ActivationHistoryDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'ActivationHistory_'.date('YmdHis');
+        return 'VoucherHistory'.date('YmdHis');
     }
 }
