@@ -3,12 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class Customer extends Model
+class Customer extends Authenticatable
 {
     use HasFactory;
+
+    protected $rememberTokenName = false;
 
     protected $fillable = [
         'username',
