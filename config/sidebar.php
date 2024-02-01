@@ -178,9 +178,10 @@ return [
                     'icon' => 'element-11',
                 ],
                 [
-                    'name' => 'voucher',
+                    'name' => 'voucher.order',
                     'title' => 'Voucher',
                     'icon' => 'note',
+                    'url' => '/customer/voucher',
                 ],
                 [
                     'name' => 'package',
