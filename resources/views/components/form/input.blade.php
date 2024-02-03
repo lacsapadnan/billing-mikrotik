@@ -1,3 +1,4 @@
+@aware(['description'])
 @props([
     'type' => 'text',
     'name' => '',
@@ -18,4 +19,7 @@
     @error($name)
         <div class="text-danger">{{ $message }}</div>
     @enderror
+    @if($description)
+        <span class="form-text text-muted">{!! $description !!}</span>
+    @endif
 </div>

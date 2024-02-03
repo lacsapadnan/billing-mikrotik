@@ -27,7 +27,7 @@
         display: none;
     }
 
-    input:read-only{
+    input:disabled{
         background-color: #eee !important;
     }
 

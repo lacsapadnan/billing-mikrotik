@@ -164,6 +164,19 @@ return [
                         ],
                     ],
                 ],
+                [
+                    'name' => 'setting',
+                    'title' => 'Setting',
+                    'icon' => 'setting-3',
+                    'sub' => [
+                        [
+                            'name' => 'setting.xendit',
+                            'title' => 'Payment Gateway',
+                            'url' => '/admin/setting/xendit',
+                            'icon' => 'two-credit-cart',
+                        ],
+                    ],
+                ],
             ],
 
         ],
