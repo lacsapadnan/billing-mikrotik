@@ -38,7 +38,7 @@ class PppoeRequest extends FormRequest
             'validity' => ['required', 'integer'],
             'validity_unit' => ['required', Rule::enum(ValidityUnit::class)],
             'router_id' => [Rule::exists(Router::class, 'id')],
-            'pool_id' => [Rule::exists(Pool::class, 'id'), 'nullable'],
+            'pool_id' => ['required', Rule::exists(Pool::class, 'id'), 'nullable'],
             'pool_expired_id' => [Rule::exists(Pool::class, 'id'), 'nullable'],
         ];
     }

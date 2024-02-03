@@ -36,7 +36,7 @@
                     <x-form.group.select name="router_id" label="Router Name" :options="$routers" required
                         :value="@$pppoe['router_id']" tooltip="Cannot be changed after saved" :readonly="$mode == 'edit'"/>
                     <x-form.group.select name="pool_id" label="IP Pool" :options="[]"
-                        :value="@$pppoe['pool_id']" />
+                        :value="@$pppoe['pool_id']" required/>
                     <x-form.group.select name="pool_expired_id" label="Expired IP Pool" :options="[]"
                         :value="@$pppoe['pool_expired_id']" />
 
