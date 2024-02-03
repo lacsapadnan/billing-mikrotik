@@ -37,7 +37,12 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
-        Auth::guard('customer')->logout();
+        try {
+
+            Auth::guard('customer')->logout();
+        } catch (\Exception $e) {
+            //just logout
+        }
 
         $request->session()->invalidate();
 

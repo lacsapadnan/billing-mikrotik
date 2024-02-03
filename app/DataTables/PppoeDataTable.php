@@ -22,6 +22,7 @@ class PppoeDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addColumn('action', fn ($row) => view('datatable.action.pppoe-action', $row))
+            ->editColumn('pool_expired.pool_name', fn ($row) => $row->pool_expired?->pool_name ?? '-')
             ->setRowId('id');
     }
 
