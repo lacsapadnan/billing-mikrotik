@@ -7,6 +7,8 @@ use App\Http\Controllers\Admin\AdminPrepaidController;
 use App\Http\Controllers\Admin\AdminReportController;
 use App\Http\Controllers\Admin\AdminServiceController;
 use App\Http\Controllers\Admin\AdminSettingController;
+use App\Http\Controllers\Auth\PasswordController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::name('admin:')->group(function () {
@@ -16,6 +18,11 @@ Route::name('admin:')->group(function () {
             Route::post('login', [AdminAuthController::class, 'store'])->name('auth.login');
         });
     Route::middleware('auth:admin')->group(function () {
+        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+        Route::put('password', [PasswordController::class, 'update'])->name('password.update');
         Route::view('dashboard', 'admin.dashboard')->name('dashboard');
         Route::get('logout', [AdminAuthController::class, 'destroy'])->name('auth.logout');
         Route::resource('customer', AdminCustomerController::class);

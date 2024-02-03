@@ -34,7 +34,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/history/voucher', [CustomerVoucherController::class, 'voucherHistory'])->name('history.voucher');
 
         // ORDER #
-        Route::get('order', [CustomerOrderController::class, 'orderList'])->name('order.index');
+        Route::get('order', [CustomerOrderController::class, 'index'])->name('order.index');
+        Route::get('order/{plan}', [CustomerOrderController::class, 'buy'])->name('order.buy');
+        Route::get('order/{order}/detail', [CustomerOrderController::class, 'detail'])->name('order.detail');
+        Route::get('order/{order}/check', [CustomerOrderController::class, 'check'])->name('order.check');
     });
 });
 
