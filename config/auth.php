@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Customer;
 use App\Models\User;
 
 return [
@@ -67,8 +68,8 @@ return [
 
     'providers' => [
         'customers' => [
-            'driver' => 'database',
-            'table' => 'customers', // TODO: ganti ke eloquent
+            'driver' => 'eloquent',
+            'model' => Customer::class,
         ],
 
         'users' => [

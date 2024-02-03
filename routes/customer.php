@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Customer\CustomerVoucherController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -17,15 +18,16 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('auth.login');
-});
+})->middleware('guest');
 
 Route::middleware('auth')->group(function () {
-    Route::view('/dashboard', 'customer.dashboard')->name('dashboard');
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::name('customer:')->prefix('customer')->group(function () {
+        Route::view('/dashboard', 'customer.dashboard')->name('dashboard');
+        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+        Route::put('password', [PasswordController::class, 'update'])->name('password.update');
         Route::get('/voucher', [CustomerVoucherController::class, 'voucher'])->name('voucher.create');
         Route::post('/voucher/activate', [CustomerVoucherController::class, 'voucherActivate'])->name('voucher.activate');
         Route::get('/history/voucher', [CustomerVoucherController::class, 'voucherHistory'])->name('history.voucher');

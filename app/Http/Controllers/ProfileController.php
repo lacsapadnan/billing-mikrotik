@@ -34,7 +34,7 @@ class ProfileController extends Controller
 
         $request->user()->save();
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        return Redirect::route(auth()->guard()->name.':profile.edit')->with('success', 'profile updated');
     }
 
     /**
@@ -43,12 +43,12 @@ class ProfileController extends Controller
     public function destroy(Request $request): RedirectResponse
     {
         $request->validateWithBag('userDeletion', [
-            'password' => ['required', 'current_password'],
+            'password' => ['required'],
         ]);
 
         $user = $request->user();
 
-        Auth::logout();
+        // Auth::logout();
 
         $user->delete();
 
