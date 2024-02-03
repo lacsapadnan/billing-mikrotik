@@ -10,6 +10,8 @@ class Customer extends Authenticatable
 {
     use HasFactory;
 
+    protected $rememberTokenName = false;
+
     protected $fillable = [
         'username',
         'password',

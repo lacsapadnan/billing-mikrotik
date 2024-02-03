@@ -189,7 +189,7 @@
                         <!--end::Menu separator-->
                         <!--begin::Menu item-->
                         <div class="px-5 menu-item">
-                            <a href="../../demo1/dist/account/overview.html" class="px-5 menu-link">My Profile</a>
+                            <a href="{{route(auth()->guard()->name.':profile.edit')}}" class="px-5 menu-link">My Profile</a>
                         </div>
                         <!--end::Menu item-->
                         <!--begin::Menu item-->
