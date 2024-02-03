@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\AdminNetworkController;
 use App\Http\Controllers\Admin\AdminPrepaidController;
 use App\Http\Controllers\Admin\AdminReportController;
 use App\Http\Controllers\Admin\AdminServiceController;
+use App\Http\Controllers\Admin\AdminSettingController;
 use Illuminate\Support\Facades\Route;
 
 Route::name('admin:')->group(function () {
@@ -81,6 +82,10 @@ Route::name('admin:')->group(function () {
         Route::get('report/activation', [AdminReportController::class, 'reportActivation'])->name('report.activation');
         Route::get('report/daily', [AdminReportController::class, 'reportDaily'])->name('report.daily');
         Route::get('report/period', [AdminReportController::class, 'reportPeriod'])->name('report.period');
+
+        // SETTING #
+        Route::get('setting/xendit', [AdminSettingController::class, 'xendit'])->name('setting.xendit');
+        Route::put('setting/xendit', [AdminSettingController::class, 'updateXendit'])->name('setting.xendit.update');
 
     });
     Route::redirect('/', '/admin/dashboard', 301);
