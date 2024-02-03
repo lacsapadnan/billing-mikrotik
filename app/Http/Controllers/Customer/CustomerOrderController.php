@@ -38,8 +38,8 @@ class CustomerOrderController extends Controller
                 'gateway' => 'xendit',
                 'plan_id' => $plan->id,
                 'plan_name' => $plan->name,
-                'routers_id' => $plan->router->id,
-                'routers' => $plan->router->name,
+                'router_id' => $plan->router->id,
+                'router_name' => $plan->router->name,
                 'price' => $plan->price,
                 'status' => PaymentGatewayStatus::UNPAID,
             ]);
@@ -49,8 +49,8 @@ class CustomerOrderController extends Controller
                 'gateway' => 'xendit',
                 'plan_id' => $plan->id,
                 'plan_name' => $plan->name,
-                'routers_id' => $plan->router->id,
-                'routers' => $plan->router->name,
+                'router_id' => $plan->router->id,
+                'router_name' => $plan->router->name,
                 'price' => $plan->price,
                 'status' => PaymentGatewayStatus::UNPAID,
             ]);
