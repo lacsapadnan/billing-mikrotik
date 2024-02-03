@@ -197,7 +197,7 @@ return [
                     'url' => '/customer/voucher',
                 ],
                 [
-                    'name' => 'package',
+                    'name' => 'order.index',
                     'title' => 'Buy Package',
                     'icon' => 'handcart',
                     'url' => '/customer/order',

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\PasswordController;
+use App\Http\Controllers\Customer\CustomerOrderController;
 use App\Http\Controllers\Customer\CustomerVoucherController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -31,6 +32,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/voucher', [CustomerVoucherController::class, 'voucher'])->name('voucher.create');
         Route::post('/voucher/activate', [CustomerVoucherController::class, 'voucherActivate'])->name('voucher.activate');
         Route::get('/history/voucher', [CustomerVoucherController::class, 'voucherHistory'])->name('history.voucher');
+
+        // ORDER #
+        Route::get('order', [CustomerOrderController::class, 'orderList'])->name('order.index');
     });
 });
 
