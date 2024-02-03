@@ -2,6 +2,7 @@
 
 return [
     'xendit' => [
+        'base_url' => 'https://api.xendit.co/v2',
         'channels' => [
             [
                 'id' => 'CREDIT_CARD',

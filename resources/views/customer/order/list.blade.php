@@ -32,7 +32,7 @@
                                                     </tr>
                                                     <tr>
                                                         <td colspan="2">
-                                                            <a href="#" class="btn btn-warning btn-sm w-full">
+                                                            <a href="{{route('customer:order.buy', $plan)}}" class="btn btn-warning btn-sm w-full">
                                                                 BUY
                                                             </a>
                                                         </td>
@@ -68,7 +68,7 @@
                                                     </tr>
                                                     <tr>
                                                         <td colspan="2">
-                                                            <a href="#" class="btn btn-warning btn-sm w-full">
+                                                            <a href="{{route('customer:order.buy', $plan)}}" class="btn btn-warning btn-sm w-full">
                                                                 BUY
                                                             </a>
                                                         </td>

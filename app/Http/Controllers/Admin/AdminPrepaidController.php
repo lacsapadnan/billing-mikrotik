@@ -107,7 +107,7 @@ class AdminPrepaidController extends Controller
     public function showInvoice(Transaction $invoice)
     {
         $admin = auth()->user();
-        $config = Config::get();
+        $config = Config::all();
 
         return view('admin.prepaid.invoice.show', compact('invoice', 'admin', 'config'));
     }
@@ -115,7 +115,7 @@ class AdminPrepaidController extends Controller
     public function printInvoice(Transaction $invoice)
     {
         $admin = auth()->user();
-        $config = Config::get();
+        $config = Config::all();
 
         return view('admin.prepaid.invoice.print', compact('invoice', 'admin', 'config'));
     }
