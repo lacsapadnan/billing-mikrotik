@@ -34,7 +34,7 @@ class OrderHistoryDataTable extends DataTable
      */
     public function query(PaymentGateway $model): QueryBuilder
     {
-        return $model->newQuery()->where('username', auth()->user()->username);
+        return $model->newQuery()->where('username', auth()->user()->username)->latest('id');
     }
 
     /**

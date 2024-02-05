@@ -54,7 +54,7 @@
                         </div>
                     @endif
                     @foreach (@$group['items'] ?? [] as $item)
-                        <div @if(!@$item['url'])data-kt-menu-trigger="click"@endif class="menu-item {{ @$item['sub'] ? 'menu-accordion' : '' }} {{  explode('.',app()->view->getSections()['active-menu'])[0] == @$item['name'] ? 'here' : '' }}">
+                        <div @if(!@$item['url'])data-kt-menu-trigger="click"@endif class="menu-item {{ @$item['sub'] ? 'menu-accordion' : '' }} {{  app()->view->getSections()['active-menu'] == @$item['name'] || explode('.',app()->view->getSections()['active-menu'])[0] == @$item['name'] ? 'here' : '' }}">
                             @if (@$item['url'])
                                 {{-- <div --}}
                                 {{--     class="menu-item {{}}"> --}}

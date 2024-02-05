@@ -187,7 +187,7 @@ return [
                 [
                     'name' => 'dashboard',
                     'title' => 'Dashboard',
-                    'url' => '/dashboard',
+                    'url' => '/customer/dashboard',
                     'icon' => 'element-11',
                 ],
                 [

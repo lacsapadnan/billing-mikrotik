@@ -62,6 +62,10 @@ class CustomerOrderController extends Controller
 
     public function detail(PaymentGateway $order)
     {
+        if (empty($order->pg_url_payment)) {
+            return redirect()->route('customer:order.buy', $order->plan)->with('error', 'Checking Payment');
+        }
+
         return view('customer.order.detail', compact('order'));
     }
 
@@ -75,6 +79,15 @@ class CustomerOrderController extends Controller
         } catch (AppException $e) {
             return redirect()->route('customer:order.detail', $order)->with('error', $e->getMessage());
         }
+    }
+
+    public function cancel(PaymentGateway $order)
+    {
+        $order->update([
+            'status' => PaymentGatewayStatus::CANCELED,
+        ]);
+
+        return redirect()->back()->with('success', 'Transaction has been canceled');
     }
 
     public function history(OrderHistoryDataTable $dataTable)

@@ -26,9 +26,9 @@ class Lang
         return date(Config::get('date_format'), strtotime($date));
     }
 
-    public static function dateTimeFormat(Carbon $date)
+    public static function dateTimeFormat(?Carbon $date)
     {
-        return $date->format(Config::get('date_format').' H:i');
+        return $date?->format(Config::get('date_format').' H:i') ?? '-';
     }
 
     public static function dateAndTimeFormat($date, $time)
