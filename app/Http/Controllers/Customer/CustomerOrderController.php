@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Customer;
 
+use App\DataTables\OrderHistoryDataTable;
 use App\Enum\PaymentGatewayStatus;
 use App\Exceptions\AppException;
 use App\Http\Controllers\Controller;
@@ -74,5 +75,10 @@ class CustomerOrderController extends Controller
         } catch (AppException $e) {
             return redirect()->route('customer:order.detail', $order)->with('error', $e->getMessage());
         }
+    }
+
+    public function history(OrderHistoryDataTable $dataTable)
+    {
+        return $dataTable->render('customer.order.history');
     }
 }

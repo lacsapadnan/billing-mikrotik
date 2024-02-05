@@ -1,4 +1,4 @@
-<x-customer-layout title="Voucher" active-menu="history.voucher" :path="['List Activated Voucher' => '']">
+<x-customer-layout title="Order History" active-menu="history.order" :path="['Order History' => '']">
     <div class="app-container container-xxl">
         <x-datatable :dataTable="$dataTable"/>
     </div>
