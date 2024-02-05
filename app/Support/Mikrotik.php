@@ -281,7 +281,7 @@ class Mikrotik
         $client->sendSync($setRequest);
     }
 
-    public static function setHotspotUserPackage($client, $user, $plan)
+    public static function setHotspotUserPackage(Client $client, string $user, string $plan)
     {
         global $_app_stage;
         if ($_app_stage == 'demo') {
