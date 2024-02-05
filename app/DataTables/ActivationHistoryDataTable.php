@@ -32,7 +32,7 @@ class ActivationHistoryDataTable extends DataTable
      */
     public function query(Transaction $model): QueryBuilder
     {
-        return $model->newQuery()->where('username', auth()->user()->username);
+        return $model->newQuery()->where('username', auth()->user()->username)->latest('id');
     }
 
     /**

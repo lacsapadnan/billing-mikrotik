@@ -38,6 +38,7 @@ Route::middleware('auth')->group(function () {
         Route::get('order/{plan}', [CustomerOrderController::class, 'buy'])->name('order.buy');
         Route::get('order/{order}/detail', [CustomerOrderController::class, 'detail'])->name('order.detail');
         Route::get('order/{order}/check', [CustomerOrderController::class, 'check'])->name('order.check');
+        Route::get('order/{order}/cancel', [CustomerOrderController::class, 'cancel'])->name('order.cancel');
         Route::get('/history/order', [CustomerOrderController::class, 'history'])->name('history.order');
     });
 });
