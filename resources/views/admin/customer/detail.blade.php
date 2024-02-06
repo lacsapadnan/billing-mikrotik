@@ -94,23 +94,57 @@
                     <!--end::Card body-->
                 </div>
                 <!--end::Card-->
+
+                @if($customer->recharge)
+                <div class="card mb-5 mb-xl-8">
+                    <!--begin::Card body-->
+                    <div class="card-body">
+                        <!--begin::Summary-->
+
+
+                        <!--begin::User Info-->
+                        <div class="d-flex flex-center flex-column py-5 bg-success text-white">{{$customer->recharge->plan->type->value}} - {{$customer->recharge->plan->name}}</div>
+                        <!--end::User Info--> <!--end::Summary-->
+                        <div class="separator"></div>
+
+                        <!--begin::Details content-->
+                        <div id="kt_user_view_details">
+                            <div class="pb-5 fs-6">
+                                <div class="fw-bold mt-5">Active</div>
+                                <div class="text-gray-600">{{$customer->recharge->is_active ? 'Yes' : 'No'}}</div>
+                                <div class="fw-bold mt-5">Created On</div>
+                                <div class="text-gray-600">{{ \App\Support\Lang::dateTimeFormat($customer->recharge->created_at)}}</div>
+                                <div class="fw-bold mt-5">Expires On</div>
+                                <div class="text-gray-600">{{ \App\Support\Lang::dateTimeFormat($customer->recharge->expired_at)}}</div>
+                                <div class="fw-bold mt-5">{{$customer->recharge->router->name}}</div>
+                                <div class="text-gray-600">{{$customer->recharge->method}}</div>
+                            </div>
+                        </div>
+                        <!--end::Details content-->
+
+                    </div>
+                    <!--end::Card body-->
+                </div>
+
+                @else
+                    <a class="btn btn-primary" href="{{route('admin:prepaid.user.recharge', $customer)}}">Recharge</a>
+                @endif
             </div>
             <div class="flex-lg-row-fluid ms-lg-15">
                 <!--begin:::Tabs-->
-                <ul class="nav nav-custom nav-tabs nav-line-tabs nav-line-tabs-2x border-0 fs-4 fw-semibold mb-8"
-                    role="tablist">
+                <ul class="nav nav-custom nav-tabs nav-line-tabs nav-line-tabs-2x border-0 fs-4 fw-semibold mb-8">
                     <!--begin:::Tab item-->
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link text-active-primary pb-4 active" data-bs-toggle="tab"
-                            href="#kt_user_view_order_tab" aria-selected="true" role="tab" tabindex="-1">30 Order
+                        <a class="nav-link text-active-primary pb-4 {{$tab=='order' ? 'active' : ''}}"
+                           href="{{route('admin:customer.show', ['customer' => $customer, 'tab'=>'order'])}}" role="tab" tabindex="-1">30 Order
                             History</a>
                     </li>
                     <!--end:::Tab item-->
 
                     <!--begin:::Tab item-->
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link text-active-primary pb-4" data-kt-countup-tabs="true" data-bs-toggle="tab"
-                            href="#kt_user_view_activation_tab" data-kt-initialized="1" aria-selected="false"
+                        <a class="nav-link text-active-primary pb-4 {{$tab=='activation' ? 'active' : ''}}" data-kt-countup-tabs="true"
+                            href="{{route('admin:customer.show', ['customer' => $customer, 'tab'=>'activation'])}}" data-kt-initialized="1"
                             role="tab">30 Activation History</a>
                     </li>
                     <!--end:::Tab item-->
@@ -125,22 +159,10 @@
                         <div class="card card-flush mb-6 mb-xl-9">
                             <!--begin::Card body-->
                             <div class="card-body p-9 pt-4">
-                                TODO: order history
-                            </div>
-                            <!--end::Card body-->
-                        </div>
-                        <!--end::Card-->
 
-                    </div>
-                    <!--end:::Tab pane-->
-
-                    <!--begin:::Tab pane-->
-                    <div class="tab-pane fade" id="kt_user_view_activation_tab" role="tabpanel">
-                        <!--begin::Card-->
-                        <div class="card card-flush mb-6 mb-xl-9">
-                            <!--begin::Card body-->
-                            <div class="card-body p-9 pt-4">
-                                TODO: activation history
+                                @if(@$dataTable)
+                                    {{ $dataTable->table(['class' => 'table align-middle table-row-dashed table-row-fs-6 gy-5 dataTable'], true) }}
+                                @endif
                             </div>
                             <!--end::Card body-->
                         </div>
@@ -155,4 +177,13 @@
             <!--end::Content-->
         </div>
     </div>
+    @if(@$dataTable)
+@push('addon-style')
+    <link href="{{ asset('assets/plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
+@endpush
+@push('addon-script')
+    <script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
+    {{ $dataTable->scripts() }}
+@endpush
+@endif
 </x-admin-layout>

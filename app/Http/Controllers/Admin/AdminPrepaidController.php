@@ -45,6 +45,18 @@ class AdminPrepaidController extends Controller
 
         return view('admin.prepaid.user.form', compact('mode', 'customers', 'planTypes', 'defaultPlanType'));
     }
+    public function rechargeUser(Customer $user)
+    {
+        $mode = 'add';
+        $customers = Customer::all()->mapWithKeys(fn ($customer) => [
+            $customer->id => $customer->username.' - '.$customer->fullname.' - '.$customer->email,
+        ]);
+        $user['customer_id'] = $user->id;
+        $planTypes = array_column(PlanType::cases(), 'value', 'value');
+        $defaultPlanType = PlanType::HOTSPOT;
+
+        return view('admin.prepaid.user.form', compact('mode', 'customers', 'planTypes', 'defaultPlanType', 'user'));
+    }
 
     public function editUser(UserRecharge $user)
     {

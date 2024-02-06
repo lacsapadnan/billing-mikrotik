@@ -31,7 +31,7 @@ class CustomerVoucherHistoryDataTable extends DataTable
      */
     public function query(Transaction $model): QueryBuilder
     {
-        return $model->newQuery();
+        return $model->newQuery()->where('username', auth()->user()->username);
     }
 
     /**

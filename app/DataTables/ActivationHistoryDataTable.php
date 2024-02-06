@@ -32,7 +32,10 @@ class ActivationHistoryDataTable extends DataTable
      */
     public function query(Transaction $model): QueryBuilder
     {
-        return $model->newQuery()->where('username', auth()->user()->username)->latest('id');
+        $username = auth()->guard()->name == 'customer' ? auth()->user()->username : request()->username;
+        // jika ada $username artinya datatable ini diakses dari tab di detail customer
+        // maka limit dan filter berdasarkan username
+        return $model->newQuery()->when($username, fn ($query) => $query->where('username', $username)->limit(30))->latest('id');
     }
 
     /**
@@ -69,6 +72,6 @@ class ActivationHistoryDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'ActivationHistory_'.date('YmdHis');
+        return 'ActivationHistory_' . date('YmdHis');
     }
 }

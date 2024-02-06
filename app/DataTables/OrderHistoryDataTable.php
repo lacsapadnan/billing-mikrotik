@@ -20,7 +20,7 @@ class OrderHistoryDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->editColumn('plan_name', fn ($row) => view('datatable.column.link', ['to' => route('customer:order.detail', $row), 'text' => $row->plan_name]))
+            ->editColumn('plan_name', fn ($row) => auth()->guard()->name == 'customer'?view('datatable.column.link', ['to' => route('customer:order.detail', $row), 'text' => $row->plan_name]):$row->plan_name)
             ->editColumn('price', fn ($row) => Lang::moneyFormat($row->price))
             ->editColumn('created_at', fn ($row) => Lang::dateTimeFormat($row->created_at))
             ->editColumn('expired_date', fn ($row) => Lang::dateTimeFormat($row->expired_date))
@@ -34,7 +34,8 @@ class OrderHistoryDataTable extends DataTable
      */
     public function query(PaymentGateway $model): QueryBuilder
     {
-        return $model->newQuery()->where('username', auth()->user()->username)->latest('id');
+        $username = auth()->guard()->name == 'customer' ? auth()->user()->username : request()->username;
+        return $model->newQuery()->where('username',$username)->latest('id')->when(auth()->guard()->name == 'admin', fn($query)=>$query->limit(30));
     }
 
     /**

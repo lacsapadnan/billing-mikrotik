@@ -31,6 +31,7 @@ Route::name('admin:')->group(function () {
         // recharge user
         Route::get('prepaid/user', [AdminPrepaidController::class, 'user'])->name('prepaid.user.index');
         Route::get('prepaid/user/add', [AdminPrepaidController::class, 'createUser'])->name('prepaid.user.create');
+        Route::get('prepaid/user/{user}/recharge', [AdminPrepaidController::class, 'rechargeUser'])->name('prepaid.user.recharge');
         Route::get('prepaid/user/{user}/edit', [AdminPrepaidController::class, 'editUser'])->name('prepaid.user.edit');
         Route::delete('prepaid/user/{user}', [AdminPrepaidController::class, 'destroyUser'])->name('prepaid.user.destroy');
         Route::patch('prepaid/user/{user}', [AdminPrepaidController::class, 'updateUser'])->name('prepaid.user.update');
