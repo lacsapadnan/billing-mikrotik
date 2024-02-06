@@ -36,7 +36,8 @@ class Customer extends Authenticatable
         return $this->hasMany(UserRecharge::class);
     }
 
-    public function recharge(): HasOne {
+    public function recharge(): HasOne
+    {
         return $this->hasOne(UserRecharge::class);
     }
 }

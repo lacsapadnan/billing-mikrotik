@@ -25,7 +25,10 @@ Route::name('admin:')->group(function () {
         Route::put('password', [PasswordController::class, 'update'])->name('password.update');
         Route::view('dashboard', 'admin.dashboard')->name('dashboard');
         Route::get('logout', [AdminAuthController::class, 'destroy'])->name('auth.logout');
+
+        //CUSTOMER#
         Route::resource('customer', AdminCustomerController::class);
+        Route::get('customer/{customer}/deactivate', [AdminCustomerController::class, 'deactivate'])->name('customer.deactivate');
 
         //# PREPAID ##
         // recharge user

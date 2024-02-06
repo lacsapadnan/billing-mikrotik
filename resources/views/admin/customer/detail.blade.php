@@ -118,6 +118,10 @@
                                 <div class="text-gray-600">{{ \App\Support\Lang::dateTimeFormat($customer->recharge->expired_at)}}</div>
                                 <div class="fw-bold mt-5">{{$customer->recharge->router->name}}</div>
                                 <div class="text-gray-600">{{$customer->recharge->method}}</div>
+                                <div class="mt-2">
+                                    <a href="{{route('admin:customer.deactivate',$customer)}}" class="btn btn-sm btn-danger">Deactivate</a>
+                                    <a href="{{route('admin:prepaid.user.recharge',$customer)}}" class="btn btn-sm btn-success">Recharge</a>
+                                </div>
                             </div>
                         </div>
                         <!--end::Details content-->

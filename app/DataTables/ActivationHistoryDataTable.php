@@ -72,6 +72,6 @@ class ActivationHistoryDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'ActivationHistory_' . date('YmdHis');
+        return 'ActivationHistory_'.date('YmdHis');
     }
 }

@@ -3,7 +3,6 @@
 namespace App\Console\Commands;
 
 use App\Enum\PlanType;
-use App\Models\Pool;
 use App\Models\UserRecharge;
 use App\Support\Mikrotik;
 use Illuminate\Console\Command;
@@ -37,8 +36,8 @@ class CheckExpired extends Command
                 if ($service->plan->is_radius) {
                     //TODO
                 } else {
-                    if (!empty($service->plan->pool_expired_id)) {
-                        Mikrotik::setHotspotUserPackage($client, $service->customer->username, 'EXPIRED LNUXBILL ' . $service->plan->pool_expired->pool_name);
+                    if (! empty($service->plan->pool_expired_id)) {
+                        Mikrotik::setHotspotUserPackage($client, $service->customer->username, 'EXPIRED LNUXBILL '.$service->plan->pool_expired->pool_name);
                     } else {
                         Mikrotik::removeHotspotUser($client, $service->customer->username);
                     }
@@ -48,8 +47,8 @@ class CheckExpired extends Command
                 if ($service->plan->is_radius) {
                     //TODO
                 } else {
-                    if (!empty($service->plan->pool_expired_id)) {
-                        Mikrotik::setPpoeUserPlan($client, $service->customer->username, 'EXPIRED LNUXBILL ' . $service->plan->pool_expired->pool_name);
+                    if (! empty($service->plan->pool_expired_id)) {
+                        Mikrotik::setPpoeUserPlan($client, $service->customer->username, 'EXPIRED LNUXBILL '.$service->plan->pool_expired->pool_name);
                     } else {
                         Mikrotik::removePpoeUser($client, $service->customer->username);
                     }
@@ -58,7 +57,7 @@ class CheckExpired extends Command
             }
             $service->status = 'off';
             $service->save();
-                $this->info("$service->expired_at : $service->username : EXPIRED");
+            $this->info("$service->expired_at : $service->username : EXPIRED");
         }
     }
 }

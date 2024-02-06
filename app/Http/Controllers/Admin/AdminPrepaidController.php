@@ -45,6 +45,7 @@ class AdminPrepaidController extends Controller
 
         return view('admin.prepaid.user.form', compact('mode', 'customers', 'planTypes', 'defaultPlanType'));
     }
+
     public function rechargeUser(Customer $user)
     {
         $mode = 'add';
