@@ -36,9 +36,10 @@
                     <x-form.row>
                         <x-form.label label="Channels" />
 
-                        <div class="col-md-9">
+                        <div class="col-md-9 pt-5">
+                            <div class="row g-2">
                             @foreach ($channels as $channel)
-                                <div class="form-check form-check-inline mb-2">
+                                <div class="form-check col-4 col-md-3">
                                     <input class="form-check-input" type="checkbox"
                                         @checked(in_array($channel['id'],@$xendit['xendit_channels']))
                                         id="xendit_channel{{ $channel['id'] }}" name="xendit_channels[]"
@@ -47,6 +48,7 @@
                                         {{ $channel['name'] }}</label>
                                 </div>
                             @endforeach
+                            </div>
                         </div>
                     </x-form.row>
 
