@@ -3,6 +3,7 @@
 namespace App\DataTables;
 
 use App\Models\Customer;
+use App\Support\Lang;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Illuminate\Support\Carbon;
 use Yajra\DataTables\EloquentDataTable;
@@ -33,7 +34,7 @@ class CustomerDataTable extends DataTable
                     return '<span class="badge badge-danger">&bull;</span>';
                 }
             })
-            ->editColumn('created_at', fn ($row) => $row->created_at->format('d M Y H:i'))
+            ->editColumn('created_at', fn ($row) => Lang::dateTimeFormat($row->created_at))
             ->rawColumns(['action', 'recharge.is_active'])
             ->setRowId('id');
     }

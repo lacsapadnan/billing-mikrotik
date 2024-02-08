@@ -175,6 +175,18 @@ return [
                             'url' => '/admin/setting/xendit',
                             'icon' => 'two-credit-cart',
                         ],
+                        [
+                            'name' => 'setting.general',
+                            'title' => 'General Settings',
+                            'url' => '/admin/setting/general',
+                            'icon' => 'switch',
+                        ],
+                        [
+                            'name' => 'setting.localisation',
+                            'title' => 'Localisation',
+                            'url' => '/admin/setting/localisation',
+                            'icon' => 'text',
+                        ],
                     ],
                 ],
             ],

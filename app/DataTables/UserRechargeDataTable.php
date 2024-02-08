@@ -3,6 +3,7 @@
 namespace App\DataTables;
 
 use App\Models\UserRecharge;
+use App\Support\Lang;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -22,10 +23,10 @@ class UserRechargeDataTable extends DataTable
         return (new EloquentDataTable($query))
             ->addColumn('action', fn ($row) => view('datatable.action.prepaid-user-action', $row))
             ->editColumn('created_at', function ($row) {
-                return $row->created_at->format('d M Y H:i');
+                return Lang::dateTimeFormat($row->created_at);
             })
             ->editColumn('expired_at', function ($row) {
-                return $row->expired_at->format('d M Y H:i');
+                return Lang::dateTimeFormat($row->expired_at);
             })
             ->setRowId('id');
     }
