@@ -138,6 +138,7 @@ return [
         ],
         [
             'group' => 'SYSTEM',
+            'middleware' => 'admin',
             'items' => [
                 [
                     'name' => 'report',
@@ -186,6 +187,12 @@ return [
                             'title' => 'Localisation',
                             'url' => '/admin/setting/localisation',
                             'icon' => 'text',
+                        ],
+                        [
+                            'name' => 'setting.user.index',
+                            'title' => 'Administrator Users',
+                            'url' => '/admin/setting/user',
+                            'icon' => 'profile-user',
                         ],
                     ],
                 ],

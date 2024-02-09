@@ -27,6 +27,9 @@ class AdminAuthController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
+        /** @var \App\Models\User $user */
+        $user = Auth::guard('admin')->user();
+        $user->update(['last_login' => now()]);
 
         return redirect()->intended(route('admin:dashboard'));
     }

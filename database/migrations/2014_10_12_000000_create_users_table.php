@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('password');
             $table->enum('user_type', array_column(UserType::cases(), 'value'))->default(UserType::SALES->value);
             $table->boolean('is_active')->default(true);
+            $table->dateTime('last_login')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

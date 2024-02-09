@@ -43,6 +43,9 @@
             <div class="menu menu-column menu-rounded menu-sub-indention px-3" id="#kt_app_sidebar_menu"
                 data-kt-menu="true" data-kt-menu-expand="false">
                 @foreach (config('sidebar.admin') as $group)
+                    @if(@$group['middleware']=='admin' && auth()->user()->user_type->value != 'Admin')
+                    @continue
+                    @endif
                     @if (@$group['group'])
                         <!--begin:Menu item-->
                         <div class="menu-item pt-5">

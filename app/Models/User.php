@@ -16,11 +16,11 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
         'fullname',
         'username',
         'password',
         'user_type',
+        'last_login',
     ];
 
     /**
@@ -41,5 +41,11 @@ class User extends Authenticatable
     protected $casts = [
         'password' => 'hashed',
         'user_type' => UserType::class,
+        'last_login' => 'datetime',
     ];
+
+    public function getIsAdminAttribute(): bool
+    {
+        return $this->user_type == UserType::ADMIN;
+    }
 }

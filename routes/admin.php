@@ -95,13 +95,20 @@ Route::name('admin:')->group(function () {
         Route::get('report/period', [AdminReportController::class, 'reportPeriod'])->name('report.period');
 
         // SETTING #
-        Route::get('setting/xendit', [AdminSettingController::class, 'xendit'])->name('setting.xendit');
-        Route::put('setting/xendit', [AdminSettingController::class, 'updateXendit'])->name('setting.xendit.update');
-        Route::get('setting/general', [AdminSettingController::class, 'general'])->name('setting.general');
-        Route::put('setting/general', [AdminSettingController::class, 'updateGeneral'])->name('setting.general.update');
-        Route::get('setting/localisation', [AdminSettingController::class, 'localisation'])->name('setting.localisation');
-        Route::put('setting/localisation', [AdminSettingController::class, 'updateLocalisation'])->name('setting.localisation.update');
-
+        Route::middleware('admin')->group(function () {
+            Route::get('setting/xendit', [AdminSettingController::class, 'xendit'])->name('setting.xendit');
+            Route::put('setting/xendit', [AdminSettingController::class, 'updateXendit'])->name('setting.xendit.update');
+            Route::get('setting/general', [AdminSettingController::class, 'general'])->name('setting.general');
+            Route::put('setting/general', [AdminSettingController::class, 'updateGeneral'])->name('setting.general.update');
+            Route::get('setting/localisation', [AdminSettingController::class, 'localisation'])->name('setting.localisation');
+            Route::put('setting/localisation', [AdminSettingController::class, 'updateLocalisation'])->name('setting.localisation.update');
+            Route::get('setting/user', [AdminSettingController::class, 'listUser'])->name('setting.user.index');
+            Route::get('setting/user/add', [AdminSettingController::class, 'createUser'])->name('setting.user.create');
+            Route::post('setting/user', [AdminSettingController::class, 'storeUser'])->name('setting.user.store');
+            Route::get('setting/user/{user}', [AdminSettingController::class, 'editUser'])->name('setting.user.edit');
+            Route::patch('setting/user/{user}', [AdminSettingController::class, 'updateUser'])->name('setting.user.update');
+            Route::delete('setting/user/{user}', [AdminSettingController::class, 'destroyUser'])->name('setting.user.destroy');
+        });
     });
     Route::redirect('/', '/admin/dashboard', 301);
 });
