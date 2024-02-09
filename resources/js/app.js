@@ -4,8 +4,6 @@ import Alpine from "alpinejs";
 
 window.Alpine = Alpine;
 
-Alpine.start();
-
 Alpine.data("confirmable", (data) => ({
     confirm(e) {
         e.preventDefault();
@@ -27,6 +25,7 @@ Alpine.data("confirmable", (data) => ({
         });
     },
 }));
+Alpine.start();
 
 // Element to indecate
 var button = document.querySelector("#kt_button_toggle");

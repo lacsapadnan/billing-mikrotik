@@ -239,6 +239,12 @@ return [
                         ],
                     ],
                 ],
+                [
+                    'name' => 'log.index',
+                    'title' => 'Logs',
+                    'icon' => 'time',
+                    'url' => '/admin/log'
+                ]
             ],
 
         ],

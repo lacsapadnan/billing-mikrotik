@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminCustomerController;
+use App\Http\Controllers\Admin\AdminLogController;
 use App\Http\Controllers\Admin\AdminNetworkController;
 use App\Http\Controllers\Admin\AdminPageController;
 use App\Http\Controllers\Admin\AdminPrepaidController;
@@ -113,6 +114,9 @@ Route::name('admin:')->group(function () {
             Route::patch('setting/user/{user}', [AdminSettingController::class, 'updateUser'])->name('setting.user.update');
             Route::delete('setting/user/{user}', [AdminSettingController::class, 'destroyUser'])->name('setting.user.destroy');
         });
+
+        Route::get('log', [AdminLogController::class, 'index'])->name('log.index');
+        Route::delete('log', [AdminLogController::class, 'clean'])->name('log.clean');
     });
     Route::redirect('/', '/admin/dashboard', 301);
 });
