@@ -166,6 +166,49 @@ return [
                     ],
                 ],
                 [
+                    'name'=>'page',
+                    'title' => 'Static Pages',
+                    'icon' => 'some-files',
+                    'sub' => [
+                        [
+                            'name' => 'page.Order_Voucher',
+                            'title' => 'Order Voucher',
+                            'url' => '/admin/page/Order_Voucher',
+                            'icon' => 'file'
+                        ],
+                        [
+                            'name' => 'page.Voucher',
+                            'title' => 'Voucher Template',
+                            'url' => '/admin/page/Voucher',
+                            'icon' => 'file'
+                        ],
+                        [
+                            'name' => 'page.Announcement',
+                            'title' => 'Announcement',
+                            'url' => '/admin/page/Announcement',
+                            'icon' => 'file'
+                        ],
+                        [
+                            'name' => 'page.Registration_Info',
+                            'title' => 'Registration Info',
+                            'url' => '/admin/page/Registration_Info',
+                            'icon' => 'file'
+                        ],
+                        [
+                            'name' => 'page.Privacy_Policy',
+                            'title' => 'Privacy Policy',
+                            'url' => '/admin/page/Privacy_Policy',
+                            'icon' => 'file'
+                        ],
+                        [
+                            'name' => 'page.Terms_and_Conditions',
+                            'title' => 'Terms and Condition',
+                            'url' => '/admin/page/Terms_and_Conditions',
+                            'icon' => 'file'
+                        ],
+                    ]
+                ],
+                [
                     'name' => 'setting',
                     'title' => 'Setting',
                     'icon' => 'setting-3',

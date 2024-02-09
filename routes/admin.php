@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminCustomerController;
 use App\Http\Controllers\Admin\AdminNetworkController;
+use App\Http\Controllers\Admin\AdminPageController;
 use App\Http\Controllers\Admin\AdminPrepaidController;
 use App\Http\Controllers\Admin\AdminReportController;
 use App\Http\Controllers\Admin\AdminServiceController;
@@ -89,6 +90,9 @@ Route::name('admin:')->group(function () {
         Route::post('service/pppoe', [AdminServiceController::class, 'storePppoe'])->name('service.pppoe.store');
         Route::patch('service/pppoe/{pppoe}', [AdminServiceController::class, 'updatePppoe'])->name('service.pppoe.update');
 
+        // STATIC PAGES #
+        Route::get('page/{title}', [AdminPageController::class, 'edit'])->name('page.edit');
+        Route::put('page/{page}', [AdminPageController::class, 'update'])->name('page.update');
         // REPORT #
         Route::get('report/activation', [AdminReportController::class, 'reportActivation'])->name('report.activation');
         Route::get('report/daily', [AdminReportController::class, 'reportDaily'])->name('report.daily');
