@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('logs', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class)->constrained();
+            $table->foreignId('loggable_id');
+            $table->string('loggable_type');
             $table->dateTime('date')->nullable();
-            $table->string('type', 50);
             $table->mediumText('description');
             $table->string('ip');
             $table->timestamps();

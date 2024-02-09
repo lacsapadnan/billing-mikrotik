@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Auth\AdminLoginRequest;
+use App\Support\Facades\Log;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -39,6 +40,8 @@ class AdminAuthController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
+        $user = auth()->user();
+        Log::put($user->username.' logged out', $user);
         Auth::guard('admin')->logout();
 
         $request->session()->invalidate();

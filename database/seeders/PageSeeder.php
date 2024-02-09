@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class PageSeeder extends Seeder
@@ -18,13 +17,13 @@ class PageSeeder extends Seeder
             'Privacy_Policy',
             'Registration_Info',
             'Terms_and_Conditions',
-            'Voucher'
+            'Voucher',
         ];
-        foreach($pages as $title){
+        foreach ($pages as $title) {
             $content = file_get_contents(database_path("seeders/raw/html/$title.html"));
             \App\Models\Page::create([
                 'title' => $title,
-                'content' => $content
+                'content' => $content,
             ]);
         }
     }

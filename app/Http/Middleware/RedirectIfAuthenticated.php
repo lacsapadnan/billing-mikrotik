@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Providers\RouteServiceProvider;
+use App\Support\Facades\Log;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,6 +22,8 @@ class RedirectIfAuthenticated
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
+                Log::put(Auth::user()->username.' logged in', Auth::user());
+
                 return redirect(RouteServiceProvider::HOME[$guard]);
             }
         }

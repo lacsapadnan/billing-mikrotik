@@ -42,7 +42,7 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        $user = Customer::where('username', $this->username)->first();
+        $user = Customer::where('username', $this->username)->where('password', $this->password)->first();
         if (! $user || ! Auth::guard('customer')->login($user, $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
 
