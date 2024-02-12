@@ -164,11 +164,11 @@ class AdminPrepaidController extends Controller
             } elseif ($voucherFormat == VoucherFormat::RaNdoM) {
                 $code = Lang::randomUpLowCase($code);
             }
+            $request->merge([
+                'code' => $request->prefix.$code,
+            ]);
+            Voucher::create($request->all());
         }
-        $request->merge([
-            'code' => $request->prefix.$code,
-        ]);
-        Voucher::create($request->all());
 
         return redirect()->route('admin:prepaid.voucher.index')->with('success', __('success.created'));
     }

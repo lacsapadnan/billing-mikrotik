@@ -15,13 +15,13 @@ class AdminLogDataTable extends DataTable
     /**
      * Build the DataTable class.
      *
-     * @param QueryBuilder $query Results from query() method.
+     * @param  QueryBuilder  $query Results from query() method.
      */
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->editColumn('date', fn($row)=>Lang::dateTimeFormat($row->date))
-            ->editColumn('loggable_type', fn($row)=>match($row->loggable_type){
+            ->editColumn('date', fn ($row) => Lang::dateTimeFormat($row->date))
+            ->editColumn('loggable_type', fn ($row) => match ($row->loggable_type) {
                 'App\Models\Customer' => 'Customer',
                 'App\Models\User' => 'Admin',
                 default => 'Unknown',
@@ -43,11 +43,11 @@ class AdminLogDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    ->columns($this->getColumns())
-                    ->minifiedAjax()
+            ->columns($this->getColumns())
+            ->minifiedAjax()
                     //->dom('Bfrtip')
-                    ->orderBy(1)
-                    ->selectStyleSingle();
+            ->orderBy(1)
+            ->selectStyleSingle();
     }
 
     /**
@@ -69,6 +69,6 @@ class AdminLogDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'AdminLog_' . date('YmdHis');
+        return 'AdminLog_'.date('YmdHis');
     }
 }

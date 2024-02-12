@@ -11,6 +11,7 @@ use App\Enum\ValidityUnit;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Plan extends Model
 {
@@ -89,5 +90,10 @@ class Plan extends Model
     public function pool(): BelongsTo
     {
         return $this->belongsTo(Pool::class, 'pool_id');
+    }
+
+    public function vouchers(): HasMany
+    {
+        return $this->hasMany(Voucher::class);
     }
 }

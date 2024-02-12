@@ -16,15 +16,18 @@ class AdminLogController extends Controller
     public function index(AdminLogDataTable $dataTable)
     {
         $appName = Config::get('CompanyName');
+
         return $dataTable->render('admin.log.list', compact('appName'));
     }
 
-    public function clean(Request $request){
+    public function clean(Request $request)
+    {
         $validated = $request->validate([
             'days' => ['required', 'numeric'],
         ]);
 
         Log::whereDate('date', '<', now()->subDays($validated['days']))->delete();
+
         return redirect()->route('admin:log.index')->with('success', 'Deleted logs older than '.$validated['days'].' days');
     }
 }

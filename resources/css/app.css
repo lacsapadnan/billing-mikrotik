@@ -32,3 +32,8 @@
     }
 
 /*Select2 ReadOnly End*/
+
+.card-widget:hover .widget-icon{
+    font-size: 7rem !important;
+    opacity: .3;
+}

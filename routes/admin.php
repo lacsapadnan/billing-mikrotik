@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminCustomerController;
+use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminLogController;
 use App\Http\Controllers\Admin\AdminNetworkController;
 use App\Http\Controllers\Admin\AdminPageController;
@@ -25,7 +26,7 @@ Route::name('admin:')->group(function () {
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
         Route::put('password', [PasswordController::class, 'update'])->name('password.update');
-        Route::view('dashboard', 'admin.dashboard')->name('dashboard');
+        Route::get('dashboard', AdminDashboardController::class)->name('dashboard');
         Route::get('logout', [AdminAuthController::class, 'destroy'])->name('auth.logout');
 
         //CUSTOMER#
