@@ -18,9 +18,9 @@ return new class extends Migration
     {
         Schema::create('vouchers', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Plan::class)->constrained();
-            $table->foreignIdFor(Router::class)->constrained();
-            $table->foreignIdFor(Customer::class)->nullable()->constrained();
+            $table->foreignIdFor(Plan::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Router::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Customer::class)->nullable()->constrained()->cascadeOnDelete();
             $table->enum('type', array_column(PlanType::cases(), 'value'));
             $table->string('code', 55);
             $table->enum('status', array_column(VoucherStatus::cases(), 'value'))->default(VoucherStatus::UNUSED->value);

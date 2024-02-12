@@ -16,9 +16,9 @@ return new class extends Migration
     {
         Schema::create('user_recharges', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Router::class)->constrained();
-            $table->foreignIdFor(Customer::class)->constrained();
-            $table->foreignIdFor(Plan::class)->constrained();
+            $table->foreignIdFor(Router::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Customer::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Plan::class)->constrained()->cascadeOnDelete();
             $table->string('username', 32);
             $table->string('namebp', 40);
             $table->dateTime('recharged_at');

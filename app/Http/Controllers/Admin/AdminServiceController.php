@@ -19,6 +19,7 @@ use App\Models\Bandwidth;
 use App\Models\Plan;
 use App\Models\Pool;
 use App\Models\Router;
+use App\Support\Facades\Log;
 use App\Support\Mikrotik;
 
 class AdminServiceController extends Controller
@@ -47,6 +48,7 @@ class AdminServiceController extends Controller
     public function storeBandwidth(BandwidthRequest $request)
     {
         Bandwidth::create($request->all());
+        Log::put('Create Bandwidth '.$request->name_bw, auth()->user());
 
         return redirect()->to(route('admin:service.bandwidth.index'))->with('success', __('success.created'));
     }
@@ -54,6 +56,7 @@ class AdminServiceController extends Controller
     public function updateBandwidth(Bandwidth $bandwidth, BandwidthRequest $request)
     {
         $bandwidth->update($request->all());
+        Log::put('Update Bandwidth '.$bandwidth->name_bw, auth()->user());
 
         return redirect()->to(route('admin:service.bandwidth.index'))->with('success', __('success.updated'));
     }
@@ -114,6 +117,7 @@ class AdminServiceController extends Controller
             }
         }
         Plan::create($request->all());
+        Log::put('Create Hotspot Plan '.$request->name, auth()->user());
 
         return redirect()->to(route('admin:service.hotspot.index'))->with('success', __('success.created'));
     }
@@ -171,6 +175,7 @@ class AdminServiceController extends Controller
             }
         }
         $hotspot->update($request->all());
+        Log::put('Update Hotspot Plan '.$hotspot->name, auth()->user());
 
         return redirect()->to(route('admin:service.hotspot.index'))->with('success', __('success.updated'));
     }
@@ -189,6 +194,7 @@ class AdminServiceController extends Controller
             }
         }
         $hotspot->delete();
+        Log::put('Delete Hotspot Plan '.$hotspot->name, auth()->user());
 
         return redirect()->to(route('admin:service.hotspot.index'))->with('success', __('success.deleted'));
     }
@@ -234,6 +240,7 @@ class AdminServiceController extends Controller
             }
         }
         Plan::create($request->all());
+        Log::put('Create PPPoE Plan '.$request->name, auth()->user());
 
         return redirect()->to(route('admin:service.pppoe.index'))->with('success', __('success.created'));
     }
@@ -275,6 +282,7 @@ class AdminServiceController extends Controller
             }
         }
         $pppoe->update($request->all());
+        Log::put('Update PPPoE Plan '.$pppoe->name, auth()->user());
 
         return redirect()->to(route('admin:service.pppoe.index'))->with('success', __('success.updated'));
     }
@@ -293,6 +301,7 @@ class AdminServiceController extends Controller
             }
         }
         $pppoe->delete();
+        Log::put('Delete PPPoE Plan '.$pppoe->name, auth()->user());
 
         return redirect()->to(route('admin:service.pppoe.index'))->with('success', __('success.deleted'));
     }

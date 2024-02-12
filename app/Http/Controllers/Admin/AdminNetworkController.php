@@ -10,6 +10,7 @@ use App\Http\Requests\Admin\Network\RouterRequest;
 use App\Models\Plan;
 use App\Models\Pool;
 use App\Models\Router;
+use App\Support\Facades\Log;
 use App\Support\Lang;
 use App\Support\Mikrotik;
 use Illuminate\Http\Request;
@@ -63,6 +64,7 @@ class AdminNetworkController extends Controller
         try {
             Mikrotik::getClient($request->ip_address, $request->username, $request->password);
             Router::create($request->all());
+            Log::put('Create Router '.$request->name, auth()->user());
 
             return redirect(route('admin:network.router.index'))->with('success', __('success.created'));
         } catch (\Exception $e) {
@@ -79,6 +81,7 @@ class AdminNetworkController extends Controller
                 Mikrotik::addPool($client, $request->pool_name, $request->range_ip);
             }
             Pool::create($request->all());
+            Log::put('Create Pool '.$request->pool_name, auth()->user());
 
             return redirect(route('admin:network.pool.index'))->with('success', __('success.created'));
         } catch (\Exception $e) {
@@ -108,6 +111,8 @@ class AdminNetworkController extends Controller
             Mikrotik::getClient($request->ip_address, $request->username, $request->password);
             $router->update($request->all());
 
+            Log::put('Update Router '.$router->name, auth()->user());
+
             return redirect(route('admin:network.router.index'))->with('success', __('success.updated'));
         } catch (\Exception $e) {
             return redirect()->back()->with('error', $e->getMessage())->withInput();
@@ -123,6 +128,7 @@ class AdminNetworkController extends Controller
                 Mikrotik::setPool($client, $request->pool_name, $request->range_ip);
             }
             $pool->update($request->all());
+            Log::put('Update Pool '.$pool->pool_name, auth()->user());
 
             return redirect(route('admin:network.pool.index'))->with('success', __('success.updated'));
         } catch (\Exception $e) {
@@ -136,6 +142,8 @@ class AdminNetworkController extends Controller
     public function destroyRouter(Router $router)
     {
         $router->delete();
+
+        Log::put('Delete Router '.$router->name, auth()->user());
 
         return redirect()->back()->with('success', __('success.deleted'));
     }
@@ -152,6 +160,8 @@ class AdminNetworkController extends Controller
             }
         }
         $pool->delete();
+
+        Log::put('Delete Pool '.$router->pool_name, auth()->user());
 
         return redirect()->back()->with('success', __('success.deleted'));
     }

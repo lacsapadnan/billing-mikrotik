@@ -18,6 +18,7 @@ use App\Models\Transaction;
 use App\Models\UserRecharge;
 use App\Models\Voucher;
 use App\Support\Facades\Config;
+use App\Support\Facades\Log;
 use App\Support\Lang;
 use App\Support\Mikrotik;
 use App\Support\Package;
@@ -81,6 +82,8 @@ class AdminPrepaidController extends Controller
         $invoice = Transaction::where('username', $customer->username)
             ->latest('id')->first();
 
+        Log::put('Recharge account '.$customer->username, auth()->user());
+
         return redirect()->route('admin:prepaid.invoice.show', $invoice);
     }
 
@@ -93,6 +96,7 @@ class AdminPrepaidController extends Controller
         $user->save();
 
         Package::changeTo($customer, $plan, $user);
+        Log::put('Update account '.$customer->username, auth()->user());
 
         return redirect()->route('admin:prepaid.user.index')->with('success', __('success.updated'));
     }
@@ -113,6 +117,7 @@ class AdminPrepaidController extends Controller
             }
         }
         $user->delete();
+        Log::put('Delete account '.$user->username, auth()->user());
 
         return redirect()->route('admin:prepaid.user.index')->with('success', __('success.deleted'));
     }
@@ -169,6 +174,7 @@ class AdminPrepaidController extends Controller
             ]);
             Voucher::create($request->all());
         }
+        Log::put($request->count.' vouchers created', auth()->user());
 
         return redirect()->route('admin:prepaid.voucher.index')->with('success', __('success.created'));
     }
@@ -176,6 +182,7 @@ class AdminPrepaidController extends Controller
     public function destroyVoucher(Voucher $voucher)
     {
         $voucher->delete();
+        Log::put('Delete Voucher '.$voucher->code, auth()->user());
 
         return redirect()->route('admin:prepaid.voucher.index')->with('success', __('success.deleted'));
     }
@@ -208,6 +215,8 @@ class AdminPrepaidController extends Controller
         $voucher->save();
         $invoice = Transaction::where('username', $customer->username)
             ->latest('id')->first();
+
+        Log::put('Refill Account '.$customer->username, auth()->user());
 
         return redirect()->route('admin:prepaid.invoice.show', $invoice);
     }

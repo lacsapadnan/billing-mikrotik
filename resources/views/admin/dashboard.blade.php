@@ -7,7 +7,7 @@
                 color="#3fa2c1" :link="route('admin:report.period')" link-title="View Reports" />
             <x-card.widget title="Users Active" :value="$userActive" icon="user" color="#ff7211" :link="route('admin:prepaid.user.index')"
                 link-title="View All" />
-            <x-card.widget title="Total Users" :value="$totalCustomer" icon="people" color="#cc7251" :link="route('admin:prepaid.user.index')"
+            <x-card.widget title="Total Users" :value="$totalCustomer" icon="people" color="#cc7251" :link="route('admin:customer.index')"
                 link-title="View All" />
 
             <div class="col-md-7">
