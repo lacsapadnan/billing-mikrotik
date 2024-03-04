@@ -9,8 +9,11 @@ namespace App\Support;
 
 use App\Enum\DataUnit;
 use App\Enum\LimitType;
+use App\Enum\PlanType;
 use App\Enum\PlanTypeBp;
 use App\Enum\TimeUnit;
+use App\Enum\ValidityUnit;
+use App\Models\Bandwidth;
 use App\Models\Customer;
 use App\Models\Plan;
 use App\Models\Router;
@@ -529,5 +532,201 @@ class Mikrotik
             ->setArgument('phone-number', $to)
             ->setArgument('message', $message);
         $client->sendSync($smsRequest);
+    }
+
+    public static function importHotspot(Router $router)
+    {
+
+        $client = Mikrotik::getClient($router->ip_address, $router->username, $router->password);
+        // import Hotspot Profile to package
+        $printRequest = new Request(
+            '/ip hotspot user profile print'
+        );
+        $results = [];
+        $profiles = $client->sendSync($printRequest)->toArray();
+        foreach ($profiles as $p) {
+            $name = $p->getProperty('name');
+            $rateLimit = $p->getProperty('rate-limit');
+            $sharedUser = $p->getProperty('shared-user');
+
+            // 10M/10M
+            $rateLimit = explode(' ', $rateLimit)[0];
+            if (strlen($rateLimit) > 1) {
+                // Create Bandwidth profile
+                $rate = explode('/', $rateLimit);
+                $unit_up = preg_replace('/[^a-zA-Z]+/', '', $rate[0]).'bps';
+                $unit_down = preg_replace('/[^a-zA-Z]+/', '', $rate[1]).'bps';
+                $rate_up = preg_replace('/[^0-9]+/', '', $rate[0]);
+                $rate_down = preg_replace('/[^0-9]+/', '', $rate[1]);
+                $bw_name = str_replace('/', '_', $rateLimit);
+                $bw = Bandwidth::where('name_bw', $bw_name)->first();
+                if (! $bw) {
+                    $results[] = "Bandwith Created: $bw_name";
+                    $d = new Bandwidth;
+                    $d->name_bw = $bw_name;
+                    $d->rate_down = (int) $rate_down;
+                    $d->rate_down_unit = $unit_down;
+                    $d->rate_up = $rate_up;
+                    $d->rate_up_unit = $unit_up;
+                    $d->save();
+                    $bw_id = $d->id;
+                } else {
+                    $results[] = "Bandwith Exists: $bw_name";
+                    $bw_id = $bw->id;
+                }
+
+                // Create Packages
+                $pack = Plan::where('name', $name)->first();
+                if (! $pack) {
+                    $results[] = "Packages Created: $name";
+                    $d = new Plan;
+                    $d->name = $name;
+                    $d->bandwidth_id = $bw_id;
+                    $d->price = '10000';
+                    $d->type = PlanType::HOTSPOT;
+                    $d->typebp = PlanTypeBp::UNLIMITED;
+                    $d->limit_type = LimitType::TIME_LIMIT;
+                    $d->time_limit = 0;
+                    $d->time_unit = TimeUnit::HRS;
+                    $d->data_limit = 0;
+                    $d->data_unit = DataUnit::MB;
+                    $d->validity = '30';
+                    $d->validity_unit = ValidityUnit::DAYS;
+                    $d->shared_users = $sharedUser;
+                    $d->router_id = $router->id;
+                    $d->enabled = 1;
+                    $d->save();
+                } else {
+                    $results[] = "Packages Exists: $name";
+                }
+            }
+        }
+        // Import user
+        $userRequest = new Request(
+            '/ip hotspot user print'
+        );
+        $users = $client->sendSync($userRequest)->toArray();
+        foreach ($users as $u) {
+            $username = $u->getProperty('name');
+            if (! empty($username) && ! empty($u->getProperty('password'))) {
+                $d = Customer::where('username', $username)->first();
+                if ($d) {
+                    $results[] = "Username Exists: $username";
+                } else {
+                    $d = new Customer;
+                    $d->username = $username;
+                    $d->password = $u->getProperty('password');
+                    $d->pppoe_password = $d->password;
+                    $d->fullname = $username;
+                    $d->address = '';
+                    $d->email = (empty($u->getProperty('email'))) ? '' : $u->getProperty('email');
+                    $d->phonenumber = '';
+                    if ($d->save()) {
+                        $results[] = "$username added successfully";
+                    } else {
+                        $results[] = "$username Failed to be added";
+                    }
+                }
+            }
+        }
+
+        return $results;
+    }
+
+    public static function importPPPOE(Router $router)
+    {
+
+        $client = Mikrotik::getClient($router->ip_address, $router->username, $router->password);
+        // import Hotspot Profile to package
+        $printRequest = new Request(
+            '/ppp profile print'
+        );
+        $results = [];
+        $profiles = $client->sendSync($printRequest)->toArray();
+        foreach ($profiles as $p) {
+            $name = $p->getProperty('name');
+            $rateLimit = $p->getProperty('rate-limit');
+
+            // 10M/10M
+            $rateLimit = explode(' ', $rateLimit)[0];
+            if (strlen($rateLimit) > 1) {
+                // Create Bandwidth profile
+                $rate = explode('/', $rateLimit);
+                $unit_up = preg_replace('/[^a-zA-Z]+/', '', $rate[0]).'bps';
+                $unit_down = preg_replace('/[^a-zA-Z]+/', '', $rate[1]).'bps';
+                $rate_up = preg_replace('/[^0-9]+/', '', $rate[0]);
+                $rate_down = preg_replace('/[^0-9]+/', '', $rate[1]);
+                $bw_name = str_replace('/', '_', $rateLimit);
+                $bw = Bandwidth::where('name_bw', $bw_name)->first();
+                if (! $bw) {
+                    $results[] = "Bandwith Created: $bw_name";
+                    $d = new Bandwidth;
+                    $d->name_bw = $bw_name;
+                    $d->rate_down = $rate_down;
+                    $d->rate_down_unit = $unit_down;
+                    $d->rate_up = $rate_up;
+                    $d->rate_up_unit = $unit_up;
+                    $d->save();
+                    $bw_id = $d->id;
+                } else {
+                    $results[] = "Bandwith Exists: $bw_name";
+                    $bw_id = $bw->id;
+                }
+
+                // Create Packages
+                $pack = Plan::where('name', $name)->first();
+                if (! $pack) {
+                    $results[] = "Packages Created: $name";
+                    $d = new Plan;
+                    $d->name = $name;
+                    $d->bandwidth_id = $bw_id;
+                    $d->price = '10000';
+                    $d->type = PlanType::PPPOE;
+                    $d->typebp = PlanTypeBp::UNLIMITED;
+                    $d->limit_type = LimitType::TIME_LIMIT;
+                    $d->time_limit = 0;
+                    $d->time_unit = TimeUnit::HRS;
+                    $d->data_limit = 0;
+                    $d->data_unit = DataUnit::MB;
+                    $d->validity = '30';
+                    $d->validity_unit = ValidityUnit::DAYS;
+                    $d->router_id = $router->id;
+                    $d->enabled = 1;
+                    $d->save();
+                } else {
+                    $results[] = "Packages Exists: $name";
+                }
+            }
+        }
+        // Import user
+        $userRequest = new Request(
+            '/ppp secret print'
+        );
+        $users = $client->sendSync($userRequest)->toArray();
+        foreach ($users as $u) {
+            $username = $u->getProperty('name');
+            if (! empty($username) && ! empty($u->getProperty('password'))) {
+                $d = Customer::where('username', $username)->first();
+                if ($d) {
+                    $results[] = "Username Exists: $username";
+                } else {
+                    $d = new Customer;
+                    $d->username = $username;
+                    $d->password = $u->getProperty('password');
+                    $d->pppoe_password = $d->password;
+                    $d->fullname = $username;
+                    $d->address = '';
+                    $d->email = '';
+                    $d->phonenumber = '';
+                    if ($d->save()) {
+                        $results[] = "$username added successfully";
+                    } else {
+                        $results[] = "$username Failed to be added";
+                    }
+                }
+            }
+        }
+
+        return $results;
     }
 }

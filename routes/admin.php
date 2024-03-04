@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminCustomerController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminLogController;
+use App\Http\Controllers\Admin\AdminMikrotikImport;
 use App\Http\Controllers\Admin\AdminNetworkController;
 use App\Http\Controllers\Admin\AdminPageController;
 use App\Http\Controllers\Admin\AdminPrepaidController;
@@ -114,6 +115,8 @@ Route::name('admin:')->group(function () {
             Route::get('setting/user/{user}', [AdminSettingController::class, 'editUser'])->name('setting.user.edit');
             Route::patch('setting/user/{user}', [AdminSettingController::class, 'updateUser'])->name('setting.user.update');
             Route::delete('setting/user/{user}', [AdminSettingController::class, 'destroyUser'])->name('setting.user.destroy');
+            Route::get('setting/import-mikrotik', [AdminMikrotikImport::class, 'create'])->name('setting.import-mikrotik.create');
+            Route::post('setting/import-mikrotik', [AdminMikrotikImport::class, 'store'])->name('setting.import-mikrotik.store');
         });
 
         Route::get('log', [AdminLogController::class, 'index'])->name('log.index');
