@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('nasses', function (Blueprint $table) {
+        Schema::create('nas', function (Blueprint $table) {
             $table->id();
             $table->string('nasname', 128)->index();
             $table->string('shortname', 32)->nullable();
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('nasses');
+        Schema::dropIfExists('nas');
     }
 };
