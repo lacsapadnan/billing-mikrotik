@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('radreplies', function (Blueprint $table) {
+        Schema::create('radreply', function (Blueprint $table) {
             $table->id();
             $table->string('username', 64)->default('')->index();
             $table->string('attribute', 64)->default('');
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('radreplies');
+        Schema::dropIfExists('radreply');
     }
 };
