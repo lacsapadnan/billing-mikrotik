@@ -12,6 +12,7 @@ use App\Http\Requests\Admin\AdminCustomerRequest;
 use App\Models\Customer;
 use App\Support\Facades\Log;
 use App\Support\Mikrotik;
+use App\Support\Radius;
 use Error;
 use Illuminate\Http\Request;
 
@@ -56,7 +57,7 @@ class AdminCustomerController extends Controller
     {
         try {
             $customer->delete();
-            Log::put('Delete customer '.$customer->username, auth()->user());
+            Log::put('Delete customer ' . $customer->username, auth()->user());
 
             return redirect()->to(route('admin:customer.index'))->with('success', __('success.deleted'));
         } catch (Error $exception) {
@@ -67,7 +68,7 @@ class AdminCustomerController extends Controller
     public function store(AdminCustomerRequest $request)
     {
         Customer::query()->create($request->all());
-        Log::put('Create customer '.$request->username, auth()->user());
+        Log::put('Create customer ' . $request->username, auth()->user());
 
         return redirect(route('admin:customer.index'))->with('success', __('success.created'));
     }
@@ -75,7 +76,7 @@ class AdminCustomerController extends Controller
     public function update(Customer $customer, AdminCustomerRequest $request)
     {
         $customer->update($request->all());
-        Log::put('Update customer '.$request->username, auth()->user());
+        Log::put('Update customer ' . $request->username, auth()->user());
 
         return redirect(route('admin:customer.index'))->with('success', __('success.updated'));
     }
@@ -84,7 +85,7 @@ class AdminCustomerController extends Controller
     {
         $recharge = $customer->recharge;
         if ($recharge->plan->is_radius) {
-            //TODO
+            Radius::customerDeactivate($customer->username, true);
         } else {
             $mikrotik = $recharge->router;
             $client = Mikrotik::getClient($mikrotik->ip_address, $mikrotik->username, $mikrotik->password);
@@ -100,7 +101,7 @@ class AdminCustomerController extends Controller
             'status' => 'off',
             'expired_date' => now(),
         ]);
-        Log::put('Deactivate customer '.$recharge->username, auth()->user());
+        Log::put('Deactivate customer ' . $recharge->username, auth()->user());
 
         return redirect()->back()->with('success', __('Success deactivate customer to Mikrotik'));
     }
