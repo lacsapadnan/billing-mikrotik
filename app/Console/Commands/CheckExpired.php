@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Enum\PlanType;
 use App\Models\UserRecharge;
 use App\Support\Mikrotik;
+use App\Support\Radius;
 use Illuminate\Console\Command;
 
 class CheckExpired extends Command
@@ -34,10 +35,16 @@ class CheckExpired extends Command
             $client = Mikrotik::getClient($service->router->ip_address, $service->router->username, $service->router->password);
             if ($service->type == PlanType::HOTSPOT) {
                 if ($service->plan->is_radius) {
-                    //TODO
+                    // NOTE: Please test the code!
+                    if (!empty($service->plan->pool_user_expired_id)) {
+                        print_r(Radius::upsertCustomerAttr($service->customer->username, 'Framed-Pool', $service->plan->pool_user_expired_id, ':='));
+                    } else {
+                        Radius::customerDeactivate($service->customer->username, true);
+                        print_r(Radius::disconnectCustomer($service->customer->username));
+                    }
                 } else {
-                    if (! empty($service->plan->pool_expired_id)) {
-                        Mikrotik::setHotspotUserPackage($client, $service->customer->username, 'EXPIRED LNUXBILL '.$service->plan->pool_expired->pool_name);
+                    if (!empty($service->plan->pool_expired_id)) {
+                        Mikrotik::setHotspotUserPackage($client, $service->customer->username, 'EXPIRED LNUXBILL ' . $service->plan->pool_expired->pool_name);
                     } else {
                         Mikrotik::removeHotspotUser($client, $service->customer->username);
                     }
@@ -45,10 +52,16 @@ class CheckExpired extends Command
                 }
             } else {
                 if ($service->plan->is_radius) {
-                    //TODO
+                    // NOTE: Please test the code!
+                    if (!empty($service->plan->pool_user_expired_id)) {
+                        print_r(Radius::upsertCustomerAttr($service->customer->username, 'Framed-Pool', $service->plan->pool_user_expired_id, ':='));
+                    } else {
+                        Radius::customerDeactivate($service->customer->username, true);
+                        print_r(Radius::disconnectCustomer($service->customer->username));
+                    }
                 } else {
-                    if (! empty($service->plan->pool_expired_id)) {
-                        Mikrotik::setPpoeUserPlan($client, $service->customer->username, 'EXPIRED LNUXBILL '.$service->plan->pool_expired->pool_name);
+                    if (!empty($service->plan->pool_expired_id)) {
+                        Mikrotik::setPpoeUserPlan($client, $service->customer->username, 'EXPIRED LNUXBILL ' . $service->plan->pool_expired->pool_name);
                     } else {
                         Mikrotik::removePpoeUser($client, $service->customer->username);
                     }
