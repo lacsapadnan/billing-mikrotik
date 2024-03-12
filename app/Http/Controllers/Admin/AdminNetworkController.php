@@ -2,21 +2,31 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\DataTables\NasDataTable;
 use App\DataTables\PoolDataTable;
 use App\DataTables\RouterDataTable;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Network\NasRequest;
 use App\Http\Requests\Admin\Network\PoolRequest;
 use App\Http\Requests\Admin\Network\RouterRequest;
+use App\Models\Nas;
 use App\Models\Plan;
 use App\Models\Pool;
 use App\Models\Router;
 use App\Support\Facades\Log;
 use App\Support\Lang;
 use App\Support\Mikrotik;
+use App\Support\Radius;
 use Illuminate\Http\Request;
+
 
 class AdminNetworkController extends Controller
 {
+    public function nas(NasDataTable $dataTable)
+    {
+        return $dataTable->render('admin.network.nas');
+    }
+
     public function router(RouterDataTable $dataTable)
     {
         return $dataTable->render('admin.network.router');
@@ -25,6 +35,15 @@ class AdminNetworkController extends Controller
     public function pool(PoolDataTable $dataTable)
     {
         return $dataTable->render('admin.network.pool');
+    }
+
+    public function createNas()
+    {
+        $mode = 'add';
+        $routers = Router::pluck('name', 'name');
+        $defaultRouterId = Router::first()?->id;
+
+        return view('admin.network.nas-form', compact('mode', 'routers', 'defaultRouterId'));
     }
 
     public function createRouter()
@@ -43,6 +62,14 @@ class AdminNetworkController extends Controller
         return view('admin.network.pool-form', compact('mode', 'routers', 'defaultRouterId'));
     }
 
+    public function editNas(Nas $nas)
+    {
+        $mode = 'edit';
+        $routers = Router::pluck('name', 'name');
+
+        return view('admin.network.nas-form', compact('mode', 'nas', 'routers'));
+    }
+
     public function editRouter(Router $router)
     {
         $mode = 'edit';
@@ -59,12 +86,25 @@ class AdminNetworkController extends Controller
         return view('admin.network.pool-form', compact('mode', 'pool', 'routers', 'defaultRouterId'));
     }
 
+    public function storeNas(NasRequest $request)
+    {
+        try {
+            Radius::nasAdd($request->shortname, $request->nasname, $request->ports, $request->secret, $request->routers, $request->description, $request->type, $request->input('server'), $request->community);
+
+            Log::put('Create NAS ' . $request->nasname, auth()->user());
+
+            return redirect(route('admin:network.nas.index'))->with('success', __('success.created'));
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage())->withInput();
+        }
+    }
+
     public function storeRouter(RouterRequest $request)
     {
         try {
             Mikrotik::getClient($request->ip_address, $request->username, $request->password);
             Router::create($request->all());
-            Log::put('Create Router '.$request->name, auth()->user());
+            Log::put('Create Router ' . $request->name, auth()->user());
 
             return redirect(route('admin:network.router.index'))->with('success', __('success.created'));
         } catch (\Exception $e) {
@@ -81,7 +121,7 @@ class AdminNetworkController extends Controller
                 Mikrotik::addPool($client, $request->pool_name, $request->range_ip);
             }
             Pool::create($request->all());
-            Log::put('Create Pool '.$request->pool_name, auth()->user());
+            Log::put('Create Pool ' . $request->pool_name, auth()->user());
 
             return redirect(route('admin:network.pool.index'))->with('success', __('success.created'));
         } catch (\Exception $e) {
@@ -105,13 +145,26 @@ class AdminNetworkController extends Controller
         //
     }
 
+    public function updateNas(Nas $nas, Request $request)
+    {
+        try {
+            Radius::nasUpdate($nas->id, $request->shortname, $request->nasname, $request->ports, $request->secret, $request->routers, $request->description, $request->type, $request->input('server'), $request->community);
+
+            Log::put('Update NAS ' . $request->nasname, auth()->user());
+
+            return redirect(route('admin:network.nas.index'))->with('success', __('success.updated'));
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage())->withInput();
+        }
+    }
+
     public function updateRouter(Router $router, RouterRequest $request)
     {
         try {
             Mikrotik::getClient($request->ip_address, $request->username, $request->password);
             $router->update($request->all());
 
-            Log::put('Update Router '.$router->name, auth()->user());
+            Log::put('Update Router ' . $router->name, auth()->user());
 
             return redirect(route('admin:network.router.index'))->with('success', __('success.updated'));
         } catch (\Exception $e) {
@@ -128,7 +181,7 @@ class AdminNetworkController extends Controller
                 Mikrotik::setPool($client, $request->pool_name, $request->range_ip);
             }
             $pool->update($request->all());
-            Log::put('Update Pool '.$pool->pool_name, auth()->user());
+            Log::put('Update Pool ' . $pool->pool_name, auth()->user());
 
             return redirect(route('admin:network.pool.index'))->with('success', __('success.updated'));
         } catch (\Exception $e) {
@@ -139,11 +192,20 @@ class AdminNetworkController extends Controller
     /**
      * Remove the specified resource from storage.
      */
+    public function destroyNas(Nas $nas)
+    {
+        $nas->delete();
+
+        Log::put('Delete NAS ' . $nas->nasname, auth()->user());
+
+        return redirect()->back()->with('success', __('success.deleted'));
+    }
+
     public function destroyRouter(Router $router)
     {
         $router->delete();
 
-        Log::put('Delete Router '.$router->name, auth()->user());
+        Log::put('Delete Router ' . $router->name, auth()->user());
 
         return redirect()->back()->with('success', __('success.deleted'));
     }
@@ -161,7 +223,7 @@ class AdminNetworkController extends Controller
         }
         $pool->delete();
 
-        Log::put('Delete Pool '.$router->pool_name, auth()->user());
+        Log::put('Delete Pool ' . $router->pool_name, auth()->user());
 
         return redirect()->back()->with('success', __('success.deleted'));
     }
@@ -186,7 +248,7 @@ class AdminNetworkController extends Controller
         $plans = Plan::when($request->has('plan_type'), fn ($query) => $query->where('type', $request->plan_type))
             ->when($request->has('router_id'), fn ($query) => $query->where('router_id', $request->router_id))
             ->get()
-            ->mapWithKeys(fn ($plan) => [$plan->id => $plan->name.' - '.Lang::moneyFormat($plan->price)]);
+            ->mapWithKeys(fn ($plan) => [$plan->id => $plan->name . ' - ' . Lang::moneyFormat($plan->price)]);
 
         return response()->json($plans);
     }
