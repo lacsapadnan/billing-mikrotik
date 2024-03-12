@@ -22,6 +22,7 @@ use App\Support\Facades\Log;
 use App\Support\Lang;
 use App\Support\Mikrotik;
 use App\Support\Package;
+use App\Support\Radius;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -39,7 +40,7 @@ class AdminPrepaidController extends Controller
     {
         $mode = 'add';
         $customers = Customer::all()->mapWithKeys(fn ($customer) => [
-            $customer->id => $customer->username.' - '.$customer->fullname.' - '.$customer->email,
+            $customer->id => $customer->username . ' - ' . $customer->fullname . ' - ' . $customer->email,
         ]);
         $planTypes = array_column(PlanType::cases(), 'value', 'value');
         $defaultPlanType = PlanType::HOTSPOT;
@@ -51,7 +52,7 @@ class AdminPrepaidController extends Controller
     {
         $mode = 'add';
         $customers = Customer::all()->mapWithKeys(fn ($customer) => [
-            $customer->id => $customer->username.' - '.$customer->fullname.' - '.$customer->email,
+            $customer->id => $customer->username . ' - ' . $customer->fullname . ' - ' . $customer->email,
         ]);
         $user['customer_id'] = $user->id;
         $planTypes = array_column(PlanType::cases(), 'value', 'value');
@@ -64,7 +65,7 @@ class AdminPrepaidController extends Controller
     {
         $mode = 'edit';
         $customers = Customer::where('id', $user->customer_id)->get()->mapWithKeys(fn ($customer) => [
-            $customer->id => $customer->username.' - '.$customer->fullname.' - '.$customer->email,
+            $customer->id => $customer->username . ' - ' . $customer->fullname . ' - ' . $customer->email,
         ]);
         $planTypes = array_column(PlanType::cases(), 'value', 'value');
         $defaultPlanType = $user->plan->type;
@@ -82,7 +83,7 @@ class AdminPrepaidController extends Controller
         $invoice = Transaction::where('username', $customer->username)
             ->latest('id')->first();
 
-        Log::put('Recharge account '.$customer->username, auth()->user());
+        Log::put('Recharge account ' . $customer->username, auth()->user());
 
         return redirect()->route('admin:prepaid.invoice.show', $invoice);
     }
@@ -96,7 +97,7 @@ class AdminPrepaidController extends Controller
         $user->save();
 
         Package::changeTo($customer, $plan, $user);
-        Log::put('Update account '.$customer->username, auth()->user());
+        Log::put('Update account ' . $customer->username, auth()->user());
 
         return redirect()->route('admin:prepaid.user.index')->with('success', __('success.updated'));
     }
@@ -104,7 +105,8 @@ class AdminPrepaidController extends Controller
     public function destroyUser(UserRecharge $user)
     {
         if ($user->plan->is_radius) {
-            //TODO: Radius::customerDeactivate
+            // NOTE: Please test the code!
+            Radius::customerDeactivate($user->username, true);
         } else {
             $mikrotik = $user->router;
             $client = Mikrotik::getClient($mikrotik->ip_address, $mikrotik->username, $mikrotik->password);
@@ -117,7 +119,7 @@ class AdminPrepaidController extends Controller
             }
         }
         $user->delete();
-        Log::put('Delete account '.$user->username, auth()->user());
+        Log::put('Delete account ' . $user->username, auth()->user());
 
         return redirect()->route('admin:prepaid.user.index')->with('success', __('success.deleted'));
     }
@@ -157,12 +159,12 @@ class AdminPrepaidController extends Controller
 
     public function storeVoucher(PrepaidVoucherRequest $request)
     {
-        if (! empty($request->prefix)) {
+        if (!empty($request->prefix)) {
             Config::set('voucher_prefix', $request->prefix);
         }
         Config::set('voucher_format', $request->format);
         for ($i = 0; $i < $request->count; $i++) {
-            $code = strtoupper(substr(md5(time().rand(10000, 99999)), 0, $request->length));
+            $code = strtoupper(substr(md5(time() . rand(10000, 99999)), 0, $request->length));
             $voucherFormat = VoucherFormat::from($request->format);
             if ($voucherFormat == VoucherFormat::lowercase) {
                 $code = strtolower($code);
@@ -170,11 +172,11 @@ class AdminPrepaidController extends Controller
                 $code = Lang::randomUpLowCase($code);
             }
             $request->merge([
-                'code' => $request->prefix.$code,
+                'code' => $request->prefix . $code,
             ]);
             Voucher::create($request->all());
         }
-        Log::put($request->count.' vouchers created', auth()->user());
+        Log::put($request->count . ' vouchers created', auth()->user());
 
         return redirect()->route('admin:prepaid.voucher.index')->with('success', __('success.created'));
     }
@@ -182,7 +184,7 @@ class AdminPrepaidController extends Controller
     public function destroyVoucher(Voucher $voucher)
     {
         $voucher->delete();
-        Log::put('Delete Voucher '.$voucher->code, auth()->user());
+        Log::put('Delete Voucher ' . $voucher->code, auth()->user());
 
         return redirect()->route('admin:prepaid.voucher.index')->with('success', __('success.deleted'));
     }
@@ -190,7 +192,7 @@ class AdminPrepaidController extends Controller
     public function refillAccount()
     {
         $customers = Customer::all()->mapWithKeys(fn ($customer) => [
-            $customer->id => $customer->username.' - '.$customer->fullname.' - '.$customer->email,
+            $customer->id => $customer->username . ' - ' . $customer->fullname . ' - ' . $customer->email,
         ]);
 
         return view('admin.prepaid.refill-account', compact('customers'));
@@ -206,7 +208,7 @@ class AdminPrepaidController extends Controller
         $customer = Customer::findOrFail($validated['customer_id']);
         /** @var Voucher $voucher */
         $voucher = Voucher::where('code', $validated['voucher_code'])->where('status', VoucherStatus::UNUSED)->first();
-        if (! $voucher) {
+        if (!$voucher) {
             return redirect()->back()->with('error', 'Invalid voucher code');
         }
         Package::rechargeUser($customer, $voucher->router, $voucher->plan, RechargeGateway::VOUCHER, $voucher->code);
@@ -216,7 +218,7 @@ class AdminPrepaidController extends Controller
         $invoice = Transaction::where('username', $customer->username)
             ->latest('id')->first();
 
-        Log::put('Refill Account '.$customer->username, auth()->user());
+        Log::put('Refill Account ' . $customer->username, auth()->user());
 
         return redirect()->route('admin:prepaid.invoice.show', $invoice);
     }
