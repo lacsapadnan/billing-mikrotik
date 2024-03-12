@@ -120,6 +120,12 @@ return [
                     'icon' => 'technology-4',
                     'sub' => [
                         [
+                            'name' => 'network.nas',
+                            'title' => 'Network Access Server',
+                            'icon'  => '',
+                            'url'   => '/admin/network/nas'
+                        ],
+                        [
                             'name' => 'network.router',
                             'title' => 'Routers',
                             'icon' => 'router',
