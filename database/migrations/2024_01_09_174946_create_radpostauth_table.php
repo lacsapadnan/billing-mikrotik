@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('radpostauths', function (Blueprint $table) {
+        Schema::create('radpostauth', function (Blueprint $table) {
             $table->id();
             $table->string('username', 64)->default('')->index();
             $table->string('pass', 64)->default('');
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('radpostauths');
+        Schema::dropIfExists('radpostauth');
     }
 };
