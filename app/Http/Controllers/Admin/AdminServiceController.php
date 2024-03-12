@@ -21,6 +21,7 @@ use App\Models\Pool;
 use App\Models\Router;
 use App\Support\Facades\Log;
 use App\Support\Mikrotik;
+use App\Support\Radius;
 
 class AdminServiceController extends Controller
 {
@@ -48,7 +49,7 @@ class AdminServiceController extends Controller
     public function storeBandwidth(BandwidthRequest $request)
     {
         Bandwidth::create($request->all());
-        Log::put('Create Bandwidth '.$request->name_bw, auth()->user());
+        Log::put('Create Bandwidth ' . $request->name_bw, auth()->user());
 
         return redirect()->to(route('admin:service.bandwidth.index'))->with('success', __('success.created'));
     }
@@ -56,7 +57,7 @@ class AdminServiceController extends Controller
     public function updateBandwidth(Bandwidth $bandwidth, BandwidthRequest $request)
     {
         $bandwidth->update($request->all());
-        Log::put('Update Bandwidth '.$bandwidth->name_bw, auth()->user());
+        Log::put('Update Bandwidth ' . $bandwidth->name_bw, auth()->user());
 
         return redirect()->to(route('admin:service.bandwidth.index'))->with('success', __('success.updated'));
     }
@@ -105,19 +106,22 @@ class AdminServiceController extends Controller
 
     public function storeHotspot(HotspotRequest $request)
     {
+        dd($request->all());
+        $plan = Plan::create($request->all());
         if ($request->is_radius) {
-            // TODO: buat Radius class
+            // NOTE: Please test the code!
+            Radius::planUpSert($plan->id, $request->radiusrate);
         } else {
             $mikrotik = Router::find($request->router_id);
             $client = Mikrotik::getClient($mikrotik->ip_address, $mikrotik->username, $mikrotik->password);
             Mikrotik::addHotspotPlan($client, $request->name, $request->shared_users, $request->rate);
-            if (! empty($request->pool_expired_id)) {
+            if (!empty($request->pool_expired_id)) {
                 $poolExpired = Pool::find($request->pool_expired_id);
-                Mikrotik::setHotspotExpiredPlan($client, 'EXPIRED LNUXBILL '.$poolExpired->pool_name, $poolExpired->pool_name);
+                Mikrotik::setHotspotExpiredPlan($client, 'EXPIRED LNUXBILL ' . $poolExpired->pool_name, $poolExpired->pool_name);
             }
         }
-        Plan::create($request->all());
-        Log::put('Create Hotspot Plan '.$request->name, auth()->user());
+
+        Log::put('Create Hotspot Plan ' . $request->name, auth()->user());
 
         return redirect()->to(route('admin:service.hotspot.index'))->with('success', __('success.created'));
     }
@@ -164,18 +168,19 @@ class AdminServiceController extends Controller
     public function updateHotspot(Plan $hotspot, HotspotRequest $request)
     {
         if ($request->is_radius) {
-            // TODO: buat Radius class
+            // NOTE: Please test the code!
+            Radius::planUpSert($hotspot->id, $request->radiusrate);
         } else {
             $mikrotik = Router::find($request->router_id);
             $client = Mikrotik::getClient($mikrotik->ip_address, $mikrotik->username, $mikrotik->password);
             Mikrotik::setHotspotPlan($client, $request->name, $request->shared_users, $request->rate);
-            if (! empty($request->pool_expired_id)) {
+            if (!empty($request->pool_expired_id)) {
                 $poolExpired = Pool::find($request->pool_expired_id);
-                Mikrotik::setHotspotExpiredPlan($client, 'EXPIRED LNUXBILL '.$poolExpired->pool_name, $poolExpired->pool_name);
+                Mikrotik::setHotspotExpiredPlan($client, 'EXPIRED LNUXBILL ' . $poolExpired->pool_name, $poolExpired->pool_name);
             }
         }
         $hotspot->update($request->all());
-        Log::put('Update Hotspot Plan '.$hotspot->name, auth()->user());
+        Log::put('Update Hotspot Plan ' . $hotspot->name, auth()->user());
 
         return redirect()->to(route('admin:service.hotspot.index'))->with('success', __('success.updated'));
     }
@@ -183,7 +188,8 @@ class AdminServiceController extends Controller
     public function destroyHotspot(Plan $hotspot)
     {
         if ($hotspot->is_radius) {
-            // TODO: handle delete radius plan
+            // NOTE: Please test the code!
+            Radius::planDelete($hotspot->id);
         } else {
             try {
                 $mikrotik = $hotspot->router;
@@ -194,7 +200,7 @@ class AdminServiceController extends Controller
             }
         }
         $hotspot->delete();
-        Log::put('Delete Hotspot Plan '.$hotspot->name, auth()->user());
+        Log::put('Delete Hotspot Plan ' . $hotspot->name, auth()->user());
 
         return redirect()->to(route('admin:service.hotspot.index'))->with('success', __('success.deleted'));
     }
@@ -227,20 +233,21 @@ class AdminServiceController extends Controller
 
     public function storePppoe(PppoeRequest $request)
     {
+        $plan = Plan::create($request->all());
         if ($request->is_radius) {
-            // TODO: buat Radius class
+            // NOTE: Please test the code!
+            Radius::planUpSert($plan->id, $request->radiusrate, $plan->pool->pool_name);
         } else {
             $mikrotik = Router::find($request->router_id);
             $client = Mikrotik::getClient($mikrotik->ip_address, $mikrotik->username, $mikrotik->password);
             $pool = Pool::find($request->pool_id);
             Mikrotik::addPpoePlan($client, $request->name, $pool->pool_name, $request->rate);
-            if (! empty($request->pool_expired_id)) {
+            if (!empty($request->pool_expired_id)) {
                 $poolExpired = Pool::find($request->pool_expired_id);
-                Mikrotik::setPpoePlan($client, 'EXPIRED LNUXBILL '.$poolExpired->pool_name, $poolExpired->pool_name, '512K/512K');
+                Mikrotik::setPpoePlan($client, 'EXPIRED LNUXBILL ' . $poolExpired->pool_name, $poolExpired->pool_name, '512K/512K');
             }
         }
-        Plan::create($request->all());
-        Log::put('Create PPPoE Plan '.$request->name, auth()->user());
+        Log::put('Create PPPoE Plan ' . $request->name, auth()->user());
 
         return redirect()->to(route('admin:service.pppoe.index'))->with('success', __('success.created'));
     }
@@ -271,18 +278,19 @@ class AdminServiceController extends Controller
     public function updatePppoe(Plan $pppoe, PppoeRequest $request)
     {
         if ($request->is_radius) {
-            // TODO: buat Radius class
+            // NOTE: Please test the code!
+            Radius::planUpSert($pppoe->id, $request->radiusrate, $pppoe->pool->pool_name);
         } else {
             $mikrotik = Router::find($request->router_id);
             $client = Mikrotik::getClient($mikrotik->ip_address, $mikrotik->username, $mikrotik->password);
             Mikrotik::setPpoePlan($client, $request->name, $request->shared_users, $request->rate);
-            if (! empty($request->pool_expired_id)) {
+            if (!empty($request->pool_expired_id)) {
                 $poolExpired = Pool::find($request->pool_expired_id);
-                Mikrotik::setPpoePlan($client, 'EXPIRED LNUXBILL '.$poolExpired->pool_name, $poolExpired->pool_name, '512K/512K');
+                Mikrotik::setPpoePlan($client, 'EXPIRED LNUXBILL ' . $poolExpired->pool_name, $poolExpired->pool_name, '512K/512K');
             }
         }
         $pppoe->update($request->all());
-        Log::put('Update PPPoE Plan '.$pppoe->name, auth()->user());
+        Log::put('Update PPPoE Plan ' . $pppoe->name, auth()->user());
 
         return redirect()->to(route('admin:service.pppoe.index'))->with('success', __('success.updated'));
     }
@@ -290,7 +298,8 @@ class AdminServiceController extends Controller
     public function destroyPppoe(Plan $pppoe)
     {
         if ($pppoe->is_radius) {
-            // TODO: handle delete radius plan
+            // NOTE: Please test the code!
+            Radius::planDelete($pppoe->id);
         } else {
             try {
                 $mikrotik = $pppoe->router;
@@ -301,7 +310,7 @@ class AdminServiceController extends Controller
             }
         }
         $pppoe->delete();
-        Log::put('Delete PPPoE Plan '.$pppoe->name, auth()->user());
+        Log::put('Delete PPPoE Plan ' . $pppoe->name, auth()->user());
 
         return redirect()->to(route('admin:service.pppoe.index'))->with('success', __('success.deleted'));
     }
