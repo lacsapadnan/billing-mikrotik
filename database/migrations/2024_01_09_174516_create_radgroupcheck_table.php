@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('radgroupchecks', function (Blueprint $table) {
+        Schema::create('radgroupcheck', function (Blueprint $table) {
             $table->id();
             $table->string('groupname', 64)->default('')->index();
             $table->string('attribute', 64)->default('');
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('radgroupchecks');
+        Schema::dropIfExists('radgroupcheck');
     }
 };
