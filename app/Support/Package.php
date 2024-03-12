@@ -32,7 +32,8 @@ class Package
         if ($plan->type == PlanType::HOTSPOT) {
             if ($userRecharge) {
                 if ($plan->is_radius) {
-                    //TODO: radues add customer plan
+                    // NOTE: Please test the code!
+                    Radius::customerAddPlan($customer, $plan, $date_exp);
                 } else {
                     $client = static::resetCustomerMikrotik($mikrotik, $customer);
                     Mikrotik::addHotspotUser($client, $plan, $customer);
@@ -62,7 +63,7 @@ class Package
                 $userRecharge->save();
 
                 Transaction::create([
-                    'invoice' => 'INV-'.Package::_raid(5),
+                    'invoice' => 'INV-' . Package::_raid(5),
                     'username' => $customer->username,
                     'plan_name' => $plan->name,
                     'price' => $plan->price,
@@ -74,7 +75,8 @@ class Package
                 ]);
             } else {
                 if ($plan->is_radius) {
-                    // TODO: radius add customer plan
+                    // NOTE: Please test the code!
+                    Radius::customerAddPlan($customer, $plan, $date_exp);
                 } else {
                     $client = static::resetCustomerMikrotik($mikrotik, $customer);
                     Mikrotik::addHotspotUser($client, $plan, $customer);
@@ -94,7 +96,7 @@ class Package
                 ]);
 
                 Transaction::create([
-                    'invoice' => 'INV-'.Package::_raid(5),
+                    'invoice' => 'INV-' . Package::_raid(5),
                     'username' => $customer->username,
                     'plan_name' => $plan->name,
                     'price' => $plan->price,
@@ -105,11 +107,12 @@ class Package
                     'type' => PlanType::HOTSPOT,
                 ]);
             }
-        // end if type hotspot
+            // end if type hotspot
         } else {
             if ($userRecharge) {
                 if ($plan->is_radius) {
-                    // TODO: radues customer add plan
+                    // NOTE: Please test the code!
+                    Radius::customerAddPlan($customer, $plan, $date_exp);
                 } else {
                     $client = static::resetCustomerMikrotik($mikrotik, $customer);
                     Mikrotik::addPpoeUser($client, $plan, $customer);
@@ -139,7 +142,7 @@ class Package
                 $userRecharge->save();
 
                 Transaction::create([
-                    'invoice' => 'INV-'.Package::_raid(5),
+                    'invoice' => 'INV-' . Package::_raid(5),
                     'username' => $customer->username,
                     'plan_name' => $plan->name,
                     'price' => $plan->price,
@@ -152,7 +155,7 @@ class Package
             } else {
                 // if empty $userRecharge
                 if ($plan->is_radius) {
-                    //TODO: radues customer add plan
+                    Radius::customerAddPlan($customer, $plan, $date_exp);
                 } else {
                     $client = static::resetCustomerMikrotik($mikrotik, $customer);
                     Mikrotik::addPpoeUser($client, $plan, $customer);
@@ -172,7 +175,7 @@ class Package
                 ]);
 
                 Transaction::create([
-                    'invoice' => 'INV-'.Package::_raid(5),
+                    'invoice' => 'INV-' . Package::_raid(5),
                     'username' => $customer->username,
                     'plan_name' => $plan->name,
                     'price' => $plan->price,
@@ -194,19 +197,21 @@ class Package
     {
         /** @var Router $mikrotik */
         $mikrotik = $userRecharge->router;
-        if ($plan->router->id != $userRecharge->router_id && ! $plan->is_radius) {
+        if ($plan->router->id != $userRecharge->router_id && !$plan->is_radius) {
             $mikrotik = $plan->router;
         }
         $client = static::resetCustomerMikrotik($mikrotik, $customer);
         if ($plan->type == PlanType::HOTSPOT) {
             if ($plan->is_radius) {
-                //TODO:
+                // NOTE: Please test the code!
+                Radius::customerAddPlan($customer, $plan);
             } else {
                 Mikrotik::addHotspotUser($client, $plan, $customer);
             }
         } else {
             if ($plan->is_radius) {
-                //TODO:
+                // NOTE: Please test the code!
+                Radius::customerAddPlan($customer, $plan);
             } else {
                 Mikrotik::addPpoeUser($client, $plan, $customer);
             }
