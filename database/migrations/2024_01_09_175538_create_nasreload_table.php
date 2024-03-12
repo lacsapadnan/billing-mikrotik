@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('nasreloads', function (Blueprint $table) {
+        Schema::create('nasreload', function (Blueprint $table) {
             $table->string('nasipaddress', 15)->primary();
             $table->dateTime('reloadtime');
             $table->timestamps();
@@ -23,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('nasreloads');
+        Schema::dropIfExists('nasreload');
     }
 };
