@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('radchecks', function (Blueprint $table) {
+        Schema::create('radacct', function (Blueprint $table) {
             $table->id();
             $table->string('username', 64)->default('')->index();
             $table->string('attribute', 64)->default('');
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('radchecks');
+        Schema::dropIfExists('radacct');
     }
 };
