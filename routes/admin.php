@@ -55,6 +55,12 @@ Route::name('admin:')->group(function () {
         Route::get('prepaid/refill-account', [AdminPrepaidController::class, 'refillAccount'])->name('prepaid.refill-account');
         Route::post('prepaid/refill-account', [AdminPrepaidController::class, 'storeRefillAccount'])->name('prepaid.refill-account.store');
 
+        Route::get('network/nas', [AdminNetworkController::class, 'nas'])->name('network.nas.index');
+        Route::get('network/nas/add', [AdminNetworkController::class, 'createNas'])->name('network.nas.create');
+        Route::get('network/nas/{nas}/edit', [AdminNetworkController::class, 'editNas'])->name('network.nas.edit');
+        Route::delete('network/nas/{nas}', [AdminNetworkController::class, 'destroyNas'])->name('network.nas.destroy');
+        Route::post('network/nas', [AdminNetworkController::class, 'storeNas'])->name('network.nas.store');
+        Route::patch('network/nas/{nas}', [AdminNetworkController::class, 'updateNas'])->name('network.nas.update');
         Route::get('network/router', [AdminNetworkController::class, 'router'])->name('network.router.index');
         Route::get('network/router/add', [AdminNetworkController::class, 'createRouter'])->name('network.router.create');
         Route::get('network/router/{router}/edit', [AdminNetworkController::class, 'editRouter'])->name('network.router.edit');
