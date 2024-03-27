@@ -13,8 +13,7 @@
 
 
                 <!--begin::Form-->
-                <form class="form fv-plugins-bootstrap5 fv-plugins-framework flex flex-col gap-5" method="POST"
-                    action="{{ $action }}">
+                <form class="flex flex-col gap-5 form fv-plugins-bootstrap5 fv-plugins-framework" method="POST" action="{{ $action }}" enctype="multipart/form-data">
                     @method($method)
                     @csrf
                     @if ($mode == 'edit')
@@ -28,23 +27,23 @@
                     <x-form.group.input name="pppoe_password" label="PPPOE Password" type="password" :value="@$customer['pppoe_password']"
                         tooltip="User Cannot change this, only admin. if it Empty it will use user password" />
                     <x-form.group.input name="address" type="textarea" :value="@$customer['address']" />
-                    <x-form.group.select name="service_type" label="Service Type" :options="$serviceTypes" required
-                        :value="@$customer['service_type']" />
+                    <x-form.group.select name="service_type" label="Service Type" :options="$serviceTypes" required :value="@$customer['service_type']" />
+                    <x-form.group.input name="long" label="Longitude" type="text" :value="@$customer['long']" />
+                    <x-form.group.input name="lat" label="Latitude" type="text" :value="@$customer['lat']" />
+                    <x-form.group.input name="ktp" label="KTP (Identity Card)" type="file" accept=".pdf,.jpg,.jpeg,.png" />
 
-                    <div class="row py-5">
+                    <div class="py-5 row">
                         <div class="col-md-9 offset-md-3">
                             <div class="d-flex">
                                 <button type="reset" onclick="window.history.back()" class="btn btn-light me-3">
                                     Cancel
                                 </button>
-
                                 <button type="submit" class="btn btn-primary">
                                     Save
                                 </button>
                             </div>
                         </div>
                     </div>
-
                 </form>
 
 

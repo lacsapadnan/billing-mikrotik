@@ -14,6 +14,7 @@ use App\Support\Facades\Log;
 use App\Support\Mikrotik;
 use Error;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class AdminCustomerController extends Controller
 {
@@ -26,13 +27,22 @@ class AdminCustomerController extends Controller
     {
         $tab = $request->tab ?? 'order';
         $request->merge(['username' => $customer->username]);
+
         if ($tab == 'order') {
             return $orderHistoryDataTable->render('admin.customer.detail', compact('customer', 'tab'));
         }
+
         if ($tab == 'activation') {
             return $activationHistoryDataTable->render('admin.customer.detail', compact('customer', 'tab'));
         }
 
+        if ($tab == 'map') {
+            $longitude = $customer->long;
+            $latitude = $customer->lat;
+            return view('admin.customer.detail', compact('customer', 'tab', 'longitude', 'latitude'));
+        }
+
+        // Pass the longitude and latitude to the view
         return view('admin.customer.detail', compact('customer', 'tab'));
     }
 
@@ -56,7 +66,7 @@ class AdminCustomerController extends Controller
     {
         try {
             $customer->delete();
-            Log::put('Delete customer '.$customer->username, auth()->user());
+            Log::put('Delete customer ' . $customer->username, auth()->user());
 
             return redirect()->to(route('admin:customer.index'))->with('success', __('success.deleted'));
         } catch (Error $exception) {
@@ -66,16 +76,38 @@ class AdminCustomerController extends Controller
 
     public function store(AdminCustomerRequest $request)
     {
-        Customer::query()->create($request->all());
-        Log::put('Create customer '.$request->username, auth()->user());
+        $customerData = $request->all();
+
+        if ($request->hasFile('ktp')) {
+            $ktpFile = $request->file('ktp');
+            $ktpFileName = $ktpFile->getClientOriginalName(); // Get the original file name
+            $ktpFilePath = $ktpFile->storeAs('ktp', $ktpFileName, 'public'); // Store the file in storage/ktp directory
+            $customerData['ktp'] = $ktpFilePath; // Save the file path in database
+        }
+
+        Customer::create($customerData);
+        Log::put('Create customer ' . $request->username, auth()->user());
 
         return redirect(route('admin:customer.index'))->with('success', __('success.created'));
     }
 
     public function update(Customer $customer, AdminCustomerRequest $request)
     {
-        $customer->update($request->all());
-        Log::put('Update customer '.$request->username, auth()->user());
+        $customer->update($request->except('ktp')); // Exclude 'ktp' field from mass assignment
+
+        if ($request->hasFile('ktp')) {
+            if ($customer->ktp) {
+                Storage::disk('public')->delete($customer->ktp);
+            }
+            $ktpFile = $request->file('ktp');
+            $ktpFileName = $ktpFile->getClientOriginalName();
+            $ktpFilePath = $ktpFile->storeAs('ktp', $ktpFileName, 'public');
+
+            $customer->update(['ktp' => $ktpFilePath]);
+        }
+
+        // Log the update
+        Log::put('Update customer ' . $customer->username, auth()->user());
 
         return redirect(route('admin:customer.index'))->with('success', __('success.updated'));
     }
@@ -100,7 +132,7 @@ class AdminCustomerController extends Controller
             'status' => 'off',
             'expired_date' => now(),
         ]);
-        Log::put('Deactivate customer '.$recharge->username, auth()->user());
+        Log::put('Deactivate customer ' . $recharge->username, auth()->user());
 
         return redirect()->back()->with('success', __('Success deactivate customer to Mikrotik'));
     }

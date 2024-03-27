@@ -25,6 +25,9 @@ class Customer extends Authenticatable
         'service_type',
         'auto_renewal',
         'last_login',
+        'long',
+        'lat',
+        'ktp',
     ];
 
     protected $casts = [

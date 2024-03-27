@@ -38,6 +38,9 @@ class AdminCustomerRequest extends FormRequest
             'address' => 'nullable',
             'phonenumber' => 'nullable',
             'service_type' => ['required', new Enum(ServiceType::class)],
+            'long' => 'nullable',
+            'lat' => 'nullable',
+            'ktp' => 'nullable',
         ];
     }
 
