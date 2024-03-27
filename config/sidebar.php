@@ -237,6 +237,12 @@ return [
                             'url' => '/admin/setting/user',
                             'icon' => 'profile-user',
                         ],
+                        [
+                            'name' => 'setting.import-mikrotik',
+                            'title' => 'Mikrotik Import',
+                            'url' => '/admin/setting/import-mikrotik',
+                            'icon' => 'switch',
+                        ],
                     ],
                 ],
                 [
